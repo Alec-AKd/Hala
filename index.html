@@ -6,45 +6,270 @@
 <title>Evidență Echipamente Hală</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap');
-
-  :root {
-    --bg: #0e0f13; --surface: #16181f; --surface2: #1e2029;
-    --border: #2a2d3a; --accent: #f0c040; --danger: #f05060;
-    --text: #e8eaf0; --muted: #7a7f9a;
-    --in: #4af0a0; --out: #f0c040; --missing: #f05060;
-  }
+  :root { --bg: #0e0f13; --surface: #16181f; --surface2: #1e2029; --border: #2a2d3a; --accent: #f0c040; --danger: #f05060; --text: #e8eaf0; --muted: #7a7f9a; --in: #4af0a0; --out: #f0c040; --missing: #f05060; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; overflow-x: hidden; }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(240,192,64,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(240,192,64,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
-  }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(240,192,64,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(240,192,64,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
   .app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
-
-  /* Loading */
   #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 100; transition: opacity 0.4s; }
   #loading.hide { opacity: 0; pointer-events: none; }
   .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Header */
   header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 14px; }
   .logo-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
   h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
   h1 span { color: var(--accent); }
-
-  /* Connection */
   .conn-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-size: 0.78rem; font-family: 'DM Mono', monospace; margin-bottom: 20px; border: 1px solid var(--border); background: var(--surface); width: fit-content; }
   .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background 0.3s; }
   .conn-dot.online { background: var(--in); box-shadow: 0 0 6px var(--in); animation: pulse 2s infinite; }
   .conn-dot.offline { background: var(--missing); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-  /* Stats */
   .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 28px; }
   .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; transition: transform 0.2s; }
   .stat:hover { transform: translateY(-2px); }
   .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
   .stat-value { font-size: 2rem; font-weight: 800; }
+  .stat-value.total { color: var(--text); } .stat-value.in-hala { color: var(--in); } .stat-value.out-hala { color: var(--out); } .stat-value.missing { color: var(--missing); }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; }
+  .panel-header { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .panel-title { font-size: 1rem; font-weight: 700; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 20px 22px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  input, select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+  input:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface2); }
+  .form-actions { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { padding: 10px 20px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--accent); color: #0e0f13; }
+  .btn-primary:hover { background: #ffd060; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-out { background: transparent; border: 1px solid var(--out); color: var(--out); }
+  .btn-out:hover { background: rgba(240,192,64,0.1); }
+  .btn-in { background: transparent; border: 1px solid var(--in); color: var(--in); }
+  .btn-in:hover { background: rgba(74,240,160,0.1); }
+  .btn-del { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 6px 10px; font-size: 0.78rem; }
+  .btn-del:hover { border-color: var(--danger); color: var(--danger); }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .search-wrap { position: relative; }
+  .search-wrap input { padding-left: 36px; min-width: 200px; }
+  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
+  .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .pill.active, .pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,192,64,0.08); }
+  .pill.in.active { border-color: var(--in); color: var(--in); background: rgba(74,240,160,0.08); }
+  .pill.out.active { border-color: var(--out); color: var(--out); background: rgba(240,192,64,0.08); }
+  .pill.missing.active { border-color: var(--missing); color: var(--missing); background: rgba(240,80,96,0.08); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead tr { border-bottom: 2px solid var(--border); }
+  th { padding: 12px 16px; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; animation: fadeIn 0.3s ease; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 13px 16px; font-family: 'DM Mono', monospace; }
+  td.name-col { font-family: 'Syne', sans-serif; font-weight: 600; }
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; font-family: 'Syne', sans-serif; }
+  .badge-in { background: rgba(74,240,160,0.12); color: var(--in); border: 1px solid rgba(74,240,160,0.2); }
+  .badge-out { background: rgba(240,192,64,0.12); color: var(--out); border: 1px solid rgba(240,192,64,0.2); }
+  .badge-missing { background: rgba(240,80,96,0.12); color: var(--missing); border: 1px solid rgba(240,80,96,0.2); }
+  .action-cell { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .empty-state { padding: 48px 22px; text-align: center; color: var(--muted); }
+  .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.4; }
+  .history-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 22px; border-bottom: 1px solid var(--border); animation: fadeIn 0.3s ease; }
+  .history-item:last-child { border-bottom: none; }
+  .h-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .h-dot.in { background: var(--in); } .h-dot.out { background: var(--out); } .h-dot.missing { background: var(--missing); } .h-dot.add { background: #a0a0f0; }
+  .h-info { flex: 1; }
+  .h-main { color: var(--text); margin-bottom: 2px; font-family: 'Syne', sans-serif; font-size: 0.83rem; }
+  .h-main b { color: var(--accent); }
+  .h-time { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.75rem; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--surface2); border: 1px solid var(--accent); color: var(--text); padding: 12px 20px; border-radius: 10px; font-size: 0.85rem; font-family: 'Syne', sans-serif; font-weight: 600; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s cubic-bezier(.34,1.56,.64,1); max-width: 320px; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  @media (max-width: 600px) { h1 { font-size: 1.2rem; } .form-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div id="loading">
+  <div class="spinner"></div>
+  <div style="font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--muted)">Conectare Firebase...</div>
+</div>
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🏭</div>
+      <div>
+        <h1>Evidență <span>Echipamente</span></h1>
+        <div style="font-size:0.75rem;color:var(--muted);font-family:'DM Mono',monospace;">Gestiune intrări / ieșiri hală</div>
+      </div>
+    </div>
+    <div id="clock" style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)"></div>
+  </header>
+  <div class="conn-bar">
+    <div class="conn-dot" id="conn-dot"></div>
+    <span id="conn-text" style="color:var(--muted)">Se conectează...</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Total</div><div class="stat-value total" id="s-total">0</div></div>
+    <div class="stat"><div class="stat-label">În hală</div><div class="stat-value in-hala" id="s-in">0</div></div>
+    <div class="stat"><div class="stat-label">Ieșit</div><div class="stat-value out-hala" id="s-out">0</div></div>
+    <div class="stat"><div class="stat-label">Lipsă</div><div class="stat-value missing" id="s-missing">0</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">➕ Adaugă echipament</div></div>
+    <div class="form-grid">
+      <div class="field"><label>Denumire echipament</label><input type="text" id="f-name" placeholder="ex: Strung CNC, Lift..."></div>
+      <div class="field"><label>Persoana responsabilă</label><input type="text" id="f-person" placeholder="ex: Ion Popescu"></div>
+      <div class="field"><label>Stare inițială</label>
+        <select id="f-status">
+          <option value="in">✅ În hală</option>
+          <option value="out">📤 Ieșit</option>
+          <option value="missing">⚠️ Lipsă</option>
+        </select>
+      </div>
+      <div class="field"><label>Data / Ora</label><input type="datetime-local" id="f-date"></div>
+      <div class="field"><label>Observații</label><input type="text" id="f-notes" placeholder="opțional"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" id="btn-add" onclick="addEquipment()">✚ Adaugă</button>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">📋 Lista echipamente</div>
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search" placeholder="Caută..." oninput="render()">
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" onclick="setFilter('all',this)">Toate</button>
+          <button class="pill in" onclick="setFilter('in',this)">În hală</button>
+          <button class="pill out" onclick="setFilter('out',this)">Ieșite</button>
+          <button class="pill missing" onclick="setFilter('missing',this)">Lipsă</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Echipament</th><th>Responsabil</th><th>Stare</th><th>Ultima actualizare</th><th>Obs.</th><th>Acțiuni</th></tr></thead>
+        <tbody id="eq-body"></tbody>
+      </table>
+      <div id="empty-state" class="empty-state" style="display:none">
+        <div class="empty-icon">📦</div>
+        <div>Niciun echipament găsit.</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">📜 Jurnal activitate</div>
+      <button class="btn btn-del" onclick="clearHistory()">Șterge jurnal</button>
+    </div>
+    <div id="history-list">
+      <div class="empty-state" style="padding:24px"><div style="color:var(--muted)">Nicio activitate înregistrată.</div></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  const firebaseConfig = { apiKey: "AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw", authDomain: "akd-check-in.firebaseapp.com", databaseURL: "https://akd-check-in-default-rtdb.europe-west1.firebasedatabase.app", projectId: "akd-check-in", storageBucket: "akd-check-in.firebasestorage.app", messagingSenderId: "661289469260", appId: "1:661289469260:web:5e757525e78ada7059fbe9" };
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+  let equipment = {}, historyData = {}, filterState = 'all', firstLoad = true;
+  function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleString('ro-RO', {weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  updateClock(); setInterval(updateClock, 1000);
+  const n = new Date(), pad = x => String(x).padStart(2,'0');
+  document.getElementById('f-date').value = `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
+  function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
+  window.toast = toast;
+  onValue(ref(db, '.info/connected'), snap => {
+    const ok = snap.val() === true;
+    document.getElementById('conn-dot').className = 'conn-dot ' + (ok ? 'online' : 'offline');
+    const ct = document.getElementById('conn-text');
+    ct.textContent = ok ? '🟢 Conectat — sincronizare în timp real' : '🔴 Deconectat';
+    ct.style.color = ok ? 'var(--in)' : 'var(--missing)';
+  });
+  const eqRef = ref(db, 'equipment');
+  onValue(eqRef, snap => {
+    equipment = snap.val() || {}; render();
+    if (firstLoad) { firstLoad = false; const l = document.getElementById('loading'); l.classList.add('hide'); setTimeout(() => l.style.display = 'none', 400); }
+  });
+  const histRef = ref(db, 'history');
+  onValue(histRef, snap => { historyData = snap.val() || {}; renderHistory(); });
+  window.addEquipment = async function() {
+    const name = document.getElementById('f-name').value.trim();
+    const person = document.getElementById('f-person').value.trim();
+    const status = document.getElementById('f-status').value;
+    const date = document.getElementById('f-date').value;
+    const notes = document.getElementById('f-notes').value.trim();
+    if (!name) { toast('⚠️ Completați denumirea!'); return; }
+    if (!person) { toast('⚠️ Completați responsabilul!'); return; }
+    const btn = document.getElementById('btn-add'); btn.disabled = true;
+    try {
+      await set(push(eqRef), { name, person, status, date: date || new Date().toISOString(), notes, createdAt: Date.now() });
+      await push(histRef, { action:'Echipament adăugat', name, person, dot:'add', time: new Date().toLocaleString('ro-RO'), ts: Date.now() });
+      document.getElementById('f-name').value = ''; document.getElementById('f-person').value = ''; document.getElementById('f-notes').value = '';
+      toast(`✅ "${name}" adăugat!`);
+    } catch(e) { toast('❌ ' + e.message); }
+    btn.disabled = false;
+  };
+  window.changeStatus = async function(key, newStatus) {
+    const eq = equipment[key]; if (!eq) return;
+    const labels = { in:'În hală', out:'Ieșit', missing:'Lipsă' };
+    try {
+      await set(ref(db, `equipment/${key}/status`), newStatus);
+      await set(ref(db, `equipment/${key}/date`), new Date().toLocaleString('ro-RO'));
+      await push(histRef, { action:`${labels[newStatus]}: ${eq.name}`, name:eq.name, person:eq.person, dot:newStatus, time:new Date().toLocaleString('ro-RO'), ts:Date.now() });
+      toast(`🔄 "${eq.name}" → ${labels[newStatus]}`);
+    } catch(e) { toast('❌ ' + e.message); }
+  };
+  window.deleteEquipment = async function(key) {
+    const eq = equipment[key]; if (!eq) return;
+    if (!confirm(`Ștergi "${eq.name}"?`)) return;
+    try {
+      await remove(ref(db, `equipment/${key}`));
+      await push(histRef, { action:`Șters: ${eq.name}`, name:eq.name, person:eq.person, dot:'add', time:new Date().toLocaleString('ro-RO'), ts:Date.now() });
+      toast(`🗑️ "${eq.name}" șters.`);
+    } catch(e) { toast('❌ ' + e.message); }
+  };
+  window.clearHistory = async function() {
+    if (!confirm('Ștergi tot jurnalul?')) return;
+    try { await remove(histRef); toast('🗑️ Jurnal șters.'); } catch(e) { toast('❌ ' + e.message); }
+  };
+  window.setFilter = function(f, el) { filterState = f; document.querySelectorAll('.pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); render(); };
+  window.render = function() {
+    const q = (document.getElementById('search')?.value || '').toLowerCase();
+    const statusLabel = { in:'În hală', out:'Ieșit', missing:'Lipsă' };
+    let list = Object.entries(equipment).map(([key, val]) => ({key, ...val})).filter(e => {
+      if (filterState !== 'all' && e.status !== filterState) return false;
+      if (q && !e.name?.toLowerCase().includes(q) && !e.person?.toLowerCase().includes(q)) return false;
+      return true;
+    }).sort((a,b) => (b.createdAt||0)-(a.createdAt||0));
+    const tbody = document.getElementById('eq-body');
+    const empty = document.getElementById('empty-state');
+    if (!tbody) return;
+    if (list.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; }
+    else {
+      empty.style.display = 'none';
+      tbody.innerHTML = list.map((e,i) => `<tr><td style="color:var(--muted);font-size:0.8rem">${i+1}</td><td class="name-col">${e.name||'—'}</td><td>${e.person||'—'}</td><td><span class="badge badge-${e.status}">${statusLabel[e.status]||e.status}</span></td><td style="color:var(--muted);font-size:0.78rem">${e.date||'—'}</td><td style="color:var(--muted);font-size:0.78rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">${e.notes||'—'}</td><td><div class="action-cell">${e.status!=='in'?`<button class="btn btn-in" onclick="changeStatus('${e.key}','in')">⬅ Intrat</button>`:''}${e.status!=='out'?`<button class="btn btn-out" onclick="changeStatus('${e.key}','out')">➡ Ieșit</button>`:''}${e.status!=='missing'?`<button class="btn btn-del" onclick="changeStatus('${e.key}','missing')">⚠ Lipsă</button>`:''}<button class="btn btn-del" onclick="deleteEquipment('${e.key}')">🗑</button></div></td></tr>`).join('');
+    }
+    const all = Object.values(equipment);
+    document.getElementById('s-total').textContent = all.length;
+    document.getElementById('s-in').textContent = all.filter(e=>e.status==='in').length;
+    document.getElementById('s-out').textContent = all.filter(e=>e.status==='out').length;
+    document.getElementById('s-missing').textContent = all.filter(e=>e.status==='missing').length;
+  };
+  function renderHistory() {
+    const hl = document.getElementById('history-list'); if (!hl) return;
+    const items = Object.values(historyData).sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,40);
+    if (items.length === 0) { hl.innerHTML = '<div class="empty-state" style="padding:24px"><div style="color:var(--muted)">Nicio activitate înregistrată.</div></div>'; return; }
+    hl.innerHTML = items.map(h => `<div class="history-item"><div class="h-dot ${h.dot||'add'}"></div><div class="h-info"><div class="h-main"><b>${h.name}</b> — ${h.action} <span style="color:var(--muted)">· ${h.person}</span></div><div class="h-time">${h.time}</div></div></div>`).join('');
+  }
+</script>
+</body>
+</html>
