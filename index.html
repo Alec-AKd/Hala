@@ -14,13 +14,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <style>
-:root {
-  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;
-  --accent:#e8c547;--accent2:#4fd1c5;--danger:#ff5555;--success:#50fa7b;
-  --warning:#ffb86c;--text:#e8e8f0;--text2:#8888aa;--text3:#4a4a6a;
-  --font-mono:'Space Mono',monospace;--font-main:'Sora',sans-serif;
-  --radius:12px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.5);
-}
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#e8c547;--accent2:#4fd1c5;--danger:#ff5555;--success:#50fa7b;--warning:#ffb86c;--text:#e8e8f0;--text2:#8888aa;--text3:#4a4a6a;--font-mono:'Space Mono',monospace;--font-main:'Sora',sans-serif;--radius:12px;--radius-sm:6px;--shadow:0 4px 24px rgba(0,0,0,0.5);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-main);min-height:100vh;overflow-x:hidden;}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;transition:opacity 0.4s;}
@@ -91,19 +85,19 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .cat-toggle.open{transform:rotate(180deg);}
 .items-list{display:none;}
 .items-list.open{display:block;}
-.item-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--border);}
+.item-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);}
 .item-check{width:22px;height:22px;flex-shrink:0;border:2px solid var(--border);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.8rem;}
 .item-check.present{background:var(--success);border-color:var(--success);color:#000;}
 .item-check.absent{background:var(--danger);border-color:var(--danger);color:#fff;}
 .item-info{flex:1;min-width:0;}
 .item-name{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.item-sub{font-size:0.7rem;color:var(--text2);}
+.item-sub{font-size:0.68rem;color:var(--text2);margin-top:1px;}
 .item-who{font-size:0.65rem;color:var(--accent2);margin-top:2px;}
-.edit-btn{background:none;border:none;color:var(--text3);font-size:0.75rem;cursor:pointer;padding:0 4px;vertical-align:middle;}
-.item-qty{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.edit-btn{background:none;border:1px solid var(--border);color:var(--accent);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:6px;font-family:var(--font-mono);vertical-align:middle;}
+.item-qty{display:flex;align-items:center;gap:5px;flex-shrink:0;}
 .qty-btn{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
 .qty-btn:active{background:var(--accent);color:#000;border-color:var(--accent);}
-.qty-num{font-family:var(--font-mono);font-size:0.85rem;min-width:28px;text-align:center;}
+.qty-num{font-family:var(--font-mono);font-size:0.85rem;min-width:20px;text-align:center;}
 .item-status{font-size:0.65rem;padding:2px 7px;border-radius:20px;border:1px solid;cursor:pointer;flex-shrink:0;white-space:nowrap;font-family:var(--font-mono);}
 .item-status.ok{border-color:var(--success);color:var(--success);}
 .item-status.defect{border-color:var(--danger);color:var(--danger);}
@@ -139,6 +133,16 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .admin-list{display:flex;flex-direction:column;gap:6px;}
 .admin-item-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);}
 .admin-item-row span{flex:1;font-size:0.85rem;}
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.edit-overlay.show{display:flex;}
+.edit-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:90%;max-width:360px;animation:slideUp 0.3s ease;}
+.edit-box h3{font-family:var(--font-mono);color:var(--accent);font-size:0.95rem;margin-bottom:20px;}
+.edit-box label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text2);display:block;margin-bottom:6px;font-family:var(--font-mono);}
+.edit-box input{width:100%;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.95rem;margin-bottom:14px;outline:none;}
+.edit-box input:focus{border-color:var(--accent);}
+.edit-actions{display:flex;gap:8px;}
+.btn-save{flex:1;padding:12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.88rem;cursor:pointer;}
+.btn-cancel2{flex:1;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.88rem;cursor:pointer;}
 .fab-group{position:fixed;bottom:48px;right:16px;display:flex;flex-direction:column;gap:10px;z-index:50;}
 .fab-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);color:var(--accent);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);background:var(--surface2);}
 .fab-admin{display:none;}
@@ -154,7 +158,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 <!-- Loading -->
 <div id="loading">
   <div class="load-logo">AKD</div>
-  <div class="load-sub">INVENTAR v3.0</div>
+  <div class="load-sub">INVENTAR v3.1</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
 
@@ -183,6 +187,21 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
     <div class="login-error2" id="adminLoginErr">Parolă incorectă!</div>
     <button class="btn-login2" onclick="tryAdminLogin()">INTRĂ CA ADMIN</button>
     <button class="btn-cancel" onclick="closeAdminLogin()">Anulează</button>
+  </div>
+</div>
+
+<!-- Edit Overlay -->
+<div class="edit-overlay" id="editOverlay">
+  <div class="edit-box">
+    <h3>✏️ EDITEAZĂ ECHIPAMENT</h3>
+    <label>Nume echipament</label>
+    <input type="text" id="editName" placeholder="Numele echipamentului">
+    <label>Stoc maxim (bucăți)</label>
+    <input type="number" id="editQty" placeholder="ex: 2" min="1">
+    <div class="edit-actions">
+      <button class="btn-cancel2" onclick="closeEditOverlay()">Anulează</button>
+      <button class="btn-save" onclick="saveEditItem()">SALVEAZĂ</button>
+    </div>
   </div>
 </div>
 
@@ -300,7 +319,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 const firebaseConfig={apiKey:"AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw",authDomain:"akd-check-in.firebaseapp.com",databaseURL:"https://akd-check-in-default-rtdb.europe-west1.firebasedatabase.app",projectId:"akd-check-in",storageBucket:"akd-check-in.firebasestorage.app",messagingSenderId:"661289469260",appId:"1:661289469260:web:5e757525e78ada7059fbe9"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
-let isAdmin=false,currentUser=null,currentFilter='all',currentJurnalFilter='all',selectedUserId=null;
+let isAdmin=false,currentUser=null,currentFilter='all',currentJurnalFilter='all',selectedUserId=null,editingItemId=null;
 let dbData={categories:{},items:{},settings:{},users:{},jurnal:{}};
 let ADMIN_PASS='akd2025';
 const DEFAULT_USERS=[{id:'gica',name:'Gică',emoji:'👷',pass:'gica123'},{id:'muschiulet',name:'Mușchiuleț',emoji:'💪',pass:'muschi123'},{id:'ponei',name:'Ponei',emoji:'🐴',pass:'ponei123'}];
@@ -320,21 +339,25 @@ const INITIAL_ITEMS=[
 {cat:'service',name:'Telemetru cu laser',qty:3},{cat:'service',name:'Multimetru digital',qty:1},{cat:'service',name:'Masina de gaurit 600W',qty:1},{cat:'service',name:'Masina gaurit si insurubat',qty:1},{cat:'service',name:'Polizor unghiular',qty:2},{cat:'service',name:'Fierastrau circular',qty:1},{cat:'service',name:'Compresor cu ulei',qty:1},{cat:'service',name:'Generator aer cald',qty:1},{cat:'service',name:'Pistol de lipit YATO',qty:1},{cat:'service',name:'Statie de lipit',qty:1},{cat:'service',name:'Capsator pneumatic',qty:2},{cat:'service',name:'Invertor BLUE POWER',qty:1},{cat:'service',name:'Butelie CO2 20L',qty:2},{cat:'service',name:'Cutie unelte 74 elemente',qty:1},{cat:'service',name:'NIVELA LASER',qty:1},{cat:'service',name:'Clampmetru Digital 600A',qty:1}
 ];
 
-function initFirebase(){db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});db.ref('v2').once('value',s=>{const d=s.val();if(!d||!d.categories){seedData();}else{if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2/users').set(users);}if(!d.jurnal){db.ref('v2/jurnal').set({});}loadData();}});} 
-function seedData(){showToast('Inițializare...');const cats={};INITIAL_CATEGORIES.forEach(c=>{cats[c.id]={name:c.name,emoji:c.emoji};});const items={};INITIAL_ITEMS.forEach((item,i)=>{items['item_'+i+'_'+Date.now()]={name:item.name,cat:item.cat,qty:item.qty,qtyPresent:item.qty,present:true,status:'ok'};});const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2').set({categories:cats,items:items,settings:{adminPass:'akd2025'},users:users,jurnal:{}},()=>{loadData();showToast('✅ Date inițializate!');});}
+function initFirebase(){db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});db.ref('v2').once('value',s=>{const d=s.val();if(!d||!d.categories){seedData();}else{if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2/users').set(users);}if(!d.jurnal)db.ref('v2/jurnal').set({});loadData();}});}
+function seedData(){showToast('Inițializare...');const cats={};INITIAL_CATEGORIES.forEach(c=>{cats[c.id]={name:c.name,emoji:c.emoji};});const items={};INITIAL_ITEMS.forEach((item,i)=>{items['item_'+i+'_'+Date.now()]={name:item.name,cat:item.cat,qty:item.qty,qtyPresent:item.qty,present:true,status:'ok'};});const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2').set({categories:cats,items:items,settings:{adminPass:'akd2025'},users:users,jurnal:{}},()=>{loadData();showToast('✅ Inițializat!');});}
 function loadData(){db.ref('v2').on('value',s=>{const d=s.val()||{};dbData.categories=d.categories||{};dbData.items=d.items||{};dbData.settings=d.settings||{};dbData.users=d.users||{};dbData.jurnal=d.jurnal||{};if(dbData.settings.adminPass)ADMIN_PASS=dbData.settings.adminPass;renderAll();updateStats();document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');const el=document.getElementById('loading');if(!el.classList.contains('hidden')){el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);}});}
 
 function showUserLogin(){document.getElementById('userLoginOverlay').classList.remove('hidden');renderUserList();}
 function renderUserList(){const list=document.getElementById('userList');list.innerHTML='';document.getElementById('userPassSection').classList.remove('show');document.getElementById('userList').style.display='flex';Object.entries(dbData.users).forEach(([id,u])=>{const btn=document.createElement('button');btn.className='user-btn';btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;btn.onclick=()=>selectUser(id,u);list.appendChild(btn);});}
 function selectUser(id,u){selectedUserId=id;document.getElementById('userList').style.display='none';const ps=document.getElementById('userPassSection');ps.classList.add('show');document.getElementById('userPassLabel').textContent='Parola pentru '+u.name;document.getElementById('userPassInput').value='';document.getElementById('userPassErr').style.display='none';setTimeout(()=>document.getElementById('userPassInput').focus(),100);}
 function backToUserList(){selectedUserId=null;document.getElementById('userList').style.display='flex';document.getElementById('userPassSection').classList.remove('show');}
-function confirmUserLogin(){const pass=document.getElementById('userPassInput').value;const u=dbData.users[selectedUserId];if(!u){showToast('Eroare!');return;}if(pass===u.pass){currentUser={id:selectedUserId,name:u.name,emoji:u.emoji||'👤'};document.getElementById('userLoginOverlay').classList.add('hidden');document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser.emoji+' '+currentUser.name;document.getElementById('roleBtn').textContent='Admin';showToast('✅ Bun venit, '+currentUser.name+'!');}else{document.getElementById('userPassErr').style.display='block';document.getElementById('userPassInput').value='';document.getElementById('userPassInput').focus();}}
+function confirmUserLogin(){const pass=document.getElementById('userPassInput').value;const u=dbData.users[selectedUserId];if(!u)return;if(pass===u.pass){currentUser={id:selectedUserId,name:u.name,emoji:u.emoji||'👤'};document.getElementById('userLoginOverlay').classList.add('hidden');document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser.emoji+' '+currentUser.name;showToast('✅ Bun venit, '+currentUser.name+'!');}else{document.getElementById('userPassErr').style.display='block';document.getElementById('userPassInput').value='';document.getElementById('userPassInput').focus();}}
 document.getElementById('userPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmUserLogin();});
 
-function handleRoleBtn(){if(isAdmin){isAdmin=false;document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser?currentUser.emoji+' '+currentUser.name:'—';document.getElementById('roleBtn').textContent='Admin';document.getElementById('fabAdmin').style.display='none';showToast('Ieșit din Admin');}else{document.getElementById('adminLoginOverlay').classList.add('show');setTimeout(()=>document.getElementById('adminPassInput').focus(),100);}}
-function tryAdminLogin(){const p=document.getElementById('adminPassInput').value;if(p===ADMIN_PASS){isAdmin=true;closeAdminLogin();document.getElementById('roleBadge').className='role-badge admin';document.getElementById('roleBadge').textContent='👑 ADMIN';document.getElementById('roleBtn').textContent='Ieși';document.getElementById('fabAdmin').style.display='flex';showToast('✅ Mod Admin activat!');}else{document.getElementById('adminLoginErr').style.display='block';document.getElementById('adminPassInput').value='';}}
+function handleRoleBtn(){if(isAdmin){isAdmin=false;document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser?currentUser.emoji+' '+currentUser.name:'—';document.getElementById('roleBtn').textContent='Admin';document.getElementById('fabAdmin').style.display='none';renderAll();showToast('Ieșit din Admin');}else{document.getElementById('adminLoginOverlay').classList.add('show');setTimeout(()=>document.getElementById('adminPassInput').focus(),100);}}
+function tryAdminLogin(){const p=document.getElementById('adminPassInput').value;if(p===ADMIN_PASS){isAdmin=true;closeAdminLogin();document.getElementById('roleBadge').className='role-badge admin';document.getElementById('roleBadge').textContent='👑 ADMIN';document.getElementById('roleBtn').textContent='Ieși';document.getElementById('fabAdmin').style.display='flex';renderAll();showToast('✅ Mod Admin activat!');}else{document.getElementById('adminLoginErr').style.display='block';document.getElementById('adminPassInput').value='';}}
 function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('show');document.getElementById('adminPassInput').value='';document.getElementById('adminLoginErr').style.display='none';}
 document.getElementById('adminPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryAdminLogin();});
+
+function openEditOverlay(id){if(!isAdmin)return;const item=dbData.items[id];if(!item)return;editingItemId=id;document.getElementById('editName').value=item.name;document.getElementById('editQty').value=item.qty;document.getElementById('editOverlay').classList.add('show');}
+function closeEditOverlay(){document.getElementById('editOverlay').classList.remove('show');editingItemId=null;}
+function saveEditItem(){if(!editingItemId)return;const name=document.getElementById('editName').value.trim();const qty=parseInt(document.getElementById('editQty').value);if(!name){showToast('Introdu numele!');return;}if(!qty||qty<1){showToast('Stoc invalid!');return;}const item=dbData.items[editingItemId];const u={};u[`v2/items/${editingItemId}/name`]=name;u[`v2/items/${editingItemId}/qty`]=qty;if((item.qtyPresent||0)>qty)u[`v2/items/${editingItemId}/qtyPresent`]=qty;db.ref().update(u,()=>{showToast('✅ Salvat!');logAction('✏️ Editat: '+name,'stoc maxim: '+qty);});closeEditOverlay();}
 
 function logAction(action,itemName){if(!currentUser)return;db.ref('v2/jurnal').push({user:currentUser.name,userEmoji:currentUser.emoji||'👤',userId:currentUser.id,action:action,item:itemName,ts:Date.now()});}
 function openJurnal(){document.getElementById('jurnalPanel').classList.add('show');document.getElementById('btnClearJurnal').style.display=isAdmin?'block':'none';renderJurnal();}
@@ -345,11 +368,11 @@ function clearJurnal(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v2/ju
 function clearJurnalFromAdmin(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v2/jurnal').remove(()=>showToast('✅ Jurnal șters!'));}
 
 function renderAll(){const search=document.getElementById('searchInput').value.toLowerCase();const container=document.getElementById('categories');container.innerHTML='';const catOrder=['sunet','lumini','multimedia','scena','backline','masini','diverse','service'];const allCatIds=Object.keys(dbData.categories);const sorted=[...catOrder.filter(id=>allCatIds.includes(id)),...allCatIds.filter(id=>!catOrder.includes(id))];sorted.forEach((catId,idx)=>{const cat=dbData.categories[catId];if(!cat)return;let items=Object.entries(dbData.items).filter(([,v])=>v.cat===catId).map(([k,v])=>({id:k,...v}));if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));if(currentFilter==='absent')items=items.filter(it=>!it.present);if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');if(search&&items.length===0)return;const totalItems=Object.values(dbData.items).filter(v=>v.cat===catId).length;const presentItems=Object.values(dbData.items).filter(v=>v.cat===catId&&v.present).length;const pct=totalItems>0?Math.round(presentItems/totalItems*100):0;const card=document.createElement('div');card.className='category-card';card.style.animationDelay=(idx*40)+'ms';const isOpen=search||localStorage.getItem('open_'+catId)==='1';card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${presentItems}/${totalItems}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="items-list ${isOpen?'open':''}" id="list_${catId}">${items.length===0?'<div class="empty">—</div>':items.map(item=>renderItem(item)).join('')}</div>`;container.appendChild(card);});if(container.innerHTML==='')container.innerHTML='<div class="empty">Niciun echipament găsit</div>';}
-function renderItem(item){const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};const s=item.status||'ok';const n=item.name.replace(/'/g,"\\'");const whoHtml=item.lastUser?`<div class="item-who">✏️ ${item.lastUser}</div>`:'';const adminEdit=isAdmin?`<button class="edit-btn" onclick="editItem('${item.id}')">✏️</button>`:'';return`<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name}${adminEdit}</div><div class="item-sub">Prezent: ${item.qtyPresent!==undefined?item.qtyPresent:item.qty} / Max: ${item.qty} buc</div>${whoHtml}</div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1,'${n}')">−</button><span class="qty-num">${item.qtyPresent!==undefined?item.qtyPresent:item.qty}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1,'${n}')">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</div></div>`;}
+function renderItem(item){const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};const s=item.status||'ok';const n=item.name.replace(/'/g,"\\'");const qPrez=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const whoHtml=item.lastUser?`<div class="item-who">✏️ ${item.lastUser}</div>`:'';const editBtn=isAdmin?`<button class="edit-btn" onclick="openEditOverlay('${item.id}')">✏️ edit</button>`:'';return`<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${editBtn}</div><div class="item-sub">${qPrez} / ${item.qty} buc</div>${whoHtml}</div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1,'${n}')">−</button><span class="qty-num">${qPrez}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1,'${n}')">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</div></div>`;}
 
 function togglePresent(id,v,name){const u={};u[`v2/items/${id}/present`]=v;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(v?'✅ Prezent':'❌ Absent',name);showToast(v?'✅ Prezent':'❌ Absent');}
 function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:'ok'};const next=cycle[cur]||'ok';const labels={ok:'OK',defect:'Defect',lipsa:'Lipsă'};const u={};u[`v2/items/${id}/status`]=next;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction('🔄 Status → '+labels[next],name);}
-function changeQtyPresent(id,delta,name){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const max=item.qty||999;const next=Math.min(max,Math.max(0,cur+delta));if(next===cur)return;const u={};u[`v2/items/${id}/qtyPresent`]=next;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(`📦 Cantitate: ${cur}→${next}`,name);}
+function changeQtyPresent(id,delta,name){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const max=item.qty||999;const next=Math.min(max,Math.max(0,cur+delta));if(next===cur){if(delta>0)showToast('⚠️ Stoc maxim atins!');return;}const u={};u[`v2/items/${id}/qtyPresent`]=next;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(`📦 Cantitate: ${cur}→${next}`,name);}
 function toggleCat(catId){const list=document.getElementById('list_'+catId);const tog=document.getElementById('tog_'+catId);const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
 function filterItems(){renderAll();}
 function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
@@ -363,12 +386,11 @@ function deleteUser(id){if(!confirm('Ștergi utilizatorul?'))return;db.ref(`v2/u
 function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20)+'_'+Date.now();db.ref(`v2/categories/${id}`).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
 function deleteCategory(catId){if(!confirm('Ștergi categoria?'))return;db.ref(`v2/categories/${catId}`).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.cat===catId)db.ref(`v2/items/${id}`).remove();});showToast('✅ Ștearsă');}
 function addItem(){const name=document.getElementById('newItemName').value.trim();const cat=document.getElementById('newItemCat').value;const qty=parseInt(document.getElementById('newItemQty').value)||1;if(!name){showToast('Introdu numele!');return;}db.ref('v2/items/item_'+Date.now()).set({name,cat,qty,qtyPresent:qty,present:true,status:'ok'});document.getElementById('newItemName').value='';showToast('✅ Adăugat!');}
-function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v2/items/${id}/present`]=true;u[`v2/items/${id}/status`]='ok';});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
+function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v2/items/${id}/present`]=true;u[`v2/items/${id}/status`]='ok';u[`v2/items/${id}/qtyPresent`]=dbData.items[id].qty||1;});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
 function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v2/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
 
 let toastTimer;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
-function editItem(id){if(!isAdmin)return;const item=dbData.items[id];if(!item)return;const newName=prompt('Nume echipament:',item.name);if(newName===null)return;const newQty=parseInt(prompt('Stoc maxim (buc):',item.qty));if(isNaN(newQty)||newQty<1){showToast('Cantitate invalidă!');return;}const u={};u[`v2/items/${id}/name`]=newName.trim();u[`v2/items/${id}/qty`]=newQty;if(newQty<(item.qtyPresent||0))u[`v2/items/${id}/qtyPresent`]=newQty;db.ref().update(u,()=>showToast('✅ Salvat!'));logAction('✏️ Editat',newName);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
 window.addEventListener('load',()=>{setTimeout(initFirebase,1200);});
 </script>
 </body>
