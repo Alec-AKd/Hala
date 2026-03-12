@@ -1,275 +1,175 @@
-<!DOCTYPE html>
+​​​​​​<!DOCTYPE html>
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evidență Echipamente Hală</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AKD Inventar">
+<title>AKD Inventar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap');
-  :root { --bg: #0e0f13; --surface: #16181f; --surface2: #1e2029; --border: #2a2d3a; --accent: #f0c040; --danger: #f05060; --text: #e8eaf0; --muted: #7a7f9a; --in: #4af0a0; --out: #f0c040; --missing: #f05060; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(240,192,64,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(240,192,64,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
-  .app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
-  #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 100; transition: opacity 0.4s; }
-  #loading.hide { opacity: 0; pointer-events: none; }
-  .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
-  .logo { display: flex; align-items: center; gap: 14px; }
-  .logo-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-  h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
-  h1 span { color: var(--accent); }
-  .conn-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-size: 0.78rem; font-family: 'DM Mono', monospace; margin-bottom: 20px; border: 1px solid var(--border); background: var(--surface); width: fit-content; }
-  .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background 0.3s; }
-  .conn-dot.online { background: var(--in); box-shadow: 0 0 6px var(--in); animation: pulse 2s infinite; }
-  .conn-dot.offline { background: var(--missing); }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 28px; }
-  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; transition: transform 0.2s; }
-  .stat:hover { transform: translateY(-2px); }
-  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .stat-value { font-size: 2rem; font-weight: 800; }
-  .stat-value.total { color: var(--text); } .stat-value.in-hala { color: var(--in); } .stat-value.out-hala { color: var(--out); } .stat-value.missing { color: var(--missing); }
-  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; }
-  .panel-header { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .panel-title { font-size: 1rem; font-weight: 700; }
-  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 20px 22px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  input, select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
-  input:focus, select:focus { border-color: var(--accent); }
-  select option { background: var(--surface2); }
-  .form-actions { padding: 0 22px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-  .btn { padding: 10px 20px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
-  .btn-primary { background: var(--accent); color: #0e0f13; }
-  .btn-primary:hover { background: #ffd060; transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .btn-out { background: transparent; border: 1px solid var(--out); color: var(--out); }
-  .btn-out:hover { background: rgba(240,192,64,0.1); }
-  .btn-in { background: transparent; border: 1px solid var(--in); color: var(--in); }
-  .btn-in:hover { background: rgba(74,240,160,0.1); }
-  .btn-del { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 6px 10px; font-size: 0.78rem; }
-  .btn-del:hover { border-color: var(--danger); color: var(--danger); }
-  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .search-wrap { position: relative; }
-  .search-wrap input { padding-left: 36px; min-width: 200px; }
-  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; }
-  .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
-  .pill { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-  .pill.active, .pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(240,192,64,0.08); }
-  .pill.in.active { border-color: var(--in); color: var(--in); background: rgba(74,240,160,0.08); }
-  .pill.out.active { border-color: var(--out); color: var(--out); background: rgba(240,192,64,0.08); }
-  .pill.missing.active { border-color: var(--missing); color: var(--missing); background: rgba(240,80,96,0.08); }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-  thead tr { border-bottom: 2px solid var(--border); }
-  th { padding: 12px 16px; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; animation: fadeIn 0.3s ease; }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
-  tbody tr:last-child { border-bottom: none; }
-  td { padding: 13px 16px; font-family: 'DM Mono', monospace; }
-  td.name-col { font-family: 'Syne', sans-serif; font-weight: 600; }
-  .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; font-family: 'Syne', sans-serif; }
-  .badge-in { background: rgba(74,240,160,0.12); color: var(--in); border: 1px solid rgba(74,240,160,0.2); }
-  .badge-out { background: rgba(240,192,64,0.12); color: var(--out); border: 1px solid rgba(240,192,64,0.2); }
-  .badge-missing { background: rgba(240,80,96,0.12); color: var(--missing); border: 1px solid rgba(240,80,96,0.2); }
-  .action-cell { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-  .empty-state { padding: 48px 22px; text-align: center; color: var(--muted); }
-  .empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.4; }
-  .history-item { display: flex; align-items: flex-start; gap: 14px; padding: 13px 22px; border-bottom: 1px solid var(--border); animation: fadeIn 0.3s ease; }
-  .history-item:last-child { border-bottom: none; }
-  .h-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-  .h-dot.in { background: var(--in); } .h-dot.out { background: var(--out); } .h-dot.missing { background: var(--missing); } .h-dot.add { background: #a0a0f0; }
-  .h-info { flex: 1; }
-  .h-main { color: var(--text); margin-bottom: 2px; font-family: 'Syne', sans-serif; font-size: 0.83rem; }
-  .h-main b { color: var(--accent); }
-  .h-time { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.75rem; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--surface2); border: 1px solid var(--accent); color: var(--text); padding: 12px 20px; border-radius: 10px; font-size: 0.85rem; font-family: 'Syne', sans-serif; font-weight: 600; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s cubic-bezier(.34,1.56,.64,1); max-width: 320px; }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  @media (max-width: 600px) { h1 { font-size: 1.2rem; } .form-grid { grid-template-columns: 1fr 1fr; } }
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a3d;--accent:#e8c547;--accent2:#4fd1c5;--danger:#ff5555;--success:#50fa7b;--warning:#ffb86c;--text:#e8e8f0;--text2:#8888aa;--text3:#4a4a6a;--font-mono:'Space Mono',monospace;--font-main:'Sora',sans-serif;--radius:12px;--radius-sm:6px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-main);min-height:100vh;overflow-x:hidden;}
+#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;transition:opacity 0.4s;}
+#loading.hidden{opacity:0;pointer-events:none;}
+.load-logo{font-family:var(--font-mono);font-size:2rem;color:var(--accent);letter-spacing:4px;}
+.load-sub{color:var(--text2);font-size:0.8rem;letter-spacing:2px;}
+.load-bar{width:120px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.load-fill{height:100%;background:var(--accent);animation:loadFill 1.5s ease-in-out;}
+@keyframes loadFill{from{width:0}to{width:100%}}
+#loginOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(8px);}
+#loginOverlay.show{display:flex;}
+.login-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;width:90%;max-width:360px;animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.login-box h2{font-family:var(--font-mono);color:var(--accent);font-size:1.1rem;margin-bottom:8px;}
+.login-box p{color:var(--text2);font-size:0.8rem;margin-bottom:24px;}
+.login-box input{width:100%;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-mono);font-size:1rem;margin-bottom:12px;outline:none;transition:border-color 0.2s;}
+.login-box input:focus{border-color:var(--accent);}
+.login-error{color:var(--danger);font-size:0.78rem;margin-bottom:12px;display:none;}
+.btn-login{width:100%;padding:12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.9rem;cursor:pointer;}
+.btn-cancel{width:100%;padding:10px;margin-top:8px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.82rem;cursor:pointer;}
+header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;gap:12px;height:56px;}
+.logo{font-family:var(--font-mono);font-size:1.1rem;color:var(--accent);letter-spacing:2px;}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.role-badge{font-family:var(--font-mono);font-size:0.65rem;padding:3px 8px;border-radius:20px;border:1px solid;}
+.role-badge.admin{border-color:var(--accent);color:var(--accent);}
+.role-badge.worker{border-color:var(--accent2);color:var(--accent2);}
+.btn-role{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:var(--radius-sm);font-size:0.75rem;cursor:pointer;}
+.conn-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:background 0.3s;}
+.conn-dot.on{background:var(--success);box-shadow:0 0 6px var(--success);}
+.search-bar{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;}
+.search-input{flex:1;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;outline:none;}
+.search-input::placeholder{color:var(--text3);}
+.stats-bar{display:flex;gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.stat-item{flex:1;padding:8px 4px;background:var(--surface);text-align:center;}
+.stat-item .num{font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--accent);}
+.stat-item .label{font-size:0.6rem;color:var(--text2);letter-spacing:1px;text-transform:uppercase;}
+.filter-tabs{display:flex;gap:6px;padding:10px 16px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.filter-tab{padding:5px 12px;border-radius:20px;font-size:0.75rem;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--font-mono);}
+.filter-tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700;}
+.categories{padding:12px 12px 80px;}
+.category-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;animation:fadeIn 0.3s ease both;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.cat-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;}
+.cat-icon{font-size:1.4rem;flex-shrink:0;}
+.cat-name{font-weight:600;font-size:0.95rem;flex:1;}
+.cat-count{font-family:var(--font-mono);font-size:0.7rem;color:var(--text2);background:var(--surface2);padding:2px 8px;border-radius:20px;}
+.cat-progress{height:2px;background:var(--border);margin:0 16px 8px;}
+.cat-progress-fill{height:100%;background:var(--accent2);border-radius:2px;transition:width 0.4s ease;}
+.cat-toggle{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:0.7rem;transition:transform 0.25s;}
+.cat-toggle.open{transform:rotate(180deg);}
+.items-list{display:none;}
+.items-list.open{display:block;}
+.item-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--border);}
+.item-check{width:22px;height:22px;flex-shrink:0;border:2px solid var(--border);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.8rem;}
+.item-check.present{background:var(--success);border-color:var(--success);color:#000;}
+.item-check.absent{background:var(--danger);border-color:var(--danger);color:#fff;}
+.item-info{flex:1;min-width:0;}
+.item-name{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-sub{font-size:0.7rem;color:var(--text2);}
+.item-qty{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.qty-btn{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.qty-num{font-family:var(--font-mono);font-size:0.85rem;min-width:28px;text-align:center;}
+.item-status{font-size:0.65rem;padding:2px 7px;border-radius:20px;border:1px solid;cursor:pointer;flex-shrink:0;white-space:nowrap;font-family:var(--font-mono);}
+.item-status.ok{border-color:var(--success);color:var(--success);}
+.item-status.defect{border-color:var(--warning);color:var(--warning);}
+.item-status.lipsa{border-color:var(--text3);color:var(--text3);}
+.admin-panel{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.95);flex-direction:column;overflow-y:auto;}
+.admin-panel.show{display:flex;}
+.admin-header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);}
+.admin-header h2{font-family:var(--font-mono);color:var(--accent);font-size:1rem;flex:1;}
+.btn-close{background:var(--surface2);border:1px solid var(--border);color:var(--text2);width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.admin-content{flex:1;padding:16px;}
+.admin-section{margin-bottom:24px;}
+.admin-section h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2);margin-bottom:12px;font-family:var(--font-mono);}
+.admin-form{display:flex;gap:8px;flex-wrap:wrap;}
+.admin-input{flex:1;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;outline:none;}
+.admin-select{padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;outline:none;}
+.btn-add{padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;}
+.btn-danger{padding:6px 12px;background:transparent;color:var(--danger);border:1px solid var(--danger);border-radius:var(--radius-sm);font-size:0.75rem;cursor:pointer;}
+.admin-list{display:flex;flex-direction:column;gap:6px;}
+.admin-item-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);}
+.admin-item-row span{flex:1;font-size:0.85rem;}
+.fab-admin{position:fixed;bottom:80px;right:16px;width:48px;height:48px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--accent);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,0.5);z-index:50;}
+.bottom-info{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--text3);font-family:var(--font-mono);}
+#toast{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:24px;font-size:0.82rem;font-family:var(--font-mono);opacity:0;pointer-events:none;transition:opacity 0.3s;white-space:nowrap;z-index:999;}
+#toast.show{opacity:1;}
+.empty{text-align:center;padding:40px;color:var(--text3);font-size:0.85rem;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 </style>
 </head>
 <body>
-<div id="loading">
-  <div class="spinner"></div>
-  <div style="font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--muted)">Conectare Firebase...</div>
+<div id="loading"><div class="load-logo">AKD</div><div class="load-sub">INVENTAR v2.0</div><div class="load-bar"><div class="load-fill"></div></div></div>
+<div id="loginOverlay"><div class="login-box"><h2>🔐 Mod Admin</h2><p>Introdu parola pentru acces complet</p><input type="password" id="loginPass" placeholder="Parola..." autocomplete="off"><div class="login-error" id="loginErr">Parolă incorectă!</div><button class="btn-login" onclick="tryLogin()">INTRĂ</button><button class="btn-cancel" onclick="closeLogin()">Anulează</button></div></div>
+<div id="toast"></div>
+<header><div class="logo">AKD</div><span style="color:var(--text3);font-size:0.7rem;font-family:var(--font-mono)">INVENTAR</span><div class="header-right"><div class="conn-dot" id="connDot"></div><div class="role-badge worker" id="roleBadge">VIZUALIZARE</div><button class="btn-role" id="roleBtn" onclick="handleRoleBtn()">Admin</button></div></header>
+<div class="stats-bar"><div class="stat-item"><div class="num" id="sTot">—</div><div class="label">Total</div></div><div class="stat-item"><div class="num" id="sPrez" style="color:var(--success)">—</div><div class="label">Prezente</div></div><div class="stat-item"><div class="num" id="sLipsa" style="color:var(--danger)">—</div><div class="label">Lipsă</div></div><div class="stat-item"><div class="num" id="sDefect" style="color:var(--warning)">—</div><div class="label">Defect</div></div></div>
+<div class="search-bar"><input class="search-input" type="search" id="searchInput" placeholder="🔍 Caută echipament..." oninput="filterItems()"></div>
+<div class="filter-tabs" id="filterTabs"><button class="filter-tab active" data-filter="all" onclick="setFilter('all')">Toate</button><button class="filter-tab" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button><button class="filter-tab" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button></div>
+<div class="categories" id="categories"><div class="empty">Se conectează...</div></div>
+<button class="fab-admin" id="fabAdmin" style="display:none" onclick="openAdmin()">⚙️</button>
+<div class="bottom-info"><span id="lastSync">—</span><span>AKD Events © 2025</span></div>
+<div class="admin-panel" id="adminPanel">
+<div class="admin-header"><h2>⚙️ ADMIN PANEL</h2><button class="btn-close" onclick="closeAdmin()">✕</button></div>
+<div class="admin-content">
+<div class="admin-section"><h3>Adaugă Categorie</h3><div class="admin-form"><input class="admin-input" id="newCatEmoji" placeholder="🎵" style="width:60px;flex:none"><input class="admin-input" id="newCatName" placeholder="Numele categoriei"><button class="btn-add" onclick="addCategory()">+ CAT</button></div></div>
+<div class="admin-section"><h3>Adaugă Echipament</h3><div class="admin-form"><input class="admin-input" id="newItemName" placeholder="Numele echipamentului" style="flex-basis:100%"><select class="admin-select" id="newItemCat" style="flex:1"></select><input class="admin-input" id="newItemQty" type="number" placeholder="Buc" style="width:70px;flex:none" min="1" value="1"><button class="btn-add" onclick="addItem()">+ ITEM</button></div></div>
+<div class="admin-section"><h3>Categorii existente</h3><div class="admin-list" id="adminCatList"></div></div>
+<div class="admin-section"><h3>Acțiuni</h3><button class="btn-danger" onclick="resetAllStatus()">↺ Reset toate statusurile</button></div>
+<div class="admin-section"><h3>Schimbă Parola Admin</h3><div class="admin-form"><input class="admin-input" id="newPassInput" type="password" placeholder="Parolă nouă"><button class="btn-add" onclick="changePassword()">SALVEAZĂ</button></div></div>
 </div>
-<div class="app">
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🏭</div>
-      <div>
-        <h1>Evidență <span>Echipamente</span></h1>
-        <div style="font-size:0.75rem;color:var(--muted);font-family:'DM Mono',monospace;">Gestiune intrări / ieșiri hală</div>
-      </div>
-    </div>
-    <div id="clock" style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)"></div>
-  </header>
-  <div class="conn-bar">
-    <div class="conn-dot" id="conn-dot"></div>
-    <span id="conn-text" style="color:var(--muted)">Se conectează...</span>
-  </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-label">Total</div><div class="stat-value total" id="s-total">0</div></div>
-    <div class="stat"><div class="stat-label">În hală</div><div class="stat-value in-hala" id="s-in">0</div></div>
-    <div class="stat"><div class="stat-label">Ieșit</div><div class="stat-value out-hala" id="s-out">0</div></div>
-    <div class="stat"><div class="stat-label">Lipsă</div><div class="stat-value missing" id="s-missing">0</div></div>
-  </div>
-  <div class="panel">
-    <div class="panel-header"><div class="panel-title">➕ Adaugă echipament</div></div>
-    <div class="form-grid">
-      <div class="field"><label>Denumire echipament</label><input type="text" id="f-name" placeholder="ex: Strung CNC, Lift..."></div>
-      <div class="field"><label>Persoana responsabilă</label><input type="text" id="f-person" placeholder="ex: Ion Popescu"></div>
-      <div class="field"><label>Stare inițială</label>
-        <select id="f-status">
-          <option value="in">✅ În hală</option>
-          <option value="out">📤 Ieșit</option>
-          <option value="missing">⚠️ Lipsă</option>
-        </select>
-      </div>
-      <div class="field"><label>Data / Ora</label><input type="datetime-local" id="f-date"></div>
-      <div class="field"><label>Observații</label><input type="text" id="f-notes" placeholder="opțional"></div>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-primary" id="btn-add" onclick="addEquipment()">✚ Adaugă</button>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">📋 Lista echipamente</div>
-      <div class="toolbar">
-        <div class="search-wrap">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="search" placeholder="Caută..." oninput="render()">
-        </div>
-        <div class="filter-pills">
-          <button class="pill active" onclick="setFilter('all',this)">Toate</button>
-          <button class="pill in" onclick="setFilter('in',this)">În hală</button>
-          <button class="pill out" onclick="setFilter('out',this)">Ieșite</button>
-          <button class="pill missing" onclick="setFilter('missing',this)">Lipsă</button>
-        </div>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Echipament</th><th>Responsabil</th><th>Stare</th><th>Ultima actualizare</th><th>Obs.</th><th>Acțiuni</th></tr></thead>
-        <tbody id="eq-body"></tbody>
-      </table>
-      <div id="empty-state" class="empty-state" style="display:none">
-        <div class="empty-icon">📦</div>
-        <div>Niciun echipament găsit.</div>
-      </div>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">📜 Jurnal activitate</div>
-      <button class="btn btn-del" onclick="clearHistory()">Șterge jurnal</button>
-    </div>
-    <div id="history-list">
-      <div class="empty-state" style="padding:24px"><div style="color:var(--muted)">Nicio activitate înregistrată.</div></div>
-    </div>
-  </div>
 </div>
-<div class="toast" id="toast"></div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-  const firebaseConfig = { apiKey: "AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw", authDomain: "akd-check-in.firebaseapp.com", databaseURL: "https://akd-check-in-default-rtdb.europe-west1.firebasedatabase.app", projectId: "akd-check-in", storageBucket: "akd-check-in.firebasestorage.app", messagingSenderId: "661289469260", appId: "1:661289469260:web:5e757525e78ada7059fbe9" };
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
-  let equipment = {}, historyData = {}, filterState = 'all', firstLoad = true;
-  function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleString('ro-RO', {weekday:'short',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
-  updateClock(); setInterval(updateClock, 1000);
-  const n = new Date(), pad = x => String(x).padStart(2,'0');
-  document.getElementById('f-date').value = `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
-  function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
-  window.toast = toast;
-  onValue(ref(db, '.info/connected'), snap => {
-    const ok = snap.val() === true;
-    document.getElementById('conn-dot').className = 'conn-dot ' + (ok ? 'online' : 'offline');
-    const ct = document.getElementById('conn-text');
-    ct.textContent = ok ? '🟢 Conectat — sincronizare în timp real' : '🔴 Deconectat';
-    ct.style.color = ok ? 'var(--in)' : 'var(--missing)';
-  });
-  const eqRef = ref(db, 'equipment');
-  onValue(eqRef, snap => {
-    equipment = snap.val() || {}; render();
-    if (firstLoad) { firstLoad = false; const l = document.getElementById('loading'); l.classList.add('hide'); setTimeout(() => l.style.display = 'none', 400); }
-  });
-  const histRef = ref(db, 'history');
-  onValue(histRef, snap => { historyData = snap.val() || {}; renderHistory(); });
-  window.addEquipment = async function() {
-    const name = document.getElementById('f-name').value.trim();
-    const person = document.getElementById('f-person').value.trim();
-    const status = document.getElementById('f-status').value;
-    const date = document.getElementById('f-date').value;
-    const notes = document.getElementById('f-notes').value.trim();
-    if (!name) { toast('⚠️ Completați denumirea!'); return; }
-    if (!person) { toast('⚠️ Completați responsabilul!'); return; }
-    const btn = document.getElementById('btn-add'); btn.disabled = true;
-    try {
-      await set(push(eqRef), { name, person, status, date: date || new Date().toISOString(), notes, createdAt: Date.now() });
-      await push(histRef, { action:'Echipament adăugat', name, person, dot:'add', time: new Date().toLocaleString('ro-RO'), ts: Date.now() });
-      document.getElementById('f-name').value = ''; document.getElementById('f-person').value = ''; document.getElementById('f-notes').value = '';
-      toast(`✅ "${name}" adăugat!`);
-    } catch(e) { toast('❌ ' + e.message); }
-    btn.disabled = false;
-  };
-  window.changeStatus = async function(key, newStatus) {
-    const eq = equipment[key]; if (!eq) return;
-    const labels = { in:'În hală', out:'Ieșit', missing:'Lipsă' };
-    try {
-      await set(ref(db, `equipment/${key}/status`), newStatus);
-      await set(ref(db, `equipment/${key}/date`), new Date().toLocaleString('ro-RO'));
-      await push(histRef, { action:`${labels[newStatus]}: ${eq.name}`, name:eq.name, person:eq.person, dot:newStatus, time:new Date().toLocaleString('ro-RO'), ts:Date.now() });
-      toast(`🔄 "${eq.name}" → ${labels[newStatus]}`);
-    } catch(e) { toast('❌ ' + e.message); }
-  };
-  window.deleteEquipment = async function(key) {
-    const eq = equipment[key]; if (!eq) return;
-    if (!confirm(`Ștergi "${eq.name}"?`)) return;
-    try {
-      await remove(ref(db, `equipment/${key}`));
-      await push(histRef, { action:`Șters: ${eq.name}`, name:eq.name, person:eq.person, dot:'add', time:new Date().toLocaleString('ro-RO'), ts:Date.now() });
-      toast(`🗑️ "${eq.name}" șters.`);
-    } catch(e) { toast('❌ ' + e.message); }
-  };
-  window.clearHistory = async function() {
-    if (!confirm('Ștergi tot jurnalul?')) return;
-    try { await remove(histRef); toast('🗑️ Jurnal șters.'); } catch(e) { toast('❌ ' + e.message); }
-  };
-  window.setFilter = function(f, el) { filterState = f; document.querySelectorAll('.pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); render(); };
-  window.render = function() {
-    const q = (document.getElementById('search')?.value || '').toLowerCase();
-    const statusLabel = { in:'În hală', out:'Ieșit', missing:'Lipsă' };
-    let list = Object.entries(equipment).map(([key, val]) => ({key, ...val})).filter(e => {
-      if (filterState !== 'all' && e.status !== filterState) return false;
-      if (q && !e.name?.toLowerCase().includes(q) && !e.person?.toLowerCase().includes(q)) return false;
-      return true;
-    }).sort((a,b) => (b.createdAt||0)-(a.createdAt||0));
-    const tbody = document.getElementById('eq-body');
-    const empty = document.getElementById('empty-state');
-    if (!tbody) return;
-    if (list.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; }
-    else {
-      empty.style.display = 'none';
-      tbody.innerHTML = list.map((e,i) => `<tr><td style="color:var(--muted);font-size:0.8rem">${i+1}</td><td class="name-col">${e.name||'—'}</td><td>${e.person||'—'}</td><td><span class="badge badge-${e.status}">${statusLabel[e.status]||e.status}</span></td><td style="color:var(--muted);font-size:0.78rem">${e.date||'—'}</td><td style="color:var(--muted);font-size:0.78rem;max-width:120px;overflow:hidden;text-overflow:ellipsis">${e.notes||'—'}</td><td><div class="action-cell">${e.status!=='in'?`<button class="btn btn-in" onclick="changeStatus('${e.key}','in')">⬅ Intrat</button>`:''}${e.status!=='out'?`<button class="btn btn-out" onclick="changeStatus('${e.key}','out')">➡ Ieșit</button>`:''}${e.status!=='missing'?`<button class="btn btn-del" onclick="changeStatus('${e.key}','missing')">⚠ Lipsă</button>`:''}<button class="btn btn-del" onclick="deleteEquipment('${e.key}')">🗑</button></div></td></tr>`).join('');
-    }
-    const all = Object.values(equipment);
-    document.getElementById('s-total').textContent = all.length;
-    document.getElementById('s-in').textContent = all.filter(e=>e.status==='in').length;
-    document.getElementById('s-out').textContent = all.filter(e=>e.status==='out').length;
-    document.getElementById('s-missing').textContent = all.filter(e=>e.status==='missing').length;
-  };
-  function renderHistory() {
-    const hl = document.getElementById('history-list'); if (!hl) return;
-    const items = Object.values(historyData).sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,40);
-    if (items.length === 0) { hl.innerHTML = '<div class="empty-state" style="padding:24px"><div style="color:var(--muted)">Nicio activitate înregistrată.</div></div>'; return; }
-    hl.innerHTML = items.map(h => `<div class="history-item"><div class="h-dot ${h.dot||'add'}"></div><div class="h-info"><div class="h-main"><b>${h.name}</b> — ${h.action} <span style="color:var(--muted)">· ${h.person}</span></div><div class="h-time">${h.time}</div></div></div>`).join('');
-  }
+<script>
+const firebaseConfig={apiKey:"AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw",authDomain:"akd-check-in.firebaseapp.com",databaseURL:"https://akd-check-in-default-rtdb.europe-west1.firebasedatabase.app",projectId:"akd-check-in",storageBucket:"akd-check-in.firebasestorage.app",messagingSenderId:"661289469260",appId:"1:661289469260:web:5e757525e78ada7059fbe9"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+let isAdmin=false,currentFilter='all',dbData={categories:{},items:{},settings:{}},ADMIN_PASS='akd2025';
+const INITIAL_CATEGORIES=[{id:'sunet',name:'Sunet',emoji:'🔊'},{id:'lumini',name:'Lumini',emoji:'💡'},{id:'multimedia',name:'Multimedia',emoji:'🖥️'},{id:'scena',name:'Scenă & Truss',emoji:'🏗️'},{id:'backline',name:'Back Line',emoji:'🎸'},{id:'masini',name:'Mașini',emoji:'🚐'},{id:'diverse',name:'Diverse',emoji:'🧰'},{id:'service',name:'Aparate Service',emoji:'🔧'}];
+const INITIAL_ITEMS=[{cat:'sunet',name:'Mixer PM 1600-3',qty:1},{cat:'sunet',name:'Mixer PM 600-3',qty:1},{cat:'sunet',name:'Mixer PM 1000-3',qty:2},{cat:'sunet',name:'Mixer digital SOUNDCRAFT SI',qty:1},{cat:'sunet',name:'Mixer BOSE T8S TONEMATCH',qty:1},{cat:'sunet',name:'Mixer ALLEN&HEATH CQ 18T',qty:1},{cat:'sunet',name:'Mixercase Soundcraft',qty:1},{cat:'sunet',name:'Mixer Pioneer DJM 600',qty:2},{cat:'sunet',name:'Qube QSA 210 Speaker',qty:16},{cat:'sunet',name:'Qube QM 115 Monitor',qty:6},{cat:'sunet',name:'Boxe Medii AKD Inalte',qty:8},{cat:'sunet',name:'Boxa Bass AKD 18"',qty:16},{cat:'sunet',name:'Boxe ZXA5 (2012)',qty:2},{cat:'sunet',name:'Boxe EV ZX5A',qty:4},{cat:'sunet',name:'Boxe ZXA5 (2014)',qty:2},{cat:'sunet',name:'Boxe EV R115/75',qty:2},{cat:'sunet',name:'Boxa EV Rx118S',qty:1},{cat:'sunet',name:'Boxe Bass LD 15"',qty:6},{cat:'sunet',name:'Boxe Top LD 12"',qty:6},{cat:'sunet',name:'Boxe Rx115/75 EV medii-inalte',qty:6},{cat:'sunet',name:'Boxe RX118 EV bass',qty:6},{cat:'sunet',name:'Boxa RX 118 S bass 2019',qty:1},{cat:'sunet',name:'Boxe RX 118 S 2012',qty:2},{cat:'sunet',name:'Boxe RX 115/75 2012',qty:2},{cat:'sunet',name:'Boxe BOSE set1',qty:1},{cat:'sunet',name:'Boxe BOSE set2',qty:1},{cat:'sunet',name:'Baxe SYRINCS 12',qty:2},{cat:'sunet',name:'Boxa D&B V12',qty:2},{cat:'sunet',name:'Boxa D&B V8',qty:2},{cat:'sunet',name:'Boxa D&B V Sub',qty:4},{cat:'sunet',name:'Boxe D&B V12 aug2024',qty:2},{cat:'sunet',name:'Boxe D&B V08 aug2024',qty:6},{cat:'sunet',name:'Boxe D&B Bass',qty:2},{cat:'sunet',name:'Boxe D&B Bass VGSUB',qty:2},{cat:'sunet',name:'CASE boxa D&B',qty:1},{cat:'sunet',name:'Amplificator D&B D80 2024',qty:3},{cat:'sunet',name:'Adaptor baxa d&b',qty:2},{cat:'sunet',name:'Adaptor boxa d&b',qty:2},{cat:'sunet',name:'D&B VP Flying Adapter',qty:2},{cat:'sunet',name:'D&B V Stack Adapter',qty:2},{cat:'sunet',name:'D&B rama de prins boxe',qty:2},{cat:'sunet',name:'D&B clema de prins boxe',qty:2},{cat:'sunet',name:'Stativ boxe D&B Dolly',qty:1},{cat:'sunet',name:'Stative boxe 2016',qty:8},{cat:'sunet',name:'Stative boxe 2018',qty:6},{cat:'sunet',name:'Stativ intre Bass si Medii K&M',qty:8},{cat:'sunet',name:'K&M Stativ Boxe 2025',qty:5},{cat:'sunet',name:'Huse Bass 15"',qty:4},{cat:'sunet',name:'Huse Top 12"',qty:6},{cat:'sunet',name:'Amplificator Qube PA360',qty:4},{cat:'sunet',name:'Amplificator Dynacord L2400',qty:6},{cat:'sunet',name:'Amplificator TG7 2013',qty:1},{cat:'sunet',name:'Amplificator TG7 2015',qty:1},{cat:'sunet',name:'Amplificator EV TG5',qty:2},{cat:'sunet',name:'Crossover Qube SP-26',qty:1},{cat:'sunet',name:'Crossover Yamaha SP2060',qty:1},{cat:'sunet',name:'Compresor DN 540',qty:1},{cat:'sunet',name:'Procesor Klark Teknik Square One',qty:2},{cat:'sunet',name:'Procesor KTEQ DN 370',qty:1},{cat:'sunet',name:'Procesor DX 46 2013',qty:1},{cat:'sunet',name:'Procesor DX 46 2015',qty:1},{cat:'sunet',name:'Splitter Audio Klark Teknik',qty:5},{cat:'sunet',name:'DI BOX Palmer PAN03',qty:2},{cat:'sunet',name:'CD Player CDJ-200',qty:4},{cat:'sunet',name:'CD Player CDJ-100',qty:2},{cat:'sunet',name:'CD Player TASCAM',qty:1},{cat:'sunet',name:'Shure SM57',qty:15},{cat:'sunet',name:'Shure Beta58A',qty:2},{cat:'sunet',name:'Shure SM58',qty:12},{cat:'sunet',name:'Shure Beta 58 BLD',qty:1},{cat:'sunet',name:'Shure Beta 58 GLX',qty:1},{cat:'sunet',name:'Shure GLXD1 Body Pack',qty:3},{cat:'sunet',name:'Microfon RODE NT5-MP',qty:2},{cat:'sunet',name:'Microfon Lavaliera',qty:4},{cat:'sunet',name:'Microfon Beyerdynamic MPC65',qty:1},{cat:'sunet',name:'Microfon SENNHEISER 2024',qty:2},{cat:'sunet',name:'Headset LD Systems WS1000',qty:1},{cat:'sunet',name:'Headset DPA bej',qty:2},{cat:'sunet',name:'EARSET COUNTRYMAN E6 SHURE',qty:2},{cat:'sunet',name:'Microfon SHURE BLX1K3E',qty:4},{cat:'sunet',name:'Microfon SHURE BLX24R/SM58',qty:4},{cat:'sunet',name:'SHURE SLXD124E K59',qty:1},{cat:'sunet',name:'SHURE SLXD124E G59',qty:1},{cat:'sunet',name:'SHURE SLXD14E',qty:1},{cat:'sunet',name:'Microfon unitate delegat',qty:6},{cat:'sunet',name:'Microfon unitate presedinte',qty:1},{cat:'sunet',name:'K&M Stativ Microfon 2025',qty:12},{cat:'sunet',name:'Stativ microfon',qty:10},{cat:'sunet',name:'Set monitoare SENNHEISER EW IEM G4',qty:1},
+{cat:'lumini',name:'Mixer Avolites Pearl Tiger 2008',qty:1},{cat:'lumini',name:'Mixer Avolites Pearl Tiger 2015',qty:1},{cat:'lumini',name:'Mixer CREATION II 1024',qty:1},{cat:'lumini',name:'Interfata DMX DASLIGHT',qty:1},{cat:'lumini',name:'DTS Spot XR7',qty:4},{cat:'lumini',name:'DTS Spot XR9',qty:12},{cat:'lumini',name:'DTS Fresnel Spot 2000',qty:4},{cat:'lumini',name:'DTS Blinder Flash Moon 4000',qty:4},{cat:'lumini',name:'Reflector DTS 650/1000PC',qty:12},{cat:'lumini',name:'Spot Urmarire Moonlight 1200',qty:1},{cat:'lumini',name:'LED PAR 64 RGBW 2015',qty:8},{cat:'lumini',name:'LED PAR 64 RGB+W 2016',qty:14},{cat:'lumini',name:'LED PAR 64 RGBW 2014',qty:8},{cat:'lumini',name:'LED PAR 64 QF 1221',qty:12},{cat:'lumini',name:'LED COLOR ZOOM 54',qty:8},{cat:'lumini',name:'LED BAR 252 DMX RGB 2011',qty:20},{cat:'lumini',name:'LED BAR 252 DMX RGB 2012',qty:24},{cat:'lumini',name:'FOS BEAM 7R + CASE',qty:8},{cat:'lumini',name:'FOS BEAM 7R',qty:6},{cat:'lumini',name:'FOS LED SPOT Moving Head',qty:12},{cat:'lumini',name:'FOS LED WASH Moving Head',qty:12},{cat:'lumini',name:'FOS LED Strobo 700W',qty:12},{cat:'lumini',name:'FOS PROFILE LED 200W 2018',qty:4},{cat:'lumini',name:'FOS PROFILE LED 200W 2019',qty:4},{cat:'lumini',name:'FOS Scorpio BEAM LED',qty:20},{cat:'lumini',name:'FOS VINTAVE 7 Ultra',qty:7},{cat:'lumini',name:'FOS F7 Lumini',qty:8},{cat:'lumini',name:'FOS HALO LED',qty:4},{cat:'lumini',name:'PERDEA LED RGB 180x150',qty:2},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 2018',qty:6},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 2019',qty:6},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 6buc',qty:2},{cat:'lumini',name:'Unique2 Hazer',qty:2},{cat:'lumini',name:'CHAUVET NIMBUS',qty:1},{cat:'lumini',name:'Masina confetii',qty:2},{cat:'lumini',name:'Masina zapada',qty:1},{cat:'lumini',name:'Glob DISCO 20cm',qty:12},{cat:'lumini',name:'Glob DISCO 50cm',qty:1},{cat:'lumini',name:'Dimmer Pack DMX620',qty:2},{cat:'lumini',name:'Global Truss de prindere',qty:30},{cat:'lumini',name:'Bara telescopica Manfrotto',qty:2},
+{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU40',qty:1},{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU47',qty:2},{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU105',qty:1},{cat:'multimedia',name:'Videoproiector Sanyo PLC XT-35L',qty:2},{cat:'multimedia',name:'Videoproiector Panasonic PT-EX600',qty:2},{cat:'multimedia',name:'Videoproiector CHRISTIE DWU 775-E',qty:4},{cat:'multimedia',name:'Videoproiector EPSON EB-L1505UH',qty:2},{cat:'multimedia',name:'Videoproiector EPSON EB-L530UH',qty:2},{cat:'multimedia',name:'LED Wall MR.LED P2.84 500x500',qty:60},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot1',qty:60},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot2',qty:40},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot3',qty:2},{cat:'multimedia',name:'LED Curb P2.976 NOVASTAR',qty:32},{cat:'multimedia',name:'NOVASTAR Controller VX4S 2018',qty:1},{cat:'multimedia',name:'NOVASTAR Controller VX4S mai2018',qty:1},{cat:'multimedia',name:'NOVASTAR Vx600 Controller',qty:1},{cat:'multimedia',name:'Procesor Ecran LED 4K',qty:1},{cat:'multimedia',name:'MULTI SCREEN Analog Way',qty:1},{cat:'multimedia',name:'Flip Touch Whiteboard',qty:1},{cat:'multimedia',name:'LED TV Samsung 163 2025',qty:1},{cat:'multimedia',name:'LFD Samsung LH46 Video-Wall',qty:9},{cat:'multimedia',name:'LG OLED 55" 139cm',qty:1},{cat:'multimedia',name:'Televizor UE 75',qty:2},{cat:'multimedia',name:'LED TV Samsung 108cm',qty:1},{cat:'multimedia',name:'Ecran proiectie 365x210cm',qty:2},{cat:'multimedia',name:'Ecran proiectie 508x294cm',qty:2},{cat:'multimedia',name:'Ecran Tripod 180x180',qty:5},{cat:'multimedia',name:'Laptop HP Gaming Intel Core i9',qty:2},{cat:'multimedia',name:'Laptop Gaming ACER Predator Helios',qty:2},{cat:'multimedia',name:'Laptop MSI Gaming 17.3"',qty:1},{cat:'multimedia',name:'Laser pointer Micro Cue 2-L',qty:2},{cat:'multimedia',name:'Sistem TELEVOTING',qty:1},{cat:'multimedia',name:'Placa captura AJA',qty:2},{cat:'multimedia',name:'VENTILATOR cu LED',qty:1},{cat:'multimedia',name:'Camera video 30x ZOOM',qty:1},
+{cat:'scena',name:'Structura aluminiu+podium 60buc',qty:1},{cat:'scena',name:'Placi podium Stairville 1x1m',qty:5},{cat:'scena',name:'Picioare Scena Aluminiu 40cm',qty:96},{cat:'scena',name:'Picioare Podium 40x40x80',qty:18},{cat:'scena',name:'Picioare podium 800x40x40',qty:36},{cat:'scena',name:'Picioare podium 200x40x40',qty:59},{cat:'scena',name:'Truss Triunghiular 29cm-3m DKB',qty:5},{cat:'scena',name:'Truss Triunghiular 29cm-2m DKB',qty:8},{cat:'scena',name:'Truss Colt DKC',qty:4},{cat:'scena',name:'TRUSS 40 L=50cm',qty:4},{cat:'scena',name:'TRUSS 40 L=100cm',qty:4},{cat:'scena',name:'TRUSS 40 L=150cm',qty:4},{cat:'scena',name:'TRUSS 40 L=200cm',qty:4},{cat:'scena',name:'TRUSS 30X50 Olanda',qty:4},{cat:'scena',name:'TRUSS 30X12 Olanda',qty:2},{cat:'scena',name:'TRUSS 30X24 Olanda',qty:4},{cat:'scena',name:'CORNER 3WAY 90',qty:4},{cat:'scena',name:'CORNER 90 Olanda',qty:4},{cat:'scena',name:'PROTRUSS H30V Olanda',qty:8},{cat:'scena',name:'Truss dreptunghiular 2000mm',qty:8},{cat:'scena',name:'Global Truss teava neagra 1m lot1',qty:18},{cat:'scena',name:'Global Truss teava neagra 1m lot2',qty:12},{cat:'scena',name:'PALANE CHAINMASTER D8 1t 2022',qty:8},{cat:'scena',name:'PALANE CHAINMASTER D8 1t aug2022',qty:2},{cat:'scena',name:'Palane electrice 1t D8+',qty:4},{cat:'scena',name:'Controler Palane',qty:1},{cat:'scena',name:'Transpaleta Electrica VALLIFT',qty:1},{cat:'scena',name:'Stalpi STARVILLE 2m 2018',qty:4},{cat:'scena',name:'Stalpi STARVILLE 2m 2019',qty:4},{cat:'scena',name:'MODULE SCHELA ALPE',qty:1},{cat:'scena',name:'Starville podium rotund',qty:4},{cat:'scena',name:'RING DE DANS MOTT',qty:48},{cat:'scena',name:'Prelata Scena 9x6m',qty:1},{cat:'scena',name:'Centura Complexa Siguranta',qty:1},{cat:'scena',name:'Scara Metalica Scena',qty:4},{cat:'scena',name:'Talpa schela 800x1200',qty:8},
+{cat:'backline',name:'Amplificator Chitara Fender Combo',qty:1},{cat:'backline',name:'Boxa Marshall 1960A',qty:1},{cat:'backline',name:'Amplificator D&B D80 2025',qty:1},{cat:'backline',name:'Statie Bas SWR Working Man',qty:1},{cat:'backline',name:'Boxa Bas AMPEG BSE410',qty:1},{cat:'backline',name:'Boxa Bass AMPEG BSE 115',qty:1},{cat:'backline',name:'Pian Electric Yamaha CP33',qty:1},{cat:'backline',name:'Marimba Fon',qty:1},{cat:'backline',name:'Chitara TAKAMINE',qty:1},{cat:'backline',name:'Chitara acustica + husa',qty:1},{cat:'backline',name:'Bete toba pereche',qty:4},{cat:'backline',name:'K&K Dublu Big Twin',qty:1},{cat:'backline',name:'K&K Twin',qty:1},
+{cat:'masini',name:'Iveco Daily 35C 2005',qty:1},{cat:'masini',name:'Renault Master L3H3',qty:1},{cat:'masini',name:'VW Passat',qty:1},{cat:'masini',name:'Toyota RAV 4',qty:1},{cat:'masini',name:'BMW G05',qty:1},{cat:'masini',name:'Citroen Berlingo Multispace',qty:1},{cat:'masini',name:'Iveco Daily 35C 2018',qty:1},{cat:'masini',name:'Toyota PRO ACE LONG',qty:1},{cat:'masini',name:'IVECO DAILY 35C16 2024',qty:1},{cat:'masini',name:'Iveco Daily 35C 2016',qty:1},{cat:'masini',name:'Rampa auto',qty:2},
+{cat:'diverse',name:'Aeroterma ALBATROS',qty:4},{cat:'diverse',name:'Aspirator 1600',qty:1},{cat:'diverse',name:'Aspirator cu spalare',qty:1},{cat:'diverse',name:'Robot aspirare ROBOROCK S7',qty:1},{cat:'diverse',name:'Generator AGT 8203',qty:1},{cat:'diverse',name:'Stabilizator hibrid SVRH 10000VA',qty:1},{cat:'diverse',name:'Scara hala SPMF 10',qty:1},{cat:'diverse',name:'Scara aluminiu',qty:1},{cat:'diverse',name:'Scara multifunctionala',qty:1},{cat:'diverse',name:'Mocheta rosie',qty:1},{cat:'diverse',name:'Mocheta antracit',qty:1},{cat:'diverse',name:'Mocheta trafic greu neagra',qty:1},{cat:'diverse',name:'Cort ADRIA 3x3m',qty:1},{cat:'diverse',name:'Telefon mobil Apple iPhone 7',qty:1},{cat:'diverse',name:'Birou calculator DIANA',qty:1},{cat:'diverse',name:'Aparator POP-up 3x1.2m',qty:1},{cat:'diverse',name:'Aparator POP-up 2x1.2m',qty:1},{cat:'diverse',name:'Aparator POP-up 1x1.2m',qty:1},{cat:'diverse',name:'Flipchart',qty:4},{cat:'diverse',name:'Masina maturat',qty:1},{cat:'diverse',name:'Curatator cu presiune',qty:1},
+{cat:'service',name:'Telemetru cu laser',qty:3},{cat:'service',name:'Multimetru digital',qty:1},{cat:'service',name:'Masina de gaurit 600W',qty:1},{cat:'service',name:'Masina gaurit si insurubat',qty:1},{cat:'service',name:'Polizor unghiular',qty:2},{cat:'service',name:'Fierastrau circular',qty:1},{cat:'service',name:'Compresor cu ulei',qty:1},{cat:'service',name:'Generator aer cald',qty:1},{cat:'service',name:'Pistol de lipit YATO',qty:1},{cat:'service',name:'Statie de lipit',qty:1},{cat:'service',name:'Capsator pneumatic',qty:2},{cat:'service',name:'Invertor BLUE POWER',qty:1},{cat:'service',name:'Butelie CO2 20L',qty:2},{cat:'service',name:'Cutie unelte 74 elemente',qty:1},{cat:'service',name:'NIVELA LASER',qty:1},{cat:'service',name:'Clampmetru Digital 600A',qty:1}];
+
+function initFirebase(){db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});db.ref('v2').once('value',s=>{if(!s.val()||!s.val().categories)seedData();else loadData();});}
+function seedData(){showToast('Inițializare...');const cats={};INITIAL_CATEGORIES.forEach(c=>{cats[c.id]={name:c.name,emoji:c.emoji};});const items={};INITIAL_ITEMS.forEach((item,i)=>{items['item_'+i+'_'+Date.now()]={name:item.name,cat:item.cat,qty:item.qty,qtyPresent:item.qty,present:true,status:'ok'};});db.ref('v2').set({categories:cats,items:items,settings:{adminPass:'akd2025'}},()=>{loadData();showToast('✅ Date inițializate!');});}
+function loadData(){db.ref('v2').on('value',s=>{const d=s.val()||{};dbData.categories=d.categories||{};dbData.items=d.items||{};dbData.settings=d.settings||{};if(dbData.settings.adminPass)ADMIN_PASS=dbData.settings.adminPass;renderAll();updateStats();document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');const el=document.getElementById('loading');el.classList.add('hidden');setTimeout(()=>el.style.display='none',500);});}
+function renderAll(){const search=document.getElementById('searchInput').value.toLowerCase();const container=document.getElementById('categories');container.innerHTML='';const catOrder=['sunet','lumini','multimedia','scena','backline','masini','diverse','service'];const allCatIds=Object.keys(dbData.categories);const sorted=[...catOrder.filter(id=>allCatIds.includes(id)),...allCatIds.filter(id=>!catOrder.includes(id))];sorted.forEach((catId,idx)=>{const cat=dbData.categories[catId];if(!cat)return;let items=Object.entries(dbData.items).filter(([,v])=>v.cat===catId).map(([k,v])=>({id:k,...v}));if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));if(currentFilter==='absent')items=items.filter(it=>!it.present);if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');if(search&&items.length===0)return;const totalItems=Object.values(dbData.items).filter(v=>v.cat===catId).length;const presentItems=Object.values(dbData.items).filter(v=>v.cat===catId&&v.present).length;const pct=totalItems>0?Math.round(presentItems/totalItems*100):0;const card=document.createElement('div');card.className='category-card';card.style.animationDelay=(idx*40)+'ms';const isOpen=search||localStorage.getItem('open_'+catId)==='1';card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${presentItems}/${totalItems}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="items-list ${isOpen?'open':''}" id="list_${catId}">${items.length===0?'<div class="empty">—</div>':items.map(item=>renderItem(item)).join('')}</div>`;container.appendChild(card);});if(container.innerHTML==='')container.innerHTML='<div class="empty">Niciun echipament găsit</div>';}
+function renderItem(item){const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};const s=item.status||'ok';return `<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present})">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name}</div><div class="item-sub">Stoc: ${item.qty} buc</div></div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1)">−</button><span class="qty-num">${item.qtyPresent!==undefined?item.qtyPresent:item.qty}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1)">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}')">${statusLabels[s]}</div></div>`;}
+function togglePresent(id,v){db.ref(`v2/items/${id}/present`).set(v);showToast(v?'✅ Prezent':'❌ Absent');}
+function cycleStatus(id,cur){const c={ok:'defect',defect:'lipsa',lipsa:'ok'};db.ref(`v2/items/${id}/status`).set(c[cur]||'ok');}
+function changeQtyPresent(id,d){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;db.ref(`v2/items/${id}/qtyPresent`).set(Math.max(0,cur+d));}
+function toggleCat(catId){const list=document.getElementById('list_'+catId);const tog=document.getElementById('tog_'+catId);const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
+function filterItems(){renderAll();}
+function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
+function updateStats(){const items=Object.values(dbData.items);document.getElementById('sTot').textContent=items.length;document.getElementById('sPrez').textContent=items.filter(i=>i.present).length;document.getElementById('sLipsa').textContent=items.filter(i=>!i.present).length;document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
+function handleRoleBtn(){if(isAdmin){isAdmin=false;document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent='VIZUALIZARE';document.getElementById('roleBtn').textContent='Admin';document.getElementById('fabAdmin').style.display='none';showToast('Ieșit din Admin');}else{document.getElementById('loginOverlay').classList.add('show');setTimeout(()=>document.getElementById('loginPass').focus(),100);}}
+function tryLogin(){const p=document.getElementById('loginPass').value;if(p===ADMIN_PASS){isAdmin=true;closeLogin();document.getElementById('roleBadge').className='role-badge admin';document.getElementById('roleBadge').textContent='👑 ADMIN';document.getElementById('roleBtn').textContent='Ieși';document.getElementById('fabAdmin').style.display='flex';showToast('✅ Mod Admin activat!');}else{document.getElementById('loginErr').style.display='block';document.getElementById('loginPass').value='';}}
+function closeLogin(){document.getElementById('loginOverlay').classList.remove('show');document.getElementById('loginPass').value='';document.getElementById('loginErr').style.display='none';}
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').classList.add('show');renderAdminCats();}
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
+function renderAdminCats(){const sel=document.getElementById('newItemCat');const list=document.getElementById('adminCatList');sel.innerHTML='';list.innerHTML='';Object.entries(dbData.categories).forEach(([id,cat])=>{const opt=document.createElement('option');opt.value=id;opt.textContent=cat.emoji+' '+cat.name;sel.appendChild(opt);const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕ Șterge</button>`;list.appendChild(row);});}
+function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20)+'_'+Date.now();db.ref(`v2/categories/${id}`).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
+function deleteCategory(catId){if(!confirm('Ștergi categoria?'))return;db.ref(`v2/categories/${catId}`).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.cat===catId)db.ref(`v2/items/${id}`).remove();});showToast('✅ Ștearsă');}
+function addItem(){const name=document.getElementById('newItemName').value.trim();const cat=document.getElementById('newItemCat').value;const qty=parseInt(document.getElementById('newItemQty').value)||1;if(!name){showToast('Introdu numele!');return;}const id='item_'+Date.now();db.ref(`v2/items/${id}`).set({name,cat,qty,qtyPresent:qty,present:true,status:'ok'});document.getElementById('newItemName').value='';showToast('✅ Adăugat!');}
+function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v2/items/${id}/present`]=true;u[`v2/items/${id}/status`]='ok';});db.ref().update(u,()=>showToast('✅ Reset complet!'));}
+function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v2/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);}
+window.addEventListener('load',()=>{setTimeout(initFirebase,1200);});
 </script>
 </body>
 </html>
