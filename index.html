@@ -86,38 +86,78 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .cat-body{display:none;}
 .cat-body.open{display:block;}
 .subcat-block{border-top:1px solid var(--border);}
-.subcat-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface2);cursor:pointer;user-select:none;}
+.subcat-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface2);cursor:pointer;user-select:none;}
 .subcat-icon{font-size:1rem;flex-shrink:0;}
 .subcat-name{font-size:0.82rem;font-weight:600;flex:1;color:var(--text2);}
 .subcat-count{font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);background:var(--bg);padding:2px 7px;border-radius:20px;}
-.subcat-toggle{font-size:0.6rem;color:var(--text3);transition:transform 0.2s;}
+.subcat-toggle{font-size:0.6rem;color:var(--text3);transition:transform 0.2s;margin-left:4px;}
 .subcat-toggle.open{transform:rotate(180deg);}
-.subcat-admin-btns{display:flex;gap:6px;margin-left:4px;}
 .subcat-items{display:none;}
 .subcat-items.open{display:block;}
-.item-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);}
+.item-row{border-top:1px solid var(--border);padding:10px 14px;}
+.item-top-row{display:flex;align-items:center;gap:8px;}
 .item-check{width:22px;height:22px;flex-shrink:0;border:2px solid var(--border);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.8rem;}
 .item-check.present{background:var(--success);border-color:var(--success);color:#000;}
 .item-check.absent{background:var(--danger);border-color:var(--danger);color:#fff;}
 .item-info{flex:1;min-width:0;}
 .item-name{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.item-sub{font-size:0.68rem;color:var(--text2);margin-top:1px;}
-.item-who{font-size:0.65rem;color:var(--accent2);margin-top:2px;}
-.edit-btn{background:none;border:1px solid var(--border);color:var(--accent);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:4px;font-family:var(--font-mono);vertical-align:middle;}
-.del-btn{background:none;border:1px solid var(--danger);color:var(--danger);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:2px;font-family:var(--font-mono);vertical-align:middle;}
-.item-qty{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.qty-btn{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
-.qty-btn:active{background:var(--accent);color:#000;border-color:var(--accent);}
-.qty-num{font-family:var(--font-mono);font-size:0.85rem;min-width:20px;text-align:center;}
-.item-status{font-size:0.65rem;padding:2px 7px;border-radius:20px;border:1px solid;cursor:pointer;flex-shrink:0;white-space:nowrap;font-family:var(--font-mono);}
+.item-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.item-stock-tag{font-size:0.65rem;font-family:var(--font-mono);padding:2px 7px;border-radius:20px;border:1px solid;}
+.item-stock-tag.free{border-color:var(--success);color:var(--success);}
+.item-stock-tag.partial{border-color:var(--warning);color:var(--warning);}
+.item-stock-tag.empty{border-color:var(--danger);color:var(--danger);}
+.item-status{font-size:0.65rem;padding:2px 7px;border-radius:20px;border:1px solid;cursor:pointer;white-space:nowrap;font-family:var(--font-mono);}
 .item-status.ok{border-color:var(--success);color:var(--success);}
 .item-status.defect{border-color:var(--danger);color:var(--danger);}
 .item-status.lipsa{border-color:var(--text3);color:var(--text3);}
-.add-item-row{display:flex;align-items:center;gap:8px;padding:8px 16px;border-top:1px solid var(--border);background:var(--bg);}
-.add-item-input{flex:1;padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;}
-.add-item-qty{width:50px;padding:7px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;text-align:center;}
-.add-item-btn{padding:7px 12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.75rem;cursor:pointer;white-space:nowrap;}
-.add-subcat-row{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface2);border-top:1px solid var(--border);}
+.edit-btn{background:none;border:1px solid var(--border);color:var(--accent);font-size:0.6rem;cursor:pointer;padding:2px 5px;border-radius:4px;font-family:var(--font-mono);}
+.del-btn{background:none;border:1px solid var(--danger);color:var(--danger);font-size:0.6rem;cursor:pointer;padding:2px 5px;border-radius:4px;font-family:var(--font-mono);}
+.checkout-btn{padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.72rem;cursor:pointer;flex-shrink:0;}
+.checkout-btn:disabled{opacity:0.35;pointer-events:none;}
+.who-list{padding:6px 14px 8px 44px;display:flex;flex-direction:column;gap:5px;}
+.who-row{display:flex;align-items:center;gap:8px;}
+.who-avatar{width:24px;height:24px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;}
+.who-name{font-size:0.75rem;color:var(--text2);flex:1;}
+.who-qty{font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:var(--accent);}
+.who-time{font-size:0.62rem;color:var(--text3);font-family:var(--font-mono);}
+.who-return{padding:3px 8px;background:transparent;color:var(--accent2);border:1px solid var(--accent2);border-radius:4px;font-size:0.65rem;cursor:pointer;white-space:nowrap;}
+.add-item-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-top:1px solid var(--border);background:var(--bg);}
+.add-item-input{flex:1;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;}
+.add-item-qty-inp{width:48px;padding:7px 6px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;text-align:center;}
+.add-item-btn{padding:7px 10px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.72rem;cursor:pointer;}
+.add-subcat-row{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface2);border-top:1px solid var(--border);}
+.checkout-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.checkout-modal.show{display:flex;}
+.checkout-box{background:var(--surface2);border:1px solid var(--border);border-radius:16px 16px 0 0;padding:28px 24px;width:100%;max-width:480px;animation:slideUp 0.25s ease;}
+.checkout-box h3{font-family:var(--font-mono);color:var(--accent);font-size:0.95rem;margin-bottom:4px;}
+.checkout-box .item-label{font-size:0.8rem;color:var(--text2);margin-bottom:20px;}
+.qty-picker{display:flex;align-items:center;gap:20px;justify-content:center;margin:16px 0 24px;}
+.qty-big-btn{width:52px;height:52px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.qty-big-btn:active{background:var(--accent);color:#000;border-color:var(--accent);}
+.qty-big-num{font-family:var(--font-mono);font-size:2.5rem;font-weight:700;color:var(--accent);min-width:70px;text-align:center;}
+.qty-avail{text-align:center;font-size:0.75rem;color:var(--text2);margin-bottom:16px;font-family:var(--font-mono);}
+.btn-confirm-checkout{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;cursor:pointer;margin-bottom:8px;}
+.btn-cancel-checkout{width:100%;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.85rem;cursor:pointer;}
+.return-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.return-modal.show{display:flex;}
+.return-box{background:var(--surface2);border:1px solid var(--border);border-radius:16px 16px 0 0;padding:28px 24px;width:100%;max-width:480px;animation:slideUp 0.25s ease;}
+.return-box h3{font-family:var(--font-mono);color:var(--accent2);font-size:0.95rem;margin-bottom:4px;}
+.return-box .item-label{font-size:0.8rem;color:var(--text2);margin-bottom:20px;}
+.return-opts{display:flex;gap:10px;margin-bottom:16px;}
+.return-opt{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text2);font-size:0.8rem;cursor:pointer;text-align:center;font-family:var(--font-mono);}
+.return-opt.active{background:var(--accent2);color:#000;border-color:var(--accent2);font-weight:700;}
+.btn-confirm-return{width:100%;padding:14px;background:var(--accent2);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;cursor:pointer;margin-bottom:8px;}
+.btn-cancel-return{width:100%;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.85rem;cursor:pointer;}
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.edit-overlay.show{display:flex;}
+.edit-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:90%;max-width:360px;animation:slideUp 0.3s ease;}
+.edit-box h3{font-family:var(--font-mono);color:var(--accent);font-size:0.95rem;margin-bottom:20px;}
+.edit-box label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text2);display:block;margin-bottom:6px;font-family:var(--font-mono);}
+.edit-box input{width:100%;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.95rem;margin-bottom:14px;outline:none;}
+.edit-box input:focus{border-color:var(--accent);}
+.edit-actions{display:flex;gap:8px;}
+.btn-save{flex:1;padding:12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.88rem;cursor:pointer;}
+.btn-cancel2{flex:1;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.88rem;cursor:pointer;}
 .jurnal-panel{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);flex-direction:column;}
 .jurnal-panel.show{display:flex;}
 .jurnal-header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);}
@@ -143,22 +183,11 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .admin-section h3{font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2);margin-bottom:12px;font-family:var(--font-mono);}
 .admin-form{display:flex;gap:8px;margin-bottom:12px;}
 .admin-input{flex:1;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;outline:none;}
-.admin-select{padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.88rem;outline:none;}
 .btn-add{padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.8rem;cursor:pointer;white-space:nowrap;}
 .btn-danger{padding:6px 12px;background:transparent;color:var(--danger);border:1px solid var(--danger);border-radius:var(--radius-sm);font-size:0.75rem;cursor:pointer;}
 .admin-list{display:flex;flex-direction:column;gap:6px;}
 .admin-item-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);}
 .admin-item-row span{flex:1;font-size:0.85rem;}
-.edit-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:600;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
-.edit-overlay.show{display:flex;}
-.edit-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;width:90%;max-width:360px;animation:slideUp 0.3s ease;}
-.edit-box h3{font-family:var(--font-mono);color:var(--accent);font-size:0.95rem;margin-bottom:20px;}
-.edit-box label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--text2);display:block;margin-bottom:6px;font-family:var(--font-mono);}
-.edit-box input{width:100%;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.95rem;margin-bottom:14px;outline:none;}
-.edit-box input:focus{border-color:var(--accent);}
-.edit-actions{display:flex;gap:8px;}
-.btn-save{flex:1;padding:12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.88rem;cursor:pointer;}
-.btn-cancel2{flex:1;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.88rem;cursor:pointer;}
 .fab-group{position:fixed;bottom:48px;right:16px;display:flex;flex-direction:column;gap:10px;z-index:50;}
 .fab-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);color:var(--accent);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);background:var(--surface2);}
 .fab-admin{display:none;}
@@ -173,7 +202,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 <body>
 <div id="loading">
   <div class="load-logo">AKD</div>
-  <div class="load-sub">INVENTAR v4.0</div>
+  <div class="load-sub">INVENTAR v5.0</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
 
@@ -203,6 +232,40 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
+<!-- Checkout Modal -->
+<div class="checkout-modal" id="checkoutModal">
+  <div class="checkout-box">
+    <h3>📤 CHECKOUT</h3>
+    <div class="item-label" id="checkoutLabel">—</div>
+    <div class="qty-picker">
+      <button class="qty-big-btn" onclick="changeCheckoutQty(-1)">−</button>
+      <div class="qty-big-num" id="checkoutQtyNum">1</div>
+      <button class="qty-big-btn" onclick="changeCheckoutQty(1)">+</button>
+    </div>
+    <div class="qty-avail" id="checkoutAvail">disponibile: —</div>
+    <button class="btn-confirm-checkout" onclick="confirmCheckout()">✓ CONFIRM CHECKOUT</button>
+    <button class="btn-cancel-checkout" onclick="closeCheckoutModal()">Anulează</button>
+  </div>
+</div>
+
+<!-- Return Modal -->
+<div class="return-modal" id="returnModal">
+  <div class="return-box">
+    <h3>↩ RETURN</h3>
+    <div class="item-label" id="returnLabel">—</div>
+    <div style="margin:16px 0 8px;font-size:0.75rem;color:var(--text2);font-family:var(--font-mono)">Câte returnezi?</div>
+    <div class="return-opts" id="returnOpts"></div>
+    <div class="qty-picker" id="returnQtyPicker" style="display:none">
+      <button class="qty-big-btn" onclick="changeReturnQty(-1)">−</button>
+      <div class="qty-big-num" id="returnQtyNum">1</div>
+      <button class="qty-big-btn" onclick="changeReturnQty(1)">+</button>
+    </div>
+    <button class="btn-confirm-return" onclick="confirmReturn()">✓ CONFIRM RETURN</button>
+    <button class="btn-cancel-return" onclick="closeReturnModal()">Anulează</button>
+  </div>
+</div>
+
+<!-- Edit Item Overlay -->
 <div class="edit-overlay" id="editOverlay">
   <div class="edit-box">
     <h3>✏️ EDITEAZĂ ECHIPAMENT</h3>
@@ -231,9 +294,9 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 
 <div class="stats-bar">
   <div class="stat-item"><div class="num" id="sTot">—</div><div class="label">Total</div></div>
-  <div class="stat-item"><div class="num" id="sPrez" style="color:var(--success)">—</div><div class="label">Prezente</div></div>
-  <div class="stat-item"><div class="num" id="sLipsa" style="color:var(--danger)">—</div><div class="label">Lipsă</div></div>
-  <div class="stat-item"><div class="num" id="sDefect" style="color:var(--warning)">—</div><div class="label">Defect</div></div>
+  <div class="stat-item"><div class="num" id="sOut" style="color:var(--warning)">—</div><div class="label">Afară</div></div>
+  <div class="stat-item"><div class="num" id="sIn" style="color:var(--success)">—</div><div class="label">În depozit</div></div>
+  <div class="stat-item"><div class="num" id="sDefect" style="color:var(--danger)">—</div><div class="label">Defect</div></div>
 </div>
 
 <div class="search-bar">
@@ -242,6 +305,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 
 <div class="filter-tabs">
   <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">Toate</button>
+  <button class="filter-tab" data-filter="out" onclick="setFilter('out')">📤 Afară</button>
   <button class="filter-tab" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button>
   <button class="filter-tab" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button>
 </div>
@@ -303,7 +367,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
     <div class="admin-section">
       <h3>Acțiuni</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-danger" onclick="resetAllStatus()">↺ Reset statusuri</button>
+        <button class="btn-danger" onclick="resetAllStatus()">↺ Reset complet</button>
         <button class="btn-danger" onclick="clearJurnalFromAdmin()">🗑 Șterge jurnal</button>
       </div>
     </div>
@@ -321,70 +385,28 @@ const firebaseConfig={apiKey:"AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw",authDomai
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
 let isAdmin=false,currentUser=null,currentFilter='all',currentJurnalFilter='all',selectedUserId=null,editingItemId=null;
+let checkoutItemId=null,checkoutQty=1,checkoutMax=1;
+let returnItemId=null,returnCheckoutId=null,returnQty=1,returnMax=1,returnMode='all';
 let dbData={categories:{},subcategories:{},items:{},settings:{},users:{},jurnal:{}};
 let ADMIN_PASS='akd2025';
 const DEFAULT_USERS=[{id:'gica',name:'Gică',emoji:'👷',pass:'gica123'},{id:'muschiulet',name:'Mușchiuleț',emoji:'💪',pass:'muschi123'},{id:'ponei',name:'Ponei',emoji:'🐴',pass:'ponei123'}];
 
 const SEED_DATA={
-categories:{
-  sunet:{name:'Sunet',emoji:'🔊'},
-  lumini:{name:'Lumini',emoji:'💡'},
-  multimedia:{name:'Multimedia',emoji:'🖥️'},
-  scena:{name:'Scenă & Truss',emoji:'🏗️'},
-  backline:{name:'Back Line',emoji:'🎸'},
-  masini:{name:'Mașini',emoji:'🚐'},
-  diverse:{name:'Diverse',emoji:'🧰'},
-  service:{name:'Aparate Service',emoji:'🔧'}
-},
+categories:{sunet:{name:'Sunet',emoji:'🔊'},lumini:{name:'Lumini',emoji:'💡'},multimedia:{name:'Multimedia',emoji:'🖥️'},scena:{name:'Scenă & Truss',emoji:'🏗️'},backline:{name:'Back Line',emoji:'🎸'},masini:{name:'Mașini',emoji:'🚐'},diverse:{name:'Diverse',emoji:'🧰'},service:{name:'Aparate Service',emoji:'🔧'}},
 subcategories:{
-  s_mixere:{catId:'sunet',name:'Mixere',emoji:'🎚️'},
-  s_boxe:{catId:'sunet',name:'Boxe & Monitoare',emoji:'🔈'},
-  s_ampli:{catId:'sunet',name:'Amplificatoare',emoji:'🔋'},
-  s_proc:{catId:'sunet',name:'Procesoare & Crossovere',emoji:'🎛️'},
-  s_micro:{catId:'sunet',name:'Microfoane',emoji:'🎤'},
-  s_wireless:{catId:'sunet',name:'Wireless & In-Ear',emoji:'📡'},
-  s_cd:{catId:'sunet',name:'CD Players',emoji:'💿'},
-  s_stative:{catId:'sunet',name:'Stative & Huse',emoji:'🗂️'},
-  l_console:{catId:'lumini',name:'Console DMX',emoji:'🎮'},
-  l_spoturi:{catId:'lumini',name:'Spoturi & Reflectoare',emoji:'🔦'},
-  l_ledpar:{catId:'lumini',name:'LED PAR & BAR',emoji:'🌈'},
-  l_moving:{catId:'lumini',name:'Moving Heads',emoji:'🤖'},
-  l_strobo:{catId:'lumini',name:'Strobo & Profile',emoji:'⚡'},
-  l_efecte:{catId:'lumini',name:'Efecte Speciale',emoji:'🌫️'},
-  l_dim:{catId:'lumini',name:'Dimmere & Accesorii',emoji:'🔌'},
-  l_perdele:{catId:'lumini',name:'Perdele LED & APE',emoji:'🖼️'},
-  m_proj:{catId:'multimedia',name:'Videoproiectoare',emoji:'📽️'},
-  m_ledwall:{catId:'multimedia',name:'LED Wall',emoji:'🟥'},
-  m_ctrl:{catId:'multimedia',name:'Controllere & Procesoare',emoji:'🖥️'},
-  m_ecrane:{catId:'multimedia',name:'Ecrane & Televizoare',emoji:'📺'},
-  m_laptops:{catId:'multimedia',name:'Laptopuri & Accesorii',emoji:'💻'},
-  sc_structuri:{catId:'scena',name:'Structuri & Podium',emoji:'🏗️'},
-  sc_truss:{catId:'scena',name:'Truss',emoji:'🔩'},
-  sc_palane:{catId:'scena',name:'Palane & Ridicat',emoji:'⛓️'},
-  sc_colturi:{catId:'scena',name:'Colțuri & Adaptoare',emoji:'🧱'},
-  sc_acces:{catId:'scena',name:'Accesorii Scenă',emoji:'🎪'},
-  b_chitare:{catId:'backline',name:'Chitare & Amplificatoare',emoji:'🎸'},
-  b_clape:{catId:'backline',name:'Clape & Percuție',emoji:'🎹'},
-  b_acces:{catId:'backline',name:'Accesorii',emoji:'🎻'},
-  v_utilitare:{catId:'masini',name:'Utilitare',emoji:'🚚'},
-  v_auto:{catId:'masini',name:'Autoturisme',emoji:'🚗'},
-  v_acces:{catId:'masini',name:'Accesorii',emoji:'🔧'},
-  d_clima:{catId:'diverse',name:'Climatizare',emoji:'🌡️'},
-  d_gen:{catId:'diverse',name:'Generatoare & Stabilizatoare',emoji:'⚡'},
-  d_scari:{catId:'diverse',name:'Scări & Mobilier',emoji:'🪜'},
-  d_display:{catId:'diverse',name:'Display & Prezentare',emoji:'📢'},
-  d_curat:{catId:'diverse',name:'Curățenie',emoji:'🧹'},
-  sv_masura:{catId:'service',name:'Măsurare & Testare',emoji:'📏'},
-  sv_scule:{catId:'service',name:'Scule Electrice',emoji:'🔨'},
-  sv_lipit:{catId:'service',name:'Lipit & Capsare',emoji:'🔥'},
-  sv_electr:{catId:'service',name:'Electrice & Gaze',emoji:'⚡'},
-  sv_truse:{catId:'service',name:'Truse & Diverse',emoji:'🧰'}
+  s_mixere:{catId:'sunet',name:'Mixere',emoji:'🎚️'},s_boxe:{catId:'sunet',name:'Boxe & Monitoare',emoji:'🔈'},s_ampli:{catId:'sunet',name:'Amplificatoare',emoji:'🔋'},s_proc:{catId:'sunet',name:'Procesoare & Crossovere',emoji:'🎛️'},s_micro:{catId:'sunet',name:'Microfoane',emoji:'🎤'},s_wireless:{catId:'sunet',name:'Wireless & In-Ear',emoji:'📡'},s_cd:{catId:'sunet',name:'CD Players',emoji:'💿'},s_stative:{catId:'sunet',name:'Stative & Huse',emoji:'🗂️'},
+  l_console:{catId:'lumini',name:'Console DMX',emoji:'🎮'},l_spoturi:{catId:'lumini',name:'Spoturi & Reflectoare',emoji:'🔦'},l_ledpar:{catId:'lumini',name:'LED PAR & BAR',emoji:'🌈'},l_moving:{catId:'lumini',name:'Moving Heads',emoji:'🤖'},l_strobo:{catId:'lumini',name:'Strobo & Profile',emoji:'⚡'},l_efecte:{catId:'lumini',name:'Efecte Speciale',emoji:'🌫️'},l_dim:{catId:'lumini',name:'Dimmere & Accesorii',emoji:'🔌'},l_perdele:{catId:'lumini',name:'Perdele LED & APE',emoji:'🖼️'},
+  m_proj:{catId:'multimedia',name:'Videoproiectoare',emoji:'📽️'},m_ledwall:{catId:'multimedia',name:'LED Wall',emoji:'🟥'},m_ctrl:{catId:'multimedia',name:'Controllere & Procesoare',emoji:'🖥️'},m_ecrane:{catId:'multimedia',name:'Ecrane & Televizoare',emoji:'📺'},m_laptops:{catId:'multimedia',name:'Laptopuri & Accesorii',emoji:'💻'},
+  sc_structuri:{catId:'scena',name:'Structuri & Podium',emoji:'🏗️'},sc_truss:{catId:'scena',name:'Truss',emoji:'🔩'},sc_palane:{catId:'scena',name:'Palane & Ridicat',emoji:'⛓️'},sc_colturi:{catId:'scena',name:'Colțuri & Adaptoare',emoji:'🧱'},sc_acces:{catId:'scena',name:'Accesorii Scenă',emoji:'🎪'},
+  b_chitare:{catId:'backline',name:'Chitare & Amplificatoare',emoji:'🎸'},b_clape:{catId:'backline',name:'Clape & Percuție',emoji:'🎹'},b_acces:{catId:'backline',name:'Accesorii',emoji:'🎻'},
+  v_utilitare:{catId:'masini',name:'Utilitare',emoji:'🚚'},v_auto:{catId:'masini',name:'Autoturisme',emoji:'🚗'},v_acces:{catId:'masini',name:'Accesorii',emoji:'🔧'},
+  d_clima:{catId:'diverse',name:'Climatizare',emoji:'🌡️'},d_gen:{catId:'diverse',name:'Generatoare & Stabilizatoare',emoji:'⚡'},d_scari:{catId:'diverse',name:'Scări & Mobilier',emoji:'🪜'},d_display:{catId:'diverse',name:'Display & Prezentare',emoji:'📢'},d_curat:{catId:'diverse',name:'Curățenie',emoji:'🧹'},
+  sv_masura:{catId:'service',name:'Măsurare & Testare',emoji:'📏'},sv_scule:{catId:'service',name:'Scule Electrice',emoji:'🔨'},sv_lipit:{catId:'service',name:'Lipit & Capsare',emoji:'🔥'},sv_electr:{catId:'service',name:'Electrice & Gaze',emoji:'⚡'},sv_truse:{catId:'service',name:'Truse & Diverse',emoji:'🧰'}
 },
 items:[
   {s:'s_mixere',n:'Mixer PM 1600-3',q:1},{s:'s_mixere',n:'Mixer PM 600-3',q:1},{s:'s_mixere',n:'Mixer PM 1000-3',q:2},{s:'s_mixere',n:'Mixer digital SOUNDCRAFT SI',q:1},{s:'s_mixere',n:'Mixer BOSE T8S TONEMATCH',q:1},{s:'s_mixere',n:'Mixer ALLEN&HEATH CQ 18T',q:1},{s:'s_mixere',n:'Mixercase Soundcraft',q:1},{s:'s_mixere',n:'Mixer Pioneer DJM 600',q:2},
-  {s:'s_boxe',n:'Qube QSA 210 Speaker',q:16},{s:'s_boxe',n:'Qube QM 115 Monitor',q:6},{s:'s_boxe',n:'Boxe Medii AKD Inalte',q:8},{s:'s_boxe',n:'Boxa Bass AKD 18"',q:16},{s:'s_boxe',n:'Boxe ZXA5 2012',q:2},{s:'s_boxe',n:'Boxe EV ZX5A',q:4},{s:'s_boxe',n:'Boxe ZXA5 2014',q:2},{s:'s_boxe',n:'Boxe EV R115/75',q:2},{s:'s_boxe',n:'Boxa EV Rx118S',q:1},{s:'s_boxe',n:'Boxe Bass LD 15"',q:6},{s:'s_boxe',n:'Boxe Top LD 12"',q:6},{s:'s_boxe',n:'Boxe Rx115/75 EV',q:6},{s:'s_boxe',n:'Boxe RX118 EV bass',q:6},{s:'s_boxe',n:'Boxa RX 118 S bass 2019',q:1},{s:'s_boxe',n:'Boxe RX 118 S 2012',q:2},{s:'s_boxe',n:'Boxe RX 115/75 2012',q:2},{s:'s_boxe',n:'Boxe BOSE set1',q:1},{s:'s_boxe',n:'Boxe BOSE set2',q:1},{s:'s_boxe',n:'Baxe SYRINCS 12',q:2},{s:'s_boxe',n:'Boxa D&B V12',q:2},{s:'s_boxe',n:'Boxa D&B V8',q:2},{s:'s_boxe',n:'Boxa D&B V Sub',q:4},{s:'s_boxe',n:'Boxe D&B V12 aug2024',q:2},{s:'s_boxe',n:'Boxe D&B V08 aug2024',q:6},{s:'s_boxe',n:'Boxe D&B Bass',q:2},{s:'s_boxe',n:'Boxe D&B Bass VGSUB',q:2},{s:'s_boxe',n:'CASE boxa D&B',q:1},
+  {s:'s_boxe',n:'Qube QSA 210 Speaker',q:16},{s:'s_boxe',n:'Qube QM 115 Monitor',q:6},{s:'s_boxe',n:'Boxe Medii AKD Inalte',q:8},{s:'s_boxe',n:'Boxa Bass AKD 18"',q:16},{s:'s_boxe',n:'Boxe ZXA5 2012',q:2},{s:'s_boxe',n:'Boxe EV ZX5A',q:4},{s:'s_boxe',n:'Boxe ZXA5 2014',q:2},{s:'s_boxe',n:'Boxe EV R115/75',q:2},{s:'s_boxe',n:'Boxa EV Rx118S',q:1},{s:'s_boxe',n:'Boxe Bass LD 15"',q:6},{s:'s_boxe',n:'Boxe Top LD 12"',q:6},{s:'s_boxe',n:'Boxe Rx115/75 EV',q:6},{s:'s_boxe',n:'Boxe RX118 EV bass',q:6},{s:'s_boxe',n:'Boxa RX 118 S bass 2019',q:1},{s:'s_boxe',n:'Boxe RX 118 S 2012',q:2},{s:'s_boxe',n:'Boxe RX 115/75 2012',q:2},{s:'s_boxe',n:'Boxe BOSE set1',q:1},{s:'s_boxe',n:'Boxe BOSE set2',q:1},{s:'s_boxe',n:'Baxe SYRINCS 12',q:2},{s:'s_boxe',n:'Boxa D&B V12',q:2},{s:'s_boxe',n:'Boxa D&B V8',q:2},{s:'s_boxe',n:'Boxa D&B V Sub',q:4},{s:'s_boxe',n:'Boxe D&B V12 aug2024',q:2},{s:'s_boxe',n:'Boxe D&B V08 aug2024',q:6},{s:'s_boxe',n:'Boxe D&B Bass',q:2},{s:'s_boxe',n:'Boxe D&B Bass VGSUB',q:2},{s:'s_boxe',n:'CASE boxa D&B',q:1},{s:'s_boxe',n:'Adaptor baxa d&b',q:2},{s:'s_boxe',n:'Adaptor boxa d&b',q:2},{s:'s_boxe',n:'D&B VP Flying Adapter',q:2},{s:'s_boxe',n:'D&B V Stack Adapter',q:2},{s:'s_boxe',n:'D&B rama de prins boxe',q:2},{s:'s_boxe',n:'D&B clema de prins boxe',q:2},{s:'s_boxe',n:'Stativ boxe D&B Dolly',q:1},
   {s:'s_ampli',n:'Amplificator D&B D80 2024',q:3},{s:'s_ampli',n:'Amplificator Qube PA360',q:4},{s:'s_ampli',n:'Amplificator Dynacord L2400',q:6},{s:'s_ampli',n:'Amplificator TG7 2013',q:1},{s:'s_ampli',n:'Amplificator TG7 2015',q:1},{s:'s_ampli',n:'Amplificator EV TG5',q:2},
-  {s:'s_boxe',n:'Adaptor baxa d&b',q:2},{s:'s_boxe',n:'Adaptor boxa d&b',q:2},{s:'s_boxe',n:'D&B VP Flying Adapter',q:2},{s:'s_boxe',n:'D&B V Stack Adapter',q:2},{s:'s_boxe',n:'D&B rama de prins boxe',q:2},{s:'s_boxe',n:'D&B clema de prins boxe',q:2},{s:'s_boxe',n:'Stativ boxe D&B Dolly',q:1},
   {s:'s_proc',n:'Crossover Qube SP-26',q:1},{s:'s_proc',n:'Crossover Yamaha SP2060',q:1},{s:'s_proc',n:'Compresor DN 540',q:1},{s:'s_proc',n:'Procesor Klark Teknik Square One',q:2},{s:'s_proc',n:'Procesor KTEQ DN 370',q:1},{s:'s_proc',n:'Procesor DX 46 2013',q:1},{s:'s_proc',n:'Procesor DX 46 2015',q:1},{s:'s_proc',n:'Splitter Audio Klark Teknik',q:5},{s:'s_proc',n:'DI BOX Palmer PAN03',q:2},
   {s:'s_cd',n:'CD Player CDJ-200',q:4},{s:'s_cd',n:'CD Player CDJ-100',q:2},{s:'s_cd',n:'CD Player TASCAM',q:1},
   {s:'s_micro',n:'Shure SM57',q:15},{s:'s_micro',n:'Shure Beta58A',q:2},{s:'s_micro',n:'Shure SM58',q:12},{s:'s_micro',n:'Microfon RODE NT5-MP',q:2},{s:'s_micro',n:'Microfon Beyerdynamic MPC65',q:1},{s:'s_micro',n:'Microfon SENNHEISER 2024',q:2},{s:'s_micro',n:'Microfon unitate delegat',q:6},{s:'s_micro',n:'Microfon unitate presedinte',q:1},
@@ -428,43 +450,31 @@ items:[
 
 function initFirebase(){
   db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});
-  db.ref('v4').once('value',s=>{
+  db.ref('v5').once('value',s=>{
     const d=s.val();
     if(!d||!d.categories){seedData();}
     else{
-      if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v4/users').set(users);}
-      if(!d.jurnal)db.ref('v4/jurnal').set({});
+      if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v5/users').set(users);}
+      if(!d.jurnal)db.ref('v5/jurnal').set({});
       loadData();
     }
   });
 }
 
 function seedData(){
-  showToast('Inițializare v4...');
+  showToast('Inițializare v5...');
   const items={};
   SEED_DATA.items.forEach((item,i)=>{
-    items['item_'+i+'_'+Date.now()]={name:item.n,subcatId:item.s,qty:item.q,qtyPresent:item.q,present:true,status:'ok'};
+    items['item_'+i+'_'+Date.now()]={name:item.n,subcatId:item.s,qty:item.q,present:true,status:'ok',checkouts:{}};
   });
   const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});
-  db.ref('v4').set({
-    categories:SEED_DATA.categories,
-    subcategories:SEED_DATA.subcategories,
-    items:items,
-    settings:{adminPass:'akd2025'},
-    users:users,
-    jurnal:{}
-  },()=>{loadData();showToast('✅ Inițializat!');});
+  db.ref('v5').set({categories:SEED_DATA.categories,subcategories:SEED_DATA.subcategories,items,settings:{adminPass:'akd2025'},users,jurnal:{}},()=>{loadData();showToast('✅ Inițializat!');});
 }
 
 function loadData(){
-  db.ref('v4').on('value',s=>{
+  db.ref('v5').on('value',s=>{
     const d=s.val()||{};
-    dbData.categories=d.categories||{};
-    dbData.subcategories=d.subcategories||{};
-    dbData.items=d.items||{};
-    dbData.settings=d.settings||{};
-    dbData.users=d.users||{};
-    dbData.jurnal=d.jurnal||{};
+    dbData.categories=d.categories||{};dbData.subcategories=d.subcategories||{};dbData.items=d.items||{};dbData.settings=d.settings||{};dbData.users=d.users||{};dbData.jurnal=d.jurnal||{};
     if(dbData.settings.adminPass)ADMIN_PASS=dbData.settings.adminPass;
     renderAll();updateStats();
     document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');
@@ -472,6 +482,9 @@ function loadData(){
     if(!el.classList.contains('hidden')){el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);}
   });
 }
+
+function getItemOut(item){return Object.values(item.checkouts||{}).reduce((s,c)=>s+(c.qty||0),0);}
+function getItemAvail(item){return Math.max(0,(item.qty||0)-getItemOut(item));}
 
 function showUserLogin(){document.getElementById('userLoginOverlay').classList.remove('hidden');renderUserList();}
 function renderUserList(){const list=document.getElementById('userList');list.innerHTML='';document.getElementById('userPassSection').classList.remove('show');document.getElementById('userList').style.display='flex';Object.entries(dbData.users).forEach(([id,u])=>{const btn=document.createElement('button');btn.className='user-btn';btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;btn.onclick=()=>selectUser(id,u);list.appendChild(btn);});}
@@ -485,24 +498,81 @@ function tryAdminLogin(){const p=document.getElementById('adminPassInput').value
 function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('show');document.getElementById('adminPassInput').value='';document.getElementById('adminLoginErr').style.display='none';}
 document.getElementById('adminPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')tryAdminLogin();});
 
+function openCheckoutModal(itemId){
+  if(!currentUser){showToast('Loghează-te mai întâi!');return;}
+  const item=dbData.items[itemId];if(!item)return;
+  const avail=getItemAvail(item);
+  if(avail<=0){showToast('⚠️ Nicio bucată disponibilă!');return;}
+  checkoutItemId=itemId;checkoutQty=1;checkoutMax=avail;
+  document.getElementById('checkoutLabel').textContent=item.name+' — disponibile: '+avail+' buc';
+  document.getElementById('checkoutQtyNum').textContent=1;
+  document.getElementById('checkoutAvail').textContent='max '+avail+' buc';
+  document.getElementById('checkoutModal').classList.add('show');
+}
+function closeCheckoutModal(){document.getElementById('checkoutModal').classList.remove('show');checkoutItemId=null;}
+function changeCheckoutQty(d){checkoutQty=Math.min(checkoutMax,Math.max(1,checkoutQty+d));document.getElementById('checkoutQtyNum').textContent=checkoutQty;}
+function confirmCheckout(){
+  if(!checkoutItemId||!currentUser)return;
+  const item=dbData.items[checkoutItemId];
+  const coId='co_'+Date.now();
+  const co={userId:currentUser.id,userName:currentUser.name,userEmoji:currentUser.emoji,qty:checkoutQty,ts:Date.now()};
+  db.ref('v5/items/'+checkoutItemId+'/checkouts/'+coId).set(co);
+  logAction('📤 Checkout: '+checkoutQty+' buc',item.name);
+  showToast('📤 '+checkoutQty+' buc checkout!');
+  closeCheckoutModal();
+}
+
+function openReturnModal(itemId,coId){
+  const item=dbData.items[itemId];if(!item)return;
+  const co=item.checkouts&&item.checkouts[coId];if(!co)return;
+  returnItemId=itemId;returnCheckoutId=coId;returnMax=co.qty;returnQty=co.qty;returnMode='all';
+  document.getElementById('returnLabel').textContent=item.name+' — ai luat: '+co.qty+' buc';
+  const opts=document.getElementById('returnOpts');
+  opts.innerHTML=`<button class="return-opt active" onclick="setReturnMode('all')">Tot (${co.qty} buc)</button><button class="return-opt" onclick="setReturnMode('partial')">Parțial</button>`;
+  document.getElementById('returnQtyPicker').style.display='none';
+  document.getElementById('returnQtyNum').textContent=co.qty;
+  document.getElementById('returnModal').classList.add('show');
+}
+function closeReturnModal(){document.getElementById('returnModal').classList.remove('show');returnItemId=null;returnCheckoutId=null;}
+function setReturnMode(mode){
+  returnMode=mode;
+  document.querySelectorAll('.return-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(mode==='all'?'Tot':'Parțial')));
+  const picker=document.getElementById('returnQtyPicker');
+  if(mode==='partial'){picker.style.display='flex';returnQty=1;document.getElementById('returnQtyNum').textContent=1;}
+  else{picker.style.display='none';returnQty=returnMax;}
+}
+function changeReturnQty(d){returnQty=Math.min(returnMax,Math.max(1,returnQty+d));document.getElementById('returnQtyNum').textContent=returnQty;}
+function confirmReturn(){
+  if(!returnItemId||!returnCheckoutId)return;
+  const item=dbData.items[returnItemId];
+  const co=item.checkouts[returnCheckoutId];
+  if(returnQty>=returnMax){
+    db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId).remove();
+  } else {
+    db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId+'/qty').set(returnMax-returnQty);
+  }
+  logAction('↩ Return: '+returnQty+' buc',item.name);
+  showToast('↩ '+returnQty+' buc returnate!');
+  closeReturnModal();
+}
+
 function openEditOverlay(id){if(!isAdmin)return;const item=dbData.items[id];if(!item)return;editingItemId=id;document.getElementById('editName').value=item.name;document.getElementById('editQty').value=item.qty;document.getElementById('editOverlay').classList.add('show');}
 function closeEditOverlay(){document.getElementById('editOverlay').classList.remove('show');editingItemId=null;}
-function saveEditItem(){if(!editingItemId)return;const name=document.getElementById('editName').value.trim();const qty=parseInt(document.getElementById('editQty').value);if(!name){showToast('Introdu numele!');return;}if(!qty||qty<1){showToast('Stoc invalid!');return;}const item=dbData.items[editingItemId];const u={};u[`v4/items/${editingItemId}/name`]=name;u[`v4/items/${editingItemId}/qty`]=qty;if((item.qtyPresent||0)>qty)u[`v4/items/${editingItemId}/qtyPresent`]=qty;db.ref().update(u,()=>{showToast('✅ Salvat!');logAction('✏️ Editat: '+name,'stoc: '+qty);});closeEditOverlay();}
+function saveEditItem(){if(!editingItemId)return;const name=document.getElementById('editName').value.trim();const qty=parseInt(document.getElementById('editQty').value);if(!name){showToast('Introdu numele!');return;}if(!qty||qty<1){showToast('Stoc invalid!');return;}const u={};u['v5/items/'+editingItemId+'/name']=name;u['v5/items/'+editingItemId+'/qty']=qty;db.ref().update(u,()=>showToast('✅ Salvat!'));logAction('✏️ Editat',name);closeEditOverlay();}
 
-function logAction(action,itemName){if(!currentUser)return;db.ref('v4/jurnal').push({user:currentUser.name,userEmoji:currentUser.emoji||'👤',userId:currentUser.id,action:action,item:itemName,ts:Date.now()});}
+function logAction(action,itemName){if(!currentUser)return;db.ref('v5/jurnal').push({user:currentUser.name,userEmoji:currentUser.emoji||'👤',userId:currentUser.id,action,item:itemName,ts:Date.now()});}
 function openJurnal(){document.getElementById('jurnalPanel').classList.add('show');document.getElementById('btnClearJurnal').style.display=isAdmin?'block':'none';renderJurnal();}
 function closeJurnal(){document.getElementById('jurnalPanel').classList.remove('show');}
 function setJurnalFilter(f){currentJurnalFilter=f;document.querySelectorAll('.j-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.jf===f));renderJurnal();}
-function renderJurnal(){const content=document.getElementById('jurnalContent');const entries=Object.values(dbData.jurnal).sort((a,b)=>b.ts-a.ts);const filterDiv=document.getElementById('jurnalFilter');filterDiv.innerHTML=`<button class="j-filter-btn ${currentJurnalFilter==='all'?'active':''}" data-jf="all" onclick="setJurnalFilter('all')">Toți</button>`;const usersInJurnal=[...new Set(entries.map(e=>e.userId))];usersInJurnal.forEach(uid=>{const u=dbData.users[uid];if(!u)return;filterDiv.innerHTML+=`<button class="j-filter-btn ${currentJurnalFilter===uid?'active':''}" data-jf="${uid}" onclick="setJurnalFilter('${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});const filtered=currentJurnalFilter==='all'?entries:entries.filter(e=>e.userId===currentJurnalFilter);if(filtered.length===0){content.innerHTML='<div class="jurnal-empty">Nicio activitate înregistrată</div>';return;}content.innerHTML=filtered.map(e=>{const d=new Date(e.ts);const t=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});return`<div class="jurnal-entry"><div class="jurnal-who">${e.userEmoji||'👤'} ${e.user}</div><div class="jurnal-action">${e.action}: <strong>${e.item}</strong></div><div class="jurnal-time">🕐 ${t}</div></div>`;}).join('');}
-function clearJurnal(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v4/jurnal').remove(()=>showToast('✅ Jurnal șters!'));closeJurnal();}
-function clearJurnalFromAdmin(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v4/jurnal').remove(()=>showToast('✅ Jurnal șters!'));}
+function renderJurnal(){const content=document.getElementById('jurnalContent');const entries=Object.values(dbData.jurnal).sort((a,b)=>b.ts-a.ts);const filterDiv=document.getElementById('jurnalFilter');filterDiv.innerHTML=`<button class="j-filter-btn ${currentJurnalFilter==='all'?'active':''}" data-jf="all" onclick="setJurnalFilter('all')">Toți</button>`;[...new Set(entries.map(e=>e.userId))].forEach(uid=>{const u=dbData.users[uid];if(!u)return;filterDiv.innerHTML+=`<button class="j-filter-btn ${currentJurnalFilter===uid?'active':''}" data-jf="${uid}" onclick="setJurnalFilter('${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});const filtered=currentJurnalFilter==='all'?entries:entries.filter(e=>e.userId===currentJurnalFilter);if(!filtered.length){content.innerHTML='<div class="jurnal-empty">Nicio activitate</div>';return;}content.innerHTML=filtered.map(e=>{const d=new Date(e.ts);const t=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});return`<div class="jurnal-entry"><div class="jurnal-who">${e.userEmoji||'👤'} ${e.user}</div><div class="jurnal-action">${e.action}: <strong>${e.item}</strong></div><div class="jurnal-time">🕐 ${t}</div></div>`;}).join('');}
+function clearJurnal(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v5/jurnal').remove(()=>showToast('✅ Jurnal șters!'));closeJurnal();}
+function clearJurnalFromAdmin(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v5/jurnal').remove(()=>showToast('✅ Jurnal șters!'));}
 
 const CAT_ORDER=['sunet','lumini','multimedia','scena','backline','masini','diverse','service'];
 
 function renderAll(){
   const search=document.getElementById('searchInput').value.toLowerCase();
-  const container=document.getElementById('categories');
-  container.innerHTML='';
+  const container=document.getElementById('categories');container.innerHTML='';
   const allCatIds=Object.keys(dbData.categories);
   const sorted=[...CAT_ORDER.filter(id=>allCatIds.includes(id)),...allCatIds.filter(id=>!CAT_ORDER.includes(id))];
   sorted.forEach((catId,idx)=>{
@@ -514,88 +584,59 @@ function renderAll(){
       if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));
       if(currentFilter==='absent')items=items.filter(it=>!it.present);
       if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');
-      if(items.length===0&&(search||currentFilter!=='all'))return'';
+      if(currentFilter==='out')items=items.filter(it=>getItemOut(it)>0);
+      if(!items.length&&(search||currentFilter!=='all'))return'';
       catHasItems=true;
       const total=Object.values(dbData.items).filter(v=>v.subcatId===scId).length;
-      const present=Object.values(dbData.items).filter(v=>v.subcatId===scId&&v.present).length;
+      const totalOut=Object.values(dbData.items).filter(v=>v.subcatId===scId).reduce((s,v)=>s+getItemOut(v),0);
       const isOpen=search||currentFilter!=='all'||localStorage.getItem('sopen_'+scId)==='1';
       const itemsHtml=items.map(item=>renderItem(item)).join('');
-      const addRow=isAdmin?`<div class="add-item-row"><input class="add-item-input" id="ni_${scId}" placeholder="Nume echipament..."><input class="add-item-qty" id="nq_${scId}" type="number" value="1" min="1"><button class="add-item-btn" onclick="addItemInline('${scId}')">+ ADD</button></div>`:'';
-      return`<div class="subcat-block"><div class="subcat-header" onclick="toggleSubcat('${scId}')"><span class="subcat-icon">${sc.emoji||'📁'}</span><span class="subcat-name">${sc.name}</span><span class="subcat-count">${present}/${total}</span>${isAdmin?`<button class="edit-btn" style="font-size:0.6rem;padding:2px 5px" onclick="event.stopPropagation();renameSubcat('${scId}')">✏️</button><button class="del-btn" style="font-size:0.6rem;padding:2px 5px" onclick="event.stopPropagation();deleteSubcat('${scId}')">🗑</button>`:''}<span class="subcat-toggle ${isOpen?'open':''}" id="stog_${scId}">▼</span></div><div class="subcat-items ${isOpen?'open':''}" id="slist_${scId}">${itemsHtml}${addRow}</div></div>`;
+      const addRow=isAdmin?`<div class="add-item-row"><input class="add-item-input" id="ni_${scId}" placeholder="Nume echipament..."><input class="add-item-qty-inp" id="nq_${scId}" type="number" value="1" min="1"><button class="add-item-btn" onclick="addItemInline('${scId}')">+ ADD</button></div>`:'';
+      return`<div class="subcat-block"><div class="subcat-header" onclick="toggleSubcat('${scId}')"><span class="subcat-icon">${sc.emoji||'📁'}</span><span class="subcat-name">${sc.name}</span><span class="subcat-count">${total} items${totalOut>0?' · '+totalOut+' afară':''}</span>${isAdmin?`<button class="edit-btn" style="font-size:0.6rem;padding:2px 4px;margin-left:4px" onclick="event.stopPropagation();renameSubcat('${scId}')">✏️</button><button class="del-btn" style="font-size:0.6rem;padding:2px 4px" onclick="event.stopPropagation();deleteSubcat('${scId}')">🗑</button>`:''}<span class="subcat-toggle ${isOpen?'open':''}" id="stog_${scId}">▼</span></div><div class="subcat-items ${isOpen?'open':''}" id="slist_${scId}">${itemsHtml}${addRow}</div></div>`;
     }).join('');
     if(!catHasItems&&(search||currentFilter!=='all'))return;
     const totalCat=Object.values(dbData.items).filter(v=>{const sc=dbData.subcategories[v.subcatId];return sc&&sc.catId===catId;}).length;
-    const presentCat=Object.values(dbData.items).filter(v=>{const sc=dbData.subcategories[v.subcatId];return sc&&sc.catId===catId&&v.present;}).length;
-    const pct=totalCat>0?Math.round(presentCat/totalCat*100):0;
+    const outCat=Object.values(dbData.items).filter(v=>{const sc=dbData.subcategories[v.subcatId];return sc&&sc.catId===catId;}).reduce((s,v)=>s+getItemOut(v),0);
+    const pct=totalCat>0?Math.round((totalCat-outCat)/totalCat*100):100;
     const isOpen=search||currentFilter!=='all'||localStorage.getItem('open_'+catId)==='1';
-    const addSubcatRow=isAdmin?`<div class="add-subcat-row"><input class="add-item-input" id="nsc_emoji_${catId}" placeholder="📁" style="width:50px;flex:none"><input class="add-item-input" id="nsc_name_${catId}" placeholder="Nume subcategorie..."><button class="add-item-btn" onclick="addSubcat('${catId}')">+ SUBCAT</button></div>`:'';
-    const card=document.createElement('div');
-    card.className='category-card';card.style.animationDelay=(idx*40)+'ms';
-    card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${presentCat}/${totalCat}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="cat-body ${isOpen?'open':''}" id="body_${catId}">${subcatHtml}${addSubcatRow}</div>`;
+    const addSubcatRow=isAdmin?`<div class="add-subcat-row"><input class="add-item-input" id="nsc_emoji_${catId}" placeholder="📁" style="width:46px;flex:none"><input class="add-item-input" id="nsc_name_${catId}" placeholder="Nume subcategorie..."><button class="add-item-btn" onclick="addSubcat('${catId}')">+ SUBCAT</button></div>`:'';
+    const card=document.createElement('div');card.className='category-card';card.style.animationDelay=(idx*40)+'ms';
+    card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${outCat>0?outCat+' afară':totalCat+' items'}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="cat-body ${isOpen?'open':''}" id="body_${catId}">${subcatHtml}${addSubcatRow}</div>`;
     container.appendChild(card);
   });
-  if(container.innerHTML==='')container.innerHTML='<div class="empty">✅ Totul e în ordine!</div>';
+  if(!container.innerHTML)container.innerHTML='<div class="empty">✅ Totul e în ordine!</div>';
 }
 
 function renderItem(item){
-  const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};
   const s=item.status||'ok';
+  const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};
   const n=item.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-  const qPrez=item.qtyPresent!==undefined?item.qtyPresent:item.qty;
-  const whoHtml=item.lastUser?`<div class="item-who">✏️ ${item.lastUser}</div>`:'';
+  const out=getItemOut(item);const avail=getItemAvail(item);
+  const tagClass=out===0?'free':avail===0?'empty':'partial';
+  const tagText=out===0?'✓ Liber':avail===0?'✗ Tot afară':'⚡ '+avail+' disp.';
+  const checkouts=Object.entries(item.checkouts||{});
+  const whoHtml=checkouts.length?`<div class="who-list">${checkouts.map(([coId,co])=>{
+    const t=new Date(co.ts).toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});
+    const canReturn=isAdmin||(currentUser&&co.userId===currentUser.id);
+    return`<div class="who-row"><div class="who-avatar">${co.userEmoji||'👤'}</div><span class="who-name">${co.userName}</span><span class="who-qty">${co.qty} buc</span><span class="who-time">${t}</span>${canReturn?`<button class="who-return" onclick="openReturnModal('${item.id}','${coId}')">↩ Return</button>`:''}`;
+  }).join('</div>')}</div>`:'';
   const adminBtns=isAdmin?`<button class="edit-btn" onclick="openEditOverlay('${item.id}')">✏️</button><button class="del-btn" onclick="deleteItem('${item.id}','${n}')">🗑</button>`:'';
-  return`<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${adminBtns}</div><div class="item-sub">${qPrez} / ${item.qty} buc</div>${whoHtml}</div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1,'${n}')">−</button><span class="qty-num">${qPrez}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1,'${n}')">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</div></div>`;
+  const coBtn=avail>0?`<button class="checkout-btn" onclick="openCheckoutModal('${item.id}')">📤 OUT</button>`:`<button class="checkout-btn" disabled>📤 OUT</button>`;
+  return`<div class="item-row"><div class="item-top-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${adminBtns}</div><div class="item-meta"><span class="item-stock-tag ${tagClass}">${tagText}</span><span class="item-stock-tag" style="border-color:var(--border);color:var(--text2)">stoc: ${item.qty}</span><span class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</span></div></div>${coBtn}</div>${whoHtml}</div>`;
 }
 
-function addItemInline(scId){
-  const nameEl=document.getElementById('ni_'+scId);
-  const qtyEl=document.getElementById('nq_'+scId);
-  const name=nameEl.value.trim();
-  const qty=parseInt(qtyEl.value)||1;
-  if(!name){showToast('Introdu numele!');nameEl.focus();return;}
-  db.ref('v4/items/item_'+Date.now()).set({name,subcatId:scId,qty,qtyPresent:qty,present:true,status:'ok'});
-  logAction('➕ Adăugat',name);
-  showToast('✅ '+name+' adăugat!');
-  nameEl.value='';qtyEl.value='1';
-}
-
-function addSubcat(catId){
-  const emoji=document.getElementById('nsc_emoji_'+catId).value.trim()||'📁';
-  const name=document.getElementById('nsc_name_'+catId).value.trim();
-  if(!name){showToast('Introdu numele subcategoriei!');return;}
-  const id='sc_'+Date.now();
-  db.ref('v4/subcategories/'+id).set({catId,name,emoji});
-  document.getElementById('nsc_name_'+catId).value='';
-  document.getElementById('nsc_emoji_'+catId).value='';
-  showToast('✅ Subcategorie adăugată!');
-}
-
-function renameSubcat(scId){
-  const sc=dbData.subcategories[scId];if(!sc)return;
-  const newName=prompt('Nume subcategorie:',sc.name);
-  if(!newName)return;
-  const newEmoji=prompt('Emoji:',sc.emoji||'📁');
-  db.ref('v4/subcategories/'+scId).update({name:newName.trim(),emoji:newEmoji||'📁'});
-  showToast('✅ Subcategorie redenumită!');
-}
-
-function deleteSubcat(scId){
-  const sc=dbData.subcategories[scId];if(!sc)return;
-  if(!confirm('Ștergi subcategoria "'+sc.name+'" și toate echipamentele din ea?'))return;
-  db.ref('v4/subcategories/'+scId).remove();
-  Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v4/items/'+id).remove();});
-  showToast('✅ Subcategorie ștearsă!');
-}
-
-function deleteItem(id,name){if(!confirm('Ștergi "'+name+'"?'))return;db.ref('v4/items/'+id).remove();logAction('🗑 Șters',name);showToast('✅ Șters!');}
-function togglePresent(id,v,name){const u={};u[`v4/items/${id}/present`]=v;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(v?'✅ Prezent':'❌ Absent',name);showToast(v?'✅ Prezent':'❌ Absent');}
-function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:'ok'};const next=cycle[cur]||'ok';const labels={ok:'OK',defect:'Defect',lipsa:'Lipsă'};const u={};u[`v4/items/${id}/status`]=next;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction('🔄 Status → '+labels[next],name);}
-function changeQtyPresent(id,delta,name){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const max=item.qty||999;const next=Math.min(max,Math.max(0,cur+delta));if(next===cur){if(delta>0)showToast('⚠️ Stoc maxim atins!');return;}const u={};u[`v4/items/${id}/qtyPresent`]=next;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(`📦 ${cur}→${next}`,name);}
+function addItemInline(scId){const nameEl=document.getElementById('ni_'+scId);const qtyEl=document.getElementById('nq_'+scId);const name=nameEl.value.trim();const qty=parseInt(qtyEl.value)||1;if(!name){showToast('Introdu numele!');nameEl.focus();return;}db.ref('v5/items/item_'+Date.now()).set({name,subcatId:scId,qty,present:true,status:'ok',checkouts:{}});logAction('➕ Adăugat',name);showToast('✅ '+name+' adăugat!');nameEl.value='';qtyEl.value='1';}
+function addSubcat(catId){const emoji=document.getElementById('nsc_emoji_'+catId).value.trim()||'📁';const name=document.getElementById('nsc_name_'+catId).value.trim();if(!name){showToast('Introdu numele!');return;}db.ref('v5/subcategories/sc_'+Date.now()).set({catId,name,emoji});document.getElementById('nsc_name_'+catId).value='';document.getElementById('nsc_emoji_'+catId).value='';showToast('✅ Subcategorie adăugată!');}
+function renameSubcat(scId){const sc=dbData.subcategories[scId];if(!sc)return;const newName=prompt('Nume:',sc.name);if(!newName)return;const newEmoji=prompt('Emoji:',sc.emoji||'📁');db.ref('v5/subcategories/'+scId).update({name:newName.trim(),emoji:newEmoji||'📁'});showToast('✅ Redenumit!');}
+function deleteSubcat(scId){const sc=dbData.subcategories[scId];if(!sc)return;if(!confirm('Ștergi "'+sc.name+'" și echipamentele din ea?'))return;db.ref('v5/subcategories/'+scId).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v5/items/'+id).remove();});showToast('✅ Ștearsă!');}
+function deleteItem(id,name){if(!confirm('Ștergi "'+name+'"?'))return;db.ref('v5/items/'+id).remove();logAction('🗑 Șters',name);showToast('✅ Șters!');}
+function togglePresent(id,v,name){db.ref('v5/items/'+id+'/present').set(v);logAction(v?'✅ Prezent':'❌ Absent',name);showToast(v?'✅ Prezent':'❌ Absent');}
+function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:'ok'};const next=cycle[cur]||'ok';const labels={ok:'OK',defect:'Defect',lipsa:'Lipsă'};db.ref('v5/items/'+id+'/status').set(next);logAction('🔄 Status → '+labels[next],name);}
 function toggleCat(catId){const body=document.getElementById('body_'+catId);const tog=document.getElementById('tog_'+catId);if(!body)return;const isOpen=body.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
 function toggleSubcat(scId){const list=document.getElementById('slist_'+scId);const tog=document.getElementById('stog_'+scId);if(!list)return;const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('sopen_'+scId,isOpen?'1':'0');}
 function filterItems(){renderAll();}
 function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
-function updateStats(){const items=Object.values(dbData.items);document.getElementById('sTot').textContent=items.length;document.getElementById('sPrez').textContent=items.filter(i=>i.present).length;document.getElementById('sLipsa').textContent=items.filter(i=>!i.present).length;document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
+function updateStats(){const items=Object.values(dbData.items);const totalOut=items.reduce((s,i)=>s+getItemOut(i),0);document.getElementById('sTot').textContent=items.length;document.getElementById('sOut').textContent=totalOut;document.getElementById('sIn').textContent=items.reduce((s,i)=>s+getItemAvail(i),0);document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
 
 function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').classList.add('show');renderAdminPanel();}
 function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
@@ -603,17 +644,19 @@ function renderAdminPanel(){
   const userList=document.getElementById('adminUserList');userList.innerHTML='';
   Object.entries(dbData.users).forEach(([id,u])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;userList.appendChild(row);});
   const catList=document.getElementById('adminCatList');catList.innerHTML='';
-  Object.entries(dbData.categories).forEach(([id,cat])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕ Șterge</button>`;catList.appendChild(row);});
+  Object.entries(dbData.categories).forEach(([id,cat])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕</button>`;catList.appendChild(row);});
 }
-function addUser(){const emoji=document.getElementById('newUserEmoji').value.trim()||'👤';const name=document.getElementById('newUserName').value.trim();const pass=document.getElementById('newUserPass').value.trim();if(!name||!pass){showToast('Completează numele și parola!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,15)+'_'+Date.now();db.ref(`v4/users/${id}`).set({name,emoji,pass});document.getElementById('newUserName').value='';document.getElementById('newUserPass').value='';document.getElementById('newUserEmoji').value='';showToast('✅ Utilizator adăugat!');setTimeout(renderAdminPanel,600);}
-function deleteUser(id){if(!confirm('Ștergi utilizatorul?'))return;db.ref(`v4/users/${id}`).remove();showToast('✅ Șters');setTimeout(renderAdminPanel,600);}
-function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20)+'_'+Date.now();db.ref(`v4/categories/${id}`).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
-function deleteCategory(catId){if(!confirm('Ștergi categoria și tot ce conține?'))return;db.ref(`v4/categories/${catId}`).remove();Object.entries(dbData.subcategories).forEach(([scId,sc])=>{if(sc.catId===catId){db.ref('v4/subcategories/'+scId).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v4/items/'+id).remove();});}});showToast('✅ Ștearsă!');}
-function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v4/items/${id}/present`]=true;u[`v4/items/${id}/status`]='ok';u[`v4/items/${id}/qtyPresent`]=dbData.items[id].qty||1;});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
-function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v4/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
+function addUser(){const emoji=document.getElementById('newUserEmoji').value.trim()||'👤';const name=document.getElementById('newUserName').value.trim();const pass=document.getElementById('newUserPass').value.trim();if(!name||!pass){showToast('Completează!');return;}const id='u_'+Date.now();db.ref('v5/users/'+id).set({name,emoji,pass});document.getElementById('newUserName').value='';document.getElementById('newUserPass').value='';document.getElementById('newUserEmoji').value='';showToast('✅ User adăugat!');setTimeout(renderAdminPanel,600);}
+function deleteUser(id){if(!confirm('Ștergi userul?'))return;db.ref('v5/users/'+id).remove();setTimeout(renderAdminPanel,600);}
+function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id='cat_'+Date.now();db.ref('v5/categories/'+id).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
+function deleteCategory(catId){if(!confirm('Ștergi categoria și tot?'))return;db.ref('v5/categories/'+catId).remove();Object.entries(dbData.subcategories).forEach(([scId,sc])=>{if(sc.catId===catId){db.ref('v5/subcategories/'+scId).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v5/items/'+id).remove();});}});showToast('✅ Ștearsă!');}
+function resetAllStatus(){if(!confirm('Reset complet — șterge toate checkout-urile?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u['v5/items/'+id+'/present']=true;u['v5/items/'+id+'/status']='ok';u['v5/items/'+id+'/checkouts']={};});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
+function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v5/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
 
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
+document.getElementById('checkoutModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCheckoutModal();});
+document.getElementById('returnModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeReturnModal();});
 window.addEventListener('load',()=>{setTimeout(initFirebase,1200);});
 </script>
 </body>
