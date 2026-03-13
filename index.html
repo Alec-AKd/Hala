@@ -487,8 +487,21 @@ function getItemOut(item){return Object.values(item.checkouts||{}).reduce((s,c)=
 function getItemAvail(item){return Math.max(0,(item.qty||0)-getItemOut(item));}
 
 function showUserLogin(){document.getElementById('userLoginOverlay').classList.remove('hidden');renderUserList();}
-function renderUserList(){const list=document.getElementById('userList');list.innerHTML='';document.getElementById('userPassSection').classList.remove('show');document.getElementById('userList').style.display='flex';Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0).forEach(([id,u])=>{const btn=document.createElement('button');btn.className='user-btn';btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;btn.onclick=()=>selectUser(id,u);list.appendChild(btn);});}
-function eselectUser(id,u){selectedUserId=id;document.getElementById('userList').style.display='none';document.getElementById('userPassSection').classList.add('show');document.getElementById('userPassLabel').textContent='Parola pentru '+u.name;document.getElementById('userPassInput').value='';document.getElementById('userPassErr').style.display='none';setTimeout(()=>document.getElementById('userPassInput').focus(),100);}
+function renderUserList(){
+  const list=document.getElementById('userList');
+  list.innerHTML='';
+  document.getElementById('userPassSection').classList.remove('show');
+  document.getElementById('userList').style.display='flex';
+  const sorted=Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0);
+  sorted.forEach(([id,u])=>{
+    const btn=document.createElement('button');
+    btn.className='user-btn';
+    btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;
+    btn.onclick=()=>selectUser(id,u);
+    list.appendChild(btn);
+  });
+}
+function selectUser(id,u){selectedUserId=id;document.getElementById('userList').style.display='none';document.getElementById('userPassSection').classList.add('show');document.getElementById('userPassLabel').textContent='Parola pentru '+u.name;document.getElementById('userPassInput').value='';document.getElementById('userPassErr').style.display='none';setTimeout(()=>document.getElementById('userPassInput').focus(),100);}
 function backToUserList(){selectedUserId=null;document.getElementById('userList').style.display='flex';document.getElementById('userPassSection').classList.remove('show');}
 function confirmUserLogin(){const pass=document.getElementById('userPassInput').value;const u=dbData.users[selectedUserId];if(!u)return;if(pass===u.pass){currentUser={id:selectedUserId,name:u.name,emoji:u.emoji||'👤'};document.getElementById('userLoginOverlay').classList.add('hidden');document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser.emoji+' '+currentUser.name;showToast('✅ Bun venit, '+currentUser.name+'!');}else{document.getElementById('userPassErr').style.display='block';document.getElementById('userPassInput').value='';document.getElementById('userPassInput').focus();}}
 document.getElementById('userPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmUserLogin();});
@@ -546,11 +559,8 @@ function confirmReturn(){
   if(!returnItemId||!returnCheckoutId)return;
   const item=dbData.items[returnItemId];
   const co=item.checkouts[returnCheckoutId];
-  if(returnQty>=returnMax){
-    db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId).remove();
-  } else {
-    db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId+'/qty').set(returnMax-returnQty);
-  }
+  if(returnQty>=returnMax){db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId).remove();}
+  else{db.ref('v5/items/'+returnItemId+'/checkouts/'+returnCheckoutId+'/qty').set(returnMax-returnQty);}
   logAction('↩ Return: '+returnQty+' buc',item.name);
   showToast('↩ '+returnQty+' buc returnate!');
   closeReturnModal();
@@ -615,11 +625,7 @@ function renderItem(item){
   const tagClass=out===0?'free':avail===0?'empty':'partial';
   const tagText=out===0?'✓ Liber':avail===0?'✗ Tot afară':'⚡ '+avail+' disp.';
   const checkouts=Object.entries(item.checkouts||{});
-  const whoHtml=checkouts.length?`<div class="who-list">${checkouts.map(([coId,co])=>{
-    const t=new Date(co.ts).toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});
-    const canReturn=isAdmin||(currentUser&&co.userId===currentUser.id);
-    return`<div class="who-row"><div class="who-avatar">${co.userEmoji||'👤'}</div><span class="who-name">${co.userName}</span><span class="who-qty">${co.qty} buc</span><span class="who-time">${t}</span>${canReturn?`<button class="who-return" onclick="openReturnModal('${item.id}','${coId}')">↩ Return</button>`:''}`;
-  }).join('</div>')}</div>`:'';
+  const whoHtml=checkouts.length?`<div class="who-list">${checkouts.map(([coId,co])=>{const t=new Date(co.ts).toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});const canReturn=isAdmin||(currentUser&&co.userId===currentUser.id);return`<div class="who-row"><div class="who-avatar">${co.userEmoji||'👤'}</div><span class="who-name">${co.userName}</span><span class="who-qty">${co.qty} buc</span><span class="who-time">${t}</span>${canReturn?`<button class="who-return" onclick="openReturnModal('${item.id}','${coId}')">↩ Return</button>`:''}</div>`;}).join('')}</div>`:'';
   const adminBtns=isAdmin?`<button class="edit-btn" onclick="openEditOverlay('${item.id}')">✏️</button><button class="del-btn" onclick="deleteItem('${item.id}','${n}')">🗑</button>`:'';
   const coBtn=avail>0?`<button class="checkout-btn" onclick="openCheckoutModal('${item.id}')">📤 OUT</button>`:`<button class="checkout-btn" disabled>📤 OUT</button>`;
   return`<div class="item-row"><div class="item-top-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${adminBtns}</div><div class="item-meta"><span class="item-stock-tag ${tagClass}">${tagText}</span><span class="item-stock-tag" style="border-color:var(--border);color:var(--text2)">stoc: ${item.qty}</span><span class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</span></div></div>${coBtn}</div>${whoHtml}</div>`;
@@ -642,7 +648,7 @@ function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').cl
 function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
 function renderAdminPanel(){
   const userList=document.getElementById('adminUserList');userList.innerHTML='';
-  Object.entries(dbData.users).forEach(([id,u])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;userList.appendChild(row);});
+  Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0).forEach(([id,u])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;userList.appendChild(row);});
   const catList=document.getElementById('adminCatList');catList.innerHTML='';
   Object.entries(dbData.categories).forEach(([id,cat])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕</button>`;catList.appendChild(row);});
 }
