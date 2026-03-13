@@ -58,7 +58,7 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .role-badge{font-family:var(--font-mono);font-size:0.65rem;padding:3px 8px;border-radius:20px;border:1px solid;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .role-badge.admin{border-color:var(--accent);color:var(--accent);}
 .role-badge.worker{border-color:var(--accent2);color:var(--accent2);}
-.btn-role{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:var(--radius-sm);font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
+.btn-role{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:var(--radius-sm);font-size:0.75rem;cursor:pointer;}
 .conn-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:background 0.3s;}
 .conn-dot.on{background:var(--success);box-shadow:0 0 6px var(--success);}
 .stats-bar{display:flex;gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
@@ -79,12 +79,22 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .cat-icon{font-size:1.4rem;flex-shrink:0;}
 .cat-name{font-weight:600;font-size:0.95rem;flex:1;}
 .cat-count{font-family:var(--font-mono);font-size:0.7rem;color:var(--text2);background:var(--surface2);padding:2px 8px;border-radius:20px;}
-.cat-progress{height:2px;background:var(--border);margin:0 16px 0;}
+.cat-progress{height:2px;background:var(--border);margin:0 16px 8px;}
 .cat-progress-fill{height:100%;background:var(--accent2);border-radius:2px;transition:width 0.4s ease;}
 .cat-toggle{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:0.7rem;transition:transform 0.25s;}
 .cat-toggle.open{transform:rotate(180deg);}
-.items-list{display:none;}
-.items-list.open{display:block;}
+.cat-body{display:none;}
+.cat-body.open{display:block;}
+.subcat-block{border-top:1px solid var(--border);}
+.subcat-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface2);cursor:pointer;user-select:none;}
+.subcat-icon{font-size:1rem;flex-shrink:0;}
+.subcat-name{font-size:0.82rem;font-weight:600;flex:1;color:var(--text2);}
+.subcat-count{font-family:var(--font-mono);font-size:0.65rem;color:var(--text3);background:var(--bg);padding:2px 7px;border-radius:20px;}
+.subcat-toggle{font-size:0.6rem;color:var(--text3);transition:transform 0.2s;}
+.subcat-toggle.open{transform:rotate(180deg);}
+.subcat-admin-btns{display:flex;gap:6px;margin-left:4px;}
+.subcat-items{display:none;}
+.subcat-items.open{display:block;}
 .item-row{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--border);}
 .item-check{width:22px;height:22px;flex-shrink:0;border:2px solid var(--border);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.8rem;}
 .item-check.present{background:var(--success);border-color:var(--success);color:#000;}
@@ -93,7 +103,8 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .item-name{font-size:0.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .item-sub{font-size:0.68rem;color:var(--text2);margin-top:1px;}
 .item-who{font-size:0.65rem;color:var(--accent2);margin-top:2px;}
-.edit-btn{background:none;border:1px solid var(--border);color:var(--accent);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:6px;font-family:var(--font-mono);vertical-align:middle;}
+.edit-btn{background:none;border:1px solid var(--border);color:var(--accent);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:4px;font-family:var(--font-mono);vertical-align:middle;}
+.del-btn{background:none;border:1px solid var(--danger);color:var(--danger);font-size:0.65rem;cursor:pointer;padding:2px 6px;border-radius:4px;margin-left:2px;font-family:var(--font-mono);vertical-align:middle;}
 .item-qty{display:flex;align-items:center;gap:5px;flex-shrink:0;}
 .qty-btn{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
 .qty-btn:active{background:var(--accent);color:#000;border-color:var(--accent);}
@@ -102,6 +113,11 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 .item-status.ok{border-color:var(--success);color:var(--success);}
 .item-status.defect{border-color:var(--danger);color:var(--danger);}
 .item-status.lipsa{border-color:var(--text3);color:var(--text3);}
+.add-item-row{display:flex;align-items:center;gap:8px;padding:8px 16px;border-top:1px solid var(--border);background:var(--bg);}
+.add-item-input{flex:1;padding:7px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;}
+.add-item-qty{width:50px;padding:7px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.82rem;outline:none;text-align:center;}
+.add-item-btn{padding:7px 12px;background:var(--accent);color:#000;border:none;border-radius:var(--radius-sm);font-family:var(--font-mono);font-weight:700;font-size:0.75rem;cursor:pointer;white-space:nowrap;}
+.add-subcat-row{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface2);border-top:1px solid var(--border);}
 .jurnal-panel{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);flex-direction:column;}
 .jurnal-panel.show{display:flex;}
 .jurnal-header{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);}
@@ -155,14 +171,12 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
 </style>
 </head>
 <body>
-<!-- Loading -->
 <div id="loading">
   <div class="load-logo">AKD</div>
-  <div class="load-sub">INVENTAR v3.1</div>
+  <div class="load-sub">INVENTAR v4.0</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
 
-<!-- User Login -->
 <div id="userLoginOverlay" class="hidden">
   <div class="user-login-box">
     <h2>👋 BUNĂ ZIUA</h2>
@@ -178,7 +192,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Admin Login -->
 <div id="adminLoginOverlay">
   <div class="login-box">
     <h2>👑 Mod Admin</h2>
@@ -190,7 +203,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Edit Overlay -->
 <div class="edit-overlay" id="editOverlay">
   <div class="edit-box">
     <h3>✏️ EDITEAZĂ ECHIPAMENT</h3>
@@ -246,7 +258,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   <span>AKD Events © 2025</span>
 </div>
 
-<!-- Jurnal Panel -->
 <div class="jurnal-panel" id="jurnalPanel">
   <div class="jurnal-header">
     <h2>📋 JURNAL</h2>
@@ -261,7 +272,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Admin Panel -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-header">
     <h2>⚙️ ADMIN PANEL</h2>
@@ -284,15 +294,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
         <input class="admin-input" id="newCatEmoji" placeholder="🎵" style="width:55px;flex:none">
         <input class="admin-input" id="newCatName" placeholder="Numele categoriei">
         <button class="btn-add" onclick="addCategory()">+ CAT</button>
-      </div>
-    </div>
-    <div class="admin-section">
-      <h3>Adaugă Echipament</h3>
-      <div class="admin-form" style="flex-wrap:wrap">
-        <input class="admin-input" id="newItemName" placeholder="Numele echipamentului" style="flex-basis:100%">
-        <select class="admin-select" id="newItemCat" style="flex:1"></select>
-        <input class="admin-input" id="newItemQty" type="number" placeholder="Buc" style="width:70px;flex:none" min="1" value="1">
-        <button class="btn-add" onclick="addItem()">+ ITEM</button>
       </div>
     </div>
     <div class="admin-section">
@@ -320,32 +321,161 @@ const firebaseConfig={apiKey:"AIzaSyChTK5nlDW0enaj_IZalt99i6uc3p3QbNw",authDomai
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
 let isAdmin=false,currentUser=null,currentFilter='all',currentJurnalFilter='all',selectedUserId=null,editingItemId=null;
-let dbData={categories:{},items:{},settings:{},users:{},jurnal:{}};
+let dbData={categories:{},subcategories:{},items:{},settings:{},users:{},jurnal:{}};
 let ADMIN_PASS='akd2025';
 const DEFAULT_USERS=[{id:'gica',name:'Gică',emoji:'👷',pass:'gica123'},{id:'muschiulet',name:'Mușchiuleț',emoji:'💪',pass:'muschi123'},{id:'ponei',name:'Ponei',emoji:'🐴',pass:'ponei123'}];
-const INITIAL_CATEGORIES=[{id:'sunet',name:'Sunet',emoji:'🔊'},{id:'lumini',name:'Lumini',emoji:'💡'},{id:'multimedia',name:'Multimedia',emoji:'🖥️'},{id:'scena',name:'Scenă & Truss',emoji:'🏗️'},{id:'backline',name:'Back Line',emoji:'🎸'},{id:'masini',name:'Mașini',emoji:'🚐'},{id:'diverse',name:'Diverse',emoji:'🧰'},{id:'service',name:'Aparate Service',emoji:'🔧'}];
-const INITIAL_ITEMS=[
-{cat:'sunet',name:'Mixer PM 1600-3',qty:1},{cat:'sunet',name:'Mixer PM 600-3',qty:1},{cat:'sunet',name:'Mixer PM 1000-3',qty:2},{cat:'sunet',name:'Mixer digital SOUNDCRAFT SI',qty:1},{cat:'sunet',name:'Mixer BOSE T8S TONEMATCH',qty:1},{cat:'sunet',name:'Mixer ALLEN&HEATH CQ 18T',qty:1},{cat:'sunet',name:'Mixercase Soundcraft',qty:1},{cat:'sunet',name:'Mixer Pioneer DJM 600',qty:2},
-{cat:'sunet',name:'Qube QSA 210 Speaker',qty:16},{cat:'sunet',name:'Qube QM 115 Monitor',qty:6},{cat:'sunet',name:'Boxe Medii AKD Inalte',qty:8},{cat:'sunet',name:'Boxa Bass AKD 18"',qty:16},{cat:'sunet',name:'Boxe ZXA5 2012',qty:2},{cat:'sunet',name:'Boxe EV ZX5A',qty:4},{cat:'sunet',name:'Boxe ZXA5 2014',qty:2},{cat:'sunet',name:'Boxe EV R115/75',qty:2},{cat:'sunet',name:'Boxa EV Rx118S',qty:1},{cat:'sunet',name:'Boxe Bass LD 15"',qty:6},{cat:'sunet',name:'Boxe Top LD 12"',qty:6},{cat:'sunet',name:'Boxe Rx115/75 EV',qty:6},{cat:'sunet',name:'Boxe RX118 EV bass',qty:6},{cat:'sunet',name:'Boxa RX 118 S bass 2019',qty:1},{cat:'sunet',name:'Boxe RX 118 S 2012',qty:2},{cat:'sunet',name:'Boxe RX 115/75 2012',qty:2},{cat:'sunet',name:'Boxe BOSE set1',qty:1},{cat:'sunet',name:'Boxe BOSE set2',qty:1},{cat:'sunet',name:'Baxe SYRINCS 12',qty:2},{cat:'sunet',name:'Boxa D&B V12',qty:2},{cat:'sunet',name:'Boxa D&B V8',qty:2},{cat:'sunet',name:'Boxa D&B V Sub',qty:4},{cat:'sunet',name:'Boxe D&B V12 aug2024',qty:2},{cat:'sunet',name:'Boxe D&B V08 aug2024',qty:6},{cat:'sunet',name:'Boxe D&B Bass',qty:2},{cat:'sunet',name:'Boxe D&B Bass VGSUB',qty:2},{cat:'sunet',name:'CASE boxa D&B',qty:1},{cat:'sunet',name:'Amplificator D&B D80 2024',qty:3},{cat:'sunet',name:'Adaptor baxa d&b',qty:2},{cat:'sunet',name:'Adaptor boxa d&b',qty:2},{cat:'sunet',name:'D&B VP Flying Adapter',qty:2},{cat:'sunet',name:'D&B V Stack Adapter',qty:2},{cat:'sunet',name:'D&B rama de prins boxe',qty:2},{cat:'sunet',name:'D&B clema de prins boxe',qty:2},{cat:'sunet',name:'Stativ boxe D&B Dolly',qty:1},{cat:'sunet',name:'Stative boxe 2016',qty:8},{cat:'sunet',name:'Stative boxe 2018',qty:6},{cat:'sunet',name:'Stativ intre Bass si Medii K&M',qty:8},{cat:'sunet',name:'K&M Stativ Boxe 2025',qty:5},{cat:'sunet',name:'Huse Bass 15"',qty:4},{cat:'sunet',name:'Huse Top 12"',qty:6},
-{cat:'sunet',name:'Amplificator Qube PA360',qty:4},{cat:'sunet',name:'Amplificator Dynacord L2400',qty:6},{cat:'sunet',name:'Amplificator TG7 2013',qty:1},{cat:'sunet',name:'Amplificator TG7 2015',qty:1},{cat:'sunet',name:'Amplificator EV TG5',qty:2},
-{cat:'sunet',name:'Crossover Qube SP-26',qty:1},{cat:'sunet',name:'Crossover Yamaha SP2060',qty:1},{cat:'sunet',name:'Compresor DN 540',qty:1},{cat:'sunet',name:'Procesor Klark Teknik Square One',qty:2},{cat:'sunet',name:'Procesor KTEQ DN 370',qty:1},{cat:'sunet',name:'Procesor DX 46 2013',qty:1},{cat:'sunet',name:'Procesor DX 46 2015',qty:1},{cat:'sunet',name:'Splitter Audio Klark Teknik',qty:5},{cat:'sunet',name:'DI BOX Palmer PAN03',qty:2},{cat:'sunet',name:'CD Player CDJ-200',qty:4},{cat:'sunet',name:'CD Player CDJ-100',qty:2},{cat:'sunet',name:'CD Player TASCAM',qty:1},
-{cat:'sunet',name:'Shure SM57',qty:15},{cat:'sunet',name:'Shure Beta58A',qty:2},{cat:'sunet',name:'Shure SM58',qty:12},{cat:'sunet',name:'Shure Beta 58 BLD',qty:1},{cat:'sunet',name:'Shure Beta 58 GLX',qty:1},{cat:'sunet',name:'Shure PG14E/PG30',qty:1},{cat:'sunet',name:'Shure GLXD1 Body Pack',qty:3},{cat:'sunet',name:'Microfon RODE NT5-MP',qty:2},{cat:'sunet',name:'Microfon Lavaliera',qty:4},{cat:'sunet',name:'Microfon Beyerdynamic MPC65',qty:1},{cat:'sunet',name:'Microfon SENNHEISER 2024',qty:2},{cat:'sunet',name:'Headset LD Systems WS1000',qty:1},{cat:'sunet',name:'Headset DPA bej',qty:2},{cat:'sunet',name:'EARSET COUNTRYMAN E6',qty:2},{cat:'sunet',name:'Microfon SHURE BLX1K3E',qty:4},{cat:'sunet',name:'Microfon SHURE BLX24R/SM58',qty:4},{cat:'sunet',name:'SHURE SLXD124E K59',qty:1},{cat:'sunet',name:'SHURE SLXD124E G59',qty:1},{cat:'sunet',name:'SHURE SLXD14E',qty:1},{cat:'sunet',name:'Microfon unitate delegat',qty:6},{cat:'sunet',name:'Microfon unitate presedinte',qty:1},{cat:'sunet',name:'K&M Stativ Microfon 2025',qty:12},{cat:'sunet',name:'Stativ microfon',qty:10},{cat:'sunet',name:'Set monitoare SENNHEISER EW IEM G4',qty:1},
-{cat:'lumini',name:'Mixer Avolites Pearl Tiger 2008',qty:1},{cat:'lumini',name:'Mixer Avolites Pearl Tiger 2015',qty:1},{cat:'lumini',name:'Mixer CREATION II 1024',qty:1},{cat:'lumini',name:'Interfata DMX DASLIGHT',qty:1},{cat:'lumini',name:'DTS Spot XR7',qty:4},{cat:'lumini',name:'DTS Spot XR9',qty:12},{cat:'lumini',name:'DTS Fresnel Spot 2000',qty:4},{cat:'lumini',name:'DTS Blinder Flash Moon 4000',qty:4},{cat:'lumini',name:'Reflector DTS 650/1000PC',qty:12},{cat:'lumini',name:'Spot Urmarire Moonlight 1200',qty:1},{cat:'lumini',name:'LED PAR 64 RGBW 2015',qty:8},{cat:'lumini',name:'LED PAR 64 RGB+W 2016',qty:14},{cat:'lumini',name:'LED PAR 64 RGBW 2014',qty:8},{cat:'lumini',name:'LED PAR 64 QF 1221',qty:12},{cat:'lumini',name:'LED COLOR ZOOM 54',qty:8},{cat:'lumini',name:'LED BAR 252 DMX RGB 2011',qty:20},{cat:'lumini',name:'LED BAR 252 DMX RGB 2012',qty:24},{cat:'lumini',name:'FOS BEAM 7R + CASE',qty:8},{cat:'lumini',name:'FOS BEAM 7R',qty:6},{cat:'lumini',name:'FOS LED SPOT Moving Head',qty:12},{cat:'lumini',name:'FOS LED WASH Moving Head',qty:12},{cat:'lumini',name:'FOS LED Strobo 700W',qty:12},{cat:'lumini',name:'FOS PROFILE LED 200W 2018',qty:4},{cat:'lumini',name:'FOS PROFILE LED 200W 2019',qty:4},{cat:'lumini',name:'FOS Scorpio BEAM LED',qty:20},{cat:'lumini',name:'FOS VINTAVE 7 Ultra',qty:7},{cat:'lumini',name:'FOS F7 Lumini',qty:8},{cat:'lumini',name:'FOS HALO LED',qty:4},{cat:'lumini',name:'PERDEA LED RGB 180x150',qty:2},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 2018',qty:6},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 2019',qty:6},{cat:'lumini',name:'Lumini APE LIGHT MAXI SET 6buc',qty:2},{cat:'lumini',name:'Unique2 Hazer',qty:2},{cat:'lumini',name:'CHAUVET NIMBUS',qty:1},{cat:'lumini',name:'Masina confetii',qty:2},{cat:'lumini',name:'Masina zapada',qty:1},{cat:'lumini',name:'Glob DISCO 20cm',qty:12},{cat:'lumini',name:'Glob DISCO 50cm',qty:1},{cat:'lumini',name:'Dimmer Pack DMX620',qty:2},{cat:'lumini',name:'Global Truss de prindere',qty:30},{cat:'lumini',name:'Bara telescopica Manfrotto',qty:2},
-{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU40',qty:1},{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU47',qty:2},{cat:'multimedia',name:'Videoproiector Sanyo PLC-XU105',qty:1},{cat:'multimedia',name:'Videoproiector Sanyo PLC XT-35L',qty:2},{cat:'multimedia',name:'Videoproiector Panasonic PT-EX600',qty:2},{cat:'multimedia',name:'Videoproiector CHRISTIE DWU 775-E',qty:4},{cat:'multimedia',name:'Videoproiector EPSON EB-L1505UH',qty:2},{cat:'multimedia',name:'Videoproiector EPSON EB-L530UH',qty:2},{cat:'multimedia',name:'LED Wall MR.LED P2.84 500x500',qty:60},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot1',qty:60},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot2',qty:40},{cat:'multimedia',name:'LED Wall APIX2 P2.97 lot3',qty:2},{cat:'multimedia',name:'LED Curb P2.976 NOVASTAR',qty:32},{cat:'multimedia',name:'NOVASTAR Controller VX4S 2018',qty:1},{cat:'multimedia',name:'NOVASTAR Controller VX4S mai2018',qty:1},{cat:'multimedia',name:'NOVASTAR Vx600 Controller',qty:1},{cat:'multimedia',name:'Procesor Ecran LED 4K',qty:1},{cat:'multimedia',name:'MULTI SCREEN Analog Way',qty:1},{cat:'multimedia',name:'Flip Touch Whiteboard',qty:1},{cat:'multimedia',name:'LED TV Samsung 163 2025',qty:1},{cat:'multimedia',name:'LFD Samsung LH46 Video-Wall',qty:9},{cat:'multimedia',name:'LG OLED 55" 139cm',qty:1},{cat:'multimedia',name:'Televizor UE 75',qty:2},{cat:'multimedia',name:'LED TV Samsung 108cm',qty:1},{cat:'multimedia',name:'Ecran proiectie 365x210cm',qty:2},{cat:'multimedia',name:'Ecran proiectie 508x294cm',qty:2},{cat:'multimedia',name:'Ecran Tripod 180x180',qty:5},{cat:'multimedia',name:'Laptop HP Gaming Intel Core i9',qty:2},{cat:'multimedia',name:'Laptop Gaming ACER Predator Helios',qty:2},{cat:'multimedia',name:'Laptop MSI Gaming 17.3"',qty:1},{cat:'multimedia',name:'Laser pointer Micro Cue 2-L',qty:2},{cat:'multimedia',name:'Sistem TELEVOTING',qty:1},{cat:'multimedia',name:'Placa captura AJA',qty:2},{cat:'multimedia',name:'VENTILATOR cu LED',qty:1},{cat:'multimedia',name:'Camera video 30x ZOOM',qty:1},
-{cat:'scena',name:'Structura aluminiu+podium 60buc',qty:1},{cat:'scena',name:'Placi podium Stairville 1x1m',qty:5},{cat:'scena',name:'Picioare Scena Aluminiu 40cm',qty:96},{cat:'scena',name:'Picioare Podium 40x40x80',qty:18},{cat:'scena',name:'Picioare podium 800x40x40',qty:36},{cat:'scena',name:'Picioare podium 200x40x40',qty:59},{cat:'scena',name:'Truss Triunghiular 29cm-3m DKB',qty:5},{cat:'scena',name:'Truss Triunghiular 29cm-2m DKB',qty:8},{cat:'scena',name:'Truss Colt DKC',qty:4},{cat:'scena',name:'TRUSS 40 L=50cm',qty:4},{cat:'scena',name:'TRUSS 40 L=100cm',qty:4},{cat:'scena',name:'TRUSS 40 L=150cm',qty:4},{cat:'scena',name:'TRUSS 40 L=200cm',qty:4},{cat:'scena',name:'TRUSS 30X50 Olanda',qty:4},{cat:'scena',name:'TRUSS 30X12 Olanda',qty:2},{cat:'scena',name:'TRUSS 30X24 Olanda',qty:4},{cat:'scena',name:'CORNER 3WAY 90',qty:4},{cat:'scena',name:'CORNER 90 Olanda',qty:4},{cat:'scena',name:'PROTRUSS H30V Olanda',qty:8},{cat:'scena',name:'Truss dreptunghiular 2000mm',qty:8},{cat:'scena',name:'Global Truss teava neagra 1m lot1',qty:18},{cat:'scena',name:'Global Truss teava neagra 1m lot2',qty:12},{cat:'scena',name:'PALANE CHAINMASTER D8 1t 2022',qty:8},{cat:'scena',name:'PALANE CHAINMASTER D8 1t aug2022',qty:2},{cat:'scena',name:'Palane electrice 1t D8+',qty:4},{cat:'scena',name:'Controler Palane',qty:1},{cat:'scena',name:'Transpaleta Electrica VALLIFT',qty:1},{cat:'scena',name:'Stalpi STARVILLE 2m 2018',qty:4},{cat:'scena',name:'Stalpi STARVILLE 2m 2019',qty:4},{cat:'scena',name:'MODULE SCHELA ALPE',qty:1},{cat:'scena',name:'Starville podium rotund',qty:4},{cat:'scena',name:'RING DE DANS MOTT',qty:48},{cat:'scena',name:'Prelata Scena 9x6m',qty:1},{cat:'scena',name:'Centura Complexa Siguranta',qty:1},{cat:'scena',name:'Scara Metalica Scena',qty:4},{cat:'scena',name:'Talpa schela 800x1200',qty:8},
-{cat:'backline',name:'Amplificator Chitara Fender Combo',qty:1},{cat:'backline',name:'Boxa Marshall 1960A',qty:1},{cat:'backline',name:'Amplificator D&B D80 2025',qty:1},{cat:'backline',name:'Statie Bas SWR Working Man',qty:1},{cat:'backline',name:'Boxa Bas AMPEG BSE410',qty:1},{cat:'backline',name:'Boxa Bass AMPEG BSE 115',qty:1},{cat:'backline',name:'Pian Electric Yamaha CP33',qty:1},{cat:'backline',name:'Marimba Fon',qty:1},{cat:'backline',name:'Chitara TAKAMINE',qty:1},{cat:'backline',name:'Chitara acustica + husa',qty:1},{cat:'backline',name:'Bete toba pereche',qty:4},{cat:'backline',name:'K&K Dublu Big Twin',qty:1},{cat:'backline',name:'K&K Twin',qty:1},
-{cat:'masini',name:'Iveco Daily 35C 2005',qty:1},{cat:'masini',name:'Renault Master L3H3',qty:1},{cat:'masini',name:'VW Passat',qty:1},{cat:'masini',name:'Toyota RAV 4',qty:1},{cat:'masini',name:'BMW G05',qty:1},{cat:'masini',name:'Citroen Berlingo Multispace',qty:1},{cat:'masini',name:'Iveco Daily 35C 2018',qty:1},{cat:'masini',name:'Toyota PRO ACE LONG',qty:1},{cat:'masini',name:'IVECO DAILY 35C16 2024',qty:1},{cat:'masini',name:'Iveco Daily 35C 2016',qty:1},{cat:'masini',name:'Rampa auto',qty:2},
-{cat:'diverse',name:'Aeroterma ALBATROS',qty:4},{cat:'diverse',name:'Aspirator 1600',qty:1},{cat:'diverse',name:'Aspirator cu spalare',qty:1},{cat:'diverse',name:'Robot aspirare ROBOROCK S7',qty:1},{cat:'diverse',name:'Generator AGT 8203',qty:1},{cat:'diverse',name:'Stabilizator hibrid SVRH 10000VA',qty:1},{cat:'diverse',name:'Scara hala SPMF 10',qty:1},{cat:'diverse',name:'Scara aluminiu',qty:1},{cat:'diverse',name:'Scara multifunctionala',qty:1},{cat:'diverse',name:'Mocheta rosie',qty:1},{cat:'diverse',name:'Mocheta antracit',qty:1},{cat:'diverse',name:'Mocheta trafic greu neagra',qty:1},{cat:'diverse',name:'Cort ADRIA 3x3m',qty:1},{cat:'diverse',name:'Telefon mobil Apple iPhone 7',qty:1},{cat:'diverse',name:'Birou calculator DIANA',qty:1},{cat:'diverse',name:'Aparator POP-up 3x1.2m',qty:1},{cat:'diverse',name:'Aparator POP-up 2x1.2m',qty:1},{cat:'diverse',name:'Aparator POP-up 1x1.2m',qty:1},{cat:'diverse',name:'Flipchart',qty:4},{cat:'diverse',name:'Masina maturat',qty:1},{cat:'diverse',name:'Curatator cu presiune',qty:1},
-{cat:'service',name:'Telemetru cu laser',qty:3},{cat:'service',name:'Multimetru digital',qty:1},{cat:'service',name:'Masina de gaurit 600W',qty:1},{cat:'service',name:'Masina gaurit si insurubat',qty:1},{cat:'service',name:'Polizor unghiular',qty:2},{cat:'service',name:'Fierastrau circular',qty:1},{cat:'service',name:'Compresor cu ulei',qty:1},{cat:'service',name:'Generator aer cald',qty:1},{cat:'service',name:'Pistol de lipit YATO',qty:1},{cat:'service',name:'Statie de lipit',qty:1},{cat:'service',name:'Capsator pneumatic',qty:2},{cat:'service',name:'Invertor BLUE POWER',qty:1},{cat:'service',name:'Butelie CO2 20L',qty:2},{cat:'service',name:'Cutie unelte 74 elemente',qty:1},{cat:'service',name:'NIVELA LASER',qty:1},{cat:'service',name:'Clampmetru Digital 600A',qty:1}
-];
 
-function initFirebase(){db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});db.ref('v2').once('value',s=>{const d=s.val();if(!d||!d.categories){seedData();}else{if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2/users').set(users);}if(!d.jurnal)db.ref('v2/jurnal').set({});loadData();}});}
-function seedData(){showToast('Inițializare...');const cats={};INITIAL_CATEGORIES.forEach(c=>{cats[c.id]={name:c.name,emoji:c.emoji};});const items={};INITIAL_ITEMS.forEach((item,i)=>{items['item_'+i+'_'+Date.now()]={name:item.name,cat:item.cat,qty:item.qty,qtyPresent:item.qty,present:true,status:'ok'};});const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v2').set({categories:cats,items:items,settings:{adminPass:'akd2025'},users:users,jurnal:{}},()=>{loadData();showToast('✅ Inițializat!');});}
-function loadData(){db.ref('v2').on('value',s=>{const d=s.val()||{};dbData.categories=d.categories||{};dbData.items=d.items||{};dbData.settings=d.settings||{};dbData.users=d.users||{};dbData.jurnal=d.jurnal||{};if(dbData.settings.adminPass)ADMIN_PASS=dbData.settings.adminPass;renderAll();updateStats();document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');const el=document.getElementById('loading');if(!el.classList.contains('hidden')){el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);}});}
+const SEED_DATA={
+categories:{
+  sunet:{name:'Sunet',emoji:'🔊'},
+  lumini:{name:'Lumini',emoji:'💡'},
+  multimedia:{name:'Multimedia',emoji:'🖥️'},
+  scena:{name:'Scenă & Truss',emoji:'🏗️'},
+  backline:{name:'Back Line',emoji:'🎸'},
+  masini:{name:'Mașini',emoji:'🚐'},
+  diverse:{name:'Diverse',emoji:'🧰'},
+  service:{name:'Aparate Service',emoji:'🔧'}
+},
+subcategories:{
+  s_mixere:{catId:'sunet',name:'Mixere',emoji:'🎚️'},
+  s_boxe:{catId:'sunet',name:'Boxe & Monitoare',emoji:'🔈'},
+  s_ampli:{catId:'sunet',name:'Amplificatoare',emoji:'🔋'},
+  s_proc:{catId:'sunet',name:'Procesoare & Crossovere',emoji:'🎛️'},
+  s_micro:{catId:'sunet',name:'Microfoane',emoji:'🎤'},
+  s_wireless:{catId:'sunet',name:'Wireless & In-Ear',emoji:'📡'},
+  s_cd:{catId:'sunet',name:'CD Players',emoji:'💿'},
+  s_stative:{catId:'sunet',name:'Stative & Huse',emoji:'🗂️'},
+  l_console:{catId:'lumini',name:'Console DMX',emoji:'🎮'},
+  l_spoturi:{catId:'lumini',name:'Spoturi & Reflectoare',emoji:'🔦'},
+  l_ledpar:{catId:'lumini',name:'LED PAR & BAR',emoji:'🌈'},
+  l_moving:{catId:'lumini',name:'Moving Heads',emoji:'🤖'},
+  l_strobo:{catId:'lumini',name:'Strobo & Profile',emoji:'⚡'},
+  l_efecte:{catId:'lumini',name:'Efecte Speciale',emoji:'🌫️'},
+  l_dim:{catId:'lumini',name:'Dimmere & Accesorii',emoji:'🔌'},
+  l_perdele:{catId:'lumini',name:'Perdele LED & APE',emoji:'🖼️'},
+  m_proj:{catId:'multimedia',name:'Videoproiectoare',emoji:'📽️'},
+  m_ledwall:{catId:'multimedia',name:'LED Wall',emoji:'🟥'},
+  m_ctrl:{catId:'multimedia',name:'Controllere & Procesoare',emoji:'🖥️'},
+  m_ecrane:{catId:'multimedia',name:'Ecrane & Televizoare',emoji:'📺'},
+  m_laptops:{catId:'multimedia',name:'Laptopuri & Accesorii',emoji:'💻'},
+  sc_structuri:{catId:'scena',name:'Structuri & Podium',emoji:'🏗️'},
+  sc_truss:{catId:'scena',name:'Truss',emoji:'🔩'},
+  sc_palane:{catId:'scena',name:'Palane & Ridicat',emoji:'⛓️'},
+  sc_colturi:{catId:'scena',name:'Colțuri & Adaptoare',emoji:'🧱'},
+  sc_acces:{catId:'scena',name:'Accesorii Scenă',emoji:'🎪'},
+  b_chitare:{catId:'backline',name:'Chitare & Amplificatoare',emoji:'🎸'},
+  b_clape:{catId:'backline',name:'Clape & Percuție',emoji:'🎹'},
+  b_acces:{catId:'backline',name:'Accesorii',emoji:'🎻'},
+  v_utilitare:{catId:'masini',name:'Utilitare',emoji:'🚚'},
+  v_auto:{catId:'masini',name:'Autoturisme',emoji:'🚗'},
+  v_acces:{catId:'masini',name:'Accesorii',emoji:'🔧'},
+  d_clima:{catId:'diverse',name:'Climatizare',emoji:'🌡️'},
+  d_gen:{catId:'diverse',name:'Generatoare & Stabilizatoare',emoji:'⚡'},
+  d_scari:{catId:'diverse',name:'Scări & Mobilier',emoji:'🪜'},
+  d_display:{catId:'diverse',name:'Display & Prezentare',emoji:'📢'},
+  d_curat:{catId:'diverse',name:'Curățenie',emoji:'🧹'},
+  sv_masura:{catId:'service',name:'Măsurare & Testare',emoji:'📏'},
+  sv_scule:{catId:'service',name:'Scule Electrice',emoji:'🔨'},
+  sv_lipit:{catId:'service',name:'Lipit & Capsare',emoji:'🔥'},
+  sv_electr:{catId:'service',name:'Electrice & Gaze',emoji:'⚡'},
+  sv_truse:{catId:'service',name:'Truse & Diverse',emoji:'🧰'}
+},
+items:[
+  {s:'s_mixere',n:'Mixer PM 1600-3',q:1},{s:'s_mixere',n:'Mixer PM 600-3',q:1},{s:'s_mixere',n:'Mixer PM 1000-3',q:2},{s:'s_mixere',n:'Mixer digital SOUNDCRAFT SI',q:1},{s:'s_mixere',n:'Mixer BOSE T8S TONEMATCH',q:1},{s:'s_mixere',n:'Mixer ALLEN&HEATH CQ 18T',q:1},{s:'s_mixere',n:'Mixercase Soundcraft',q:1},{s:'s_mixere',n:'Mixer Pioneer DJM 600',q:2},
+  {s:'s_boxe',n:'Qube QSA 210 Speaker',q:16},{s:'s_boxe',n:'Qube QM 115 Monitor',q:6},{s:'s_boxe',n:'Boxe Medii AKD Inalte',q:8},{s:'s_boxe',n:'Boxa Bass AKD 18"',q:16},{s:'s_boxe',n:'Boxe ZXA5 2012',q:2},{s:'s_boxe',n:'Boxe EV ZX5A',q:4},{s:'s_boxe',n:'Boxe ZXA5 2014',q:2},{s:'s_boxe',n:'Boxe EV R115/75',q:2},{s:'s_boxe',n:'Boxa EV Rx118S',q:1},{s:'s_boxe',n:'Boxe Bass LD 15"',q:6},{s:'s_boxe',n:'Boxe Top LD 12"',q:6},{s:'s_boxe',n:'Boxe Rx115/75 EV',q:6},{s:'s_boxe',n:'Boxe RX118 EV bass',q:6},{s:'s_boxe',n:'Boxa RX 118 S bass 2019',q:1},{s:'s_boxe',n:'Boxe RX 118 S 2012',q:2},{s:'s_boxe',n:'Boxe RX 115/75 2012',q:2},{s:'s_boxe',n:'Boxe BOSE set1',q:1},{s:'s_boxe',n:'Boxe BOSE set2',q:1},{s:'s_boxe',n:'Baxe SYRINCS 12',q:2},{s:'s_boxe',n:'Boxa D&B V12',q:2},{s:'s_boxe',n:'Boxa D&B V8',q:2},{s:'s_boxe',n:'Boxa D&B V Sub',q:4},{s:'s_boxe',n:'Boxe D&B V12 aug2024',q:2},{s:'s_boxe',n:'Boxe D&B V08 aug2024',q:6},{s:'s_boxe',n:'Boxe D&B Bass',q:2},{s:'s_boxe',n:'Boxe D&B Bass VGSUB',q:2},{s:'s_boxe',n:'CASE boxa D&B',q:1},
+  {s:'s_ampli',n:'Amplificator D&B D80 2024',q:3},{s:'s_ampli',n:'Amplificator Qube PA360',q:4},{s:'s_ampli',n:'Amplificator Dynacord L2400',q:6},{s:'s_ampli',n:'Amplificator TG7 2013',q:1},{s:'s_ampli',n:'Amplificator TG7 2015',q:1},{s:'s_ampli',n:'Amplificator EV TG5',q:2},
+  {s:'s_boxe',n:'Adaptor baxa d&b',q:2},{s:'s_boxe',n:'Adaptor boxa d&b',q:2},{s:'s_boxe',n:'D&B VP Flying Adapter',q:2},{s:'s_boxe',n:'D&B V Stack Adapter',q:2},{s:'s_boxe',n:'D&B rama de prins boxe',q:2},{s:'s_boxe',n:'D&B clema de prins boxe',q:2},{s:'s_boxe',n:'Stativ boxe D&B Dolly',q:1},
+  {s:'s_proc',n:'Crossover Qube SP-26',q:1},{s:'s_proc',n:'Crossover Yamaha SP2060',q:1},{s:'s_proc',n:'Compresor DN 540',q:1},{s:'s_proc',n:'Procesor Klark Teknik Square One',q:2},{s:'s_proc',n:'Procesor KTEQ DN 370',q:1},{s:'s_proc',n:'Procesor DX 46 2013',q:1},{s:'s_proc',n:'Procesor DX 46 2015',q:1},{s:'s_proc',n:'Splitter Audio Klark Teknik',q:5},{s:'s_proc',n:'DI BOX Palmer PAN03',q:2},
+  {s:'s_cd',n:'CD Player CDJ-200',q:4},{s:'s_cd',n:'CD Player CDJ-100',q:2},{s:'s_cd',n:'CD Player TASCAM',q:1},
+  {s:'s_micro',n:'Shure SM57',q:15},{s:'s_micro',n:'Shure Beta58A',q:2},{s:'s_micro',n:'Shure SM58',q:12},{s:'s_micro',n:'Microfon RODE NT5-MP',q:2},{s:'s_micro',n:'Microfon Beyerdynamic MPC65',q:1},{s:'s_micro',n:'Microfon SENNHEISER 2024',q:2},{s:'s_micro',n:'Microfon unitate delegat',q:6},{s:'s_micro',n:'Microfon unitate presedinte',q:1},
+  {s:'s_wireless',n:'Shure Beta 58 BLD',q:1},{s:'s_wireless',n:'Shure Beta 58 GLX',q:1},{s:'s_wireless',n:'Shure PG14E/PG30',q:1},{s:'s_wireless',n:'Shure GLXD1 Body Pack',q:3},{s:'s_wireless',n:'Microfon Lavaliera',q:4},{s:'s_wireless',n:'Headset LD Systems WS1000',q:1},{s:'s_wireless',n:'Headset DPA bej',q:2},{s:'s_wireless',n:'EARSET COUNTRYMAN E6',q:2},{s:'s_wireless',n:'Microfon SHURE BLX1K3E',q:4},{s:'s_wireless',n:'Microfon SHURE BLX24R/SM58',q:4},{s:'s_wireless',n:'SHURE SLXD124E K59',q:1},{s:'s_wireless',n:'SHURE SLXD124E G59',q:1},{s:'s_wireless',n:'SHURE SLXD14E',q:1},{s:'s_wireless',n:'Set monitoare SENNHEISER EW IEM G4',q:1},
+  {s:'s_stative',n:'Stative boxe 2016',q:8},{s:'s_stative',n:'Stative boxe 2018',q:6},{s:'s_stative',n:'Stativ intre Bass si Medii K&M',q:8},{s:'s_stative',n:'K&M Stativ Boxe 2025',q:5},{s:'s_stative',n:'Huse Bass 15"',q:4},{s:'s_stative',n:'Huse Top 12"',q:6},{s:'s_stative',n:'K&M Stativ Microfon 2025',q:12},{s:'s_stative',n:'Stativ microfon',q:10},
+  {s:'l_console',n:'Mixer Avolites Pearl Tiger 2008',q:1},{s:'l_console',n:'Mixer Avolites Pearl Tiger 2015',q:1},{s:'l_console',n:'Mixer CREATION II 1024',q:1},{s:'l_console',n:'Interfata DMX DASLIGHT',q:1},
+  {s:'l_spoturi',n:'DTS Spot XR7',q:4},{s:'l_spoturi',n:'DTS Spot XR9',q:12},{s:'l_spoturi',n:'DTS Fresnel Spot 2000',q:4},{s:'l_spoturi',n:'DTS Blinder Flash Moon 4000',q:4},{s:'l_spoturi',n:'Reflector DTS 650/1000PC',q:12},{s:'l_spoturi',n:'Spot Urmarire Moonlight 1200',q:1},
+  {s:'l_ledpar',n:'LED PAR 64 RGBW 2015',q:8},{s:'l_ledpar',n:'LED PAR 64 RGB+W 2016',q:14},{s:'l_ledpar',n:'LED PAR 64 RGBW 2014',q:8},{s:'l_ledpar',n:'LED PAR 64 QF 1221',q:12},{s:'l_ledpar',n:'LED COLOR ZOOM 54',q:8},{s:'l_ledpar',n:'LED BAR 252 DMX RGB 2011',q:20},{s:'l_ledpar',n:'LED BAR 252 DMX RGB 2012',q:24},
+  {s:'l_moving',n:'FOS BEAM 7R + CASE',q:8},{s:'l_moving',n:'FOS BEAM 7R',q:6},{s:'l_moving',n:'FOS LED SPOT Moving Head',q:12},{s:'l_moving',n:'FOS LED WASH Moving Head',q:12},
+  {s:'l_strobo',n:'FOS LED Strobo 700W',q:12},{s:'l_strobo',n:'FOS PROFILE LED 200W 2018',q:4},{s:'l_strobo',n:'FOS PROFILE LED 200W 2019',q:4},{s:'l_strobo',n:'FOS Scorpio BEAM LED',q:20},{s:'l_strobo',n:'FOS VINTAVE 7 Ultra',q:7},{s:'l_strobo',n:'FOS F7 Lumini',q:8},{s:'l_strobo',n:'FOS HALO LED',q:4},
+  {s:'l_efecte',n:'Unique2 Hazer',q:2},{s:'l_efecte',n:'CHAUVET NIMBUS',q:1},{s:'l_efecte',n:'Masina confetii',q:2},{s:'l_efecte',n:'Masina zapada',q:1},{s:'l_efecte',n:'Glob DISCO 20cm',q:12},{s:'l_efecte',n:'Glob DISCO 50cm',q:1},
+  {s:'l_dim',n:'Dimmer Pack DMX620',q:2},{s:'l_dim',n:'Global Truss de prindere',q:30},{s:'l_dim',n:'Bara telescopica Manfrotto',q:2},
+  {s:'l_perdele',n:'PERDEA LED RGB 180x150',q:2},{s:'l_perdele',n:'Lumini APE LIGHT MAXI SET 2018',q:6},{s:'l_perdele',n:'Lumini APE LIGHT MAXI SET 2019',q:6},{s:'l_perdele',n:'Lumini APE LIGHT MAXI SET 6buc',q:2},
+  {s:'m_proj',n:'Videoproiector Sanyo PLC-XU40',q:1},{s:'m_proj',n:'Videoproiector Sanyo PLC-XU47',q:2},{s:'m_proj',n:'Videoproiector Sanyo PLC-XU105',q:1},{s:'m_proj',n:'Videoproiector Sanyo PLC XT-35L',q:2},{s:'m_proj',n:'Videoproiector Panasonic PT-EX600',q:2},{s:'m_proj',n:'Videoproiector CHRISTIE DWU 775-E',q:4},{s:'m_proj',n:'Videoproiector EPSON EB-L1505UH',q:2},{s:'m_proj',n:'Videoproiector EPSON EB-L530UH',q:2},
+  {s:'m_ledwall',n:'LED Wall MR.LED P2.84 500x500',q:60},{s:'m_ledwall',n:'LED Wall APIX2 P2.97 lot1',q:60},{s:'m_ledwall',n:'LED Wall APIX2 P2.97 lot2',q:40},{s:'m_ledwall',n:'LED Wall APIX2 P2.97 lot3',q:2},{s:'m_ledwall',n:'LED Curb P2.976 NOVASTAR',q:32},
+  {s:'m_ctrl',n:'NOVASTAR Controller VX4S 2018',q:1},{s:'m_ctrl',n:'NOVASTAR Controller VX4S mai2018',q:1},{s:'m_ctrl',n:'NOVASTAR Vx600 Controller',q:1},{s:'m_ctrl',n:'Procesor Ecran LED 4K',q:1},{s:'m_ctrl',n:'MULTI SCREEN Analog Way',q:1},{s:'m_ctrl',n:'Flip Touch Whiteboard',q:1},
+  {s:'m_ecrane',n:'LED TV Samsung 163 2025',q:1},{s:'m_ecrane',n:'LFD Samsung LH46 Video-Wall',q:9},{s:'m_ecrane',n:'LG OLED 55" 139cm',q:1},{s:'m_ecrane',n:'Televizor UE 75',q:2},{s:'m_ecrane',n:'LED TV Samsung 108cm',q:1},{s:'m_ecrane',n:'Ecran proiectie 365x210cm',q:2},{s:'m_ecrane',n:'Ecran proiectie 508x294cm',q:2},{s:'m_ecrane',n:'Ecran Tripod 180x180',q:5},
+  {s:'m_laptops',n:'Laptop HP Gaming Intel Core i9',q:2},{s:'m_laptops',n:'Laptop Gaming ACER Predator Helios',q:2},{s:'m_laptops',n:'Laptop MSI Gaming 17.3"',q:1},{s:'m_laptops',n:'Laser pointer Micro Cue 2-L',q:2},{s:'m_laptops',n:'Sistem TELEVOTING',q:1},{s:'m_laptops',n:'Placa captura AJA',q:2},{s:'m_laptops',n:'VENTILATOR cu LED',q:1},{s:'m_laptops',n:'Camera video 30x ZOOM',q:1},
+  {s:'sc_structuri',n:'Structura aluminiu+podium 60buc',q:1},{s:'sc_structuri',n:'Placi podium Stairville 1x1m',q:5},{s:'sc_structuri',n:'Picioare Scena Aluminiu 40cm',q:96},{s:'sc_structuri',n:'Picioare Podium 40x40x80',q:18},{s:'sc_structuri',n:'Picioare podium 800x40x40',q:36},{s:'sc_structuri',n:'Picioare podium 200x40x40',q:59},
+  {s:'sc_truss',n:'Truss Triunghiular 29cm-3m DKB',q:5},{s:'sc_truss',n:'Truss Triunghiular 29cm-2m DKB',q:8},{s:'sc_truss',n:'Truss Colt DKC',q:4},{s:'sc_truss',n:'TRUSS 40 L=50cm',q:4},{s:'sc_truss',n:'TRUSS 40 L=100cm',q:4},{s:'sc_truss',n:'TRUSS 40 L=150cm',q:4},{s:'sc_truss',n:'TRUSS 40 L=200cm',q:4},{s:'sc_truss',n:'TRUSS 30X50 Olanda',q:4},{s:'sc_truss',n:'TRUSS 30X12 Olanda',q:2},{s:'sc_truss',n:'TRUSS 30X24 Olanda',q:4},{s:'sc_truss',n:'Truss dreptunghiular 2000mm',q:8},{s:'sc_truss',n:'Global Truss teava neagra 1m lot1',q:18},{s:'sc_truss',n:'Global Truss teava neagra 1m lot2',q:12},
+  {s:'sc_colturi',n:'CORNER 3WAY 90',q:4},{s:'sc_colturi',n:'CORNER 90 Olanda',q:4},{s:'sc_colturi',n:'PROTRUSS H30V Olanda',q:8},
+  {s:'sc_palane',n:'PALANE CHAINMASTER D8 1t 2022',q:8},{s:'sc_palane',n:'PALANE CHAINMASTER D8 1t aug2022',q:2},{s:'sc_palane',n:'Palane electrice 1t D8+',q:4},{s:'sc_palane',n:'Controler Palane',q:1},{s:'sc_palane',n:'Transpaleta Electrica VALLIFT',q:1},
+  {s:'sc_acces',n:'Stalpi STARVILLE 2m 2018',q:4},{s:'sc_acces',n:'Stalpi STARVILLE 2m 2019',q:4},{s:'sc_acces',n:'MODULE SCHELA ALPE',q:1},{s:'sc_acces',n:'Starville podium rotund',q:4},{s:'sc_acces',n:'RING DE DANS MOTT',q:48},{s:'sc_acces',n:'Prelata Scena 9x6m',q:1},{s:'sc_acces',n:'Centura Complexa Siguranta',q:1},{s:'sc_acces',n:'Scara Metalica Scena',q:4},{s:'sc_acces',n:'Talpa schela 800x1200',q:8},
+  {s:'b_chitare',n:'Amplificator Chitara Fender Combo',q:1},{s:'b_chitare',n:'Boxa Marshall 1960A',q:1},{s:'b_chitare',n:'Amplificator D&B D80 2025',q:1},{s:'b_chitare',n:'Statie Bas SWR Working Man',q:1},{s:'b_chitare',n:'Boxa Bas AMPEG BSE410',q:1},{s:'b_chitare',n:'Boxa Bass AMPEG BSE 115',q:1},
+  {s:'b_clape',n:'Pian Electric Yamaha CP33',q:1},{s:'b_clape',n:'Marimba Fon',q:1},{s:'b_clape',n:'Bete toba pereche',q:4},
+  {s:'b_acces',n:'Chitara TAKAMINE',q:1},{s:'b_acces',n:'Chitara acustica + husa',q:1},{s:'b_acces',n:'K&K Dublu Big Twin',q:1},{s:'b_acces',n:'K&K Twin',q:1},
+  {s:'v_utilitare',n:'Iveco Daily 35C 2005',q:1},{s:'v_utilitare',n:'Renault Master L3H3',q:1},{s:'v_utilitare',n:'Iveco Daily 35C 2018',q:1},{s:'v_utilitare',n:'Toyota PRO ACE LONG',q:1},{s:'v_utilitare',n:'IVECO DAILY 35C16 2024',q:1},{s:'v_utilitare',n:'Iveco Daily 35C 2016',q:1},
+  {s:'v_auto',n:'VW Passat',q:1},{s:'v_auto',n:'Toyota RAV 4',q:1},{s:'v_auto',n:'BMW G05',q:1},{s:'v_auto',n:'Citroen Berlingo Multispace',q:1},
+  {s:'v_acces',n:'Rampa auto',q:2},
+  {s:'d_clima',n:'Aeroterma ALBATROS',q:4},{s:'d_clima',n:'Aspirator 1600',q:1},{s:'d_clima',n:'Aspirator cu spalare',q:1},{s:'d_clima',n:'Robot aspirare ROBOROCK S7',q:1},
+  {s:'d_gen',n:'Generator AGT 8203',q:1},{s:'d_gen',n:'Stabilizator hibrid SVRH 10000VA',q:1},
+  {s:'d_scari',n:'Scara hala SPMF 10',q:1},{s:'d_scari',n:'Scara aluminiu',q:1},{s:'d_scari',n:'Scara multifunctionala',q:1},{s:'d_scari',n:'Mocheta rosie',q:1},{s:'d_scari',n:'Mocheta antracit',q:1},{s:'d_scari',n:'Mocheta trafic greu neagra',q:1},{s:'d_scari',n:'Cort ADRIA 3x3m',q:1},{s:'d_scari',n:'Birou calculator DIANA',q:1},
+  {s:'d_display',n:'Aparator POP-up 3x1.2m',q:1},{s:'d_display',n:'Aparator POP-up 2x1.2m',q:1},{s:'d_display',n:'Aparator POP-up 1x1.2m',q:1},{s:'d_display',n:'Flipchart',q:4},{s:'d_display',n:'Telefon mobil Apple iPhone 7',q:1},
+  {s:'d_curat',n:'Masina maturat',q:1},{s:'d_curat',n:'Curatator cu presiune',q:1},
+  {s:'sv_masura',n:'Telemetru cu laser',q:3},{s:'sv_masura',n:'Multimetru digital',q:1},{s:'sv_masura',n:'NIVELA LASER',q:1},{s:'sv_masura',n:'Clampmetru Digital 600A',q:1},
+  {s:'sv_scule',n:'Masina de gaurit 600W',q:1},{s:'sv_scule',n:'Masina gaurit si insurubat',q:1},{s:'sv_scule',n:'Polizor unghiular',q:2},{s:'sv_scule',n:'Fierastrau circular',q:1},{s:'sv_scule',n:'Compresor cu ulei',q:1},{s:'sv_scule',n:'Generator aer cald',q:1},
+  {s:'sv_lipit',n:'Pistol de lipit YATO',q:1},{s:'sv_lipit',n:'Statie de lipit',q:1},{s:'sv_lipit',n:'Capsator pneumatic',q:2},
+  {s:'sv_electr',n:'Invertor BLUE POWER',q:1},{s:'sv_electr',n:'Butelie CO2 20L',q:2},
+  {s:'sv_truse',n:'Cutie unelte 74 elemente',q:1}
+]};
+
+function initFirebase(){
+  db.ref('.info/connected').on('value',s=>{document.getElementById('connDot').classList.toggle('on',s.val()===true);});
+  db.ref('v4').once('value',s=>{
+    const d=s.val();
+    if(!d||!d.categories){seedData();}
+    else{
+      if(!d.users){const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});db.ref('v4/users').set(users);}
+      if(!d.jurnal)db.ref('v4/jurnal').set({});
+      loadData();
+    }
+  });
+}
+
+function seedData(){
+  showToast('Inițializare v4...');
+  const items={};
+  SEED_DATA.items.forEach((item,i)=>{
+    items['item_'+i+'_'+Date.now()]={name:item.n,subcatId:item.s,qty:item.q,qtyPresent:item.q,present:true,status:'ok'};
+  });
+  const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});
+  db.ref('v4').set({
+    categories:SEED_DATA.categories,
+    subcategories:SEED_DATA.subcategories,
+    items:items,
+    settings:{adminPass:'akd2025'},
+    users:users,
+    jurnal:{}
+  },()=>{loadData();showToast('✅ Inițializat!');});
+}
+
+function loadData(){
+  db.ref('v4').on('value',s=>{
+    const d=s.val()||{};
+    dbData.categories=d.categories||{};
+    dbData.subcategories=d.subcategories||{};
+    dbData.items=d.items||{};
+    dbData.settings=d.settings||{};
+    dbData.users=d.users||{};
+    dbData.jurnal=d.jurnal||{};
+    if(dbData.settings.adminPass)ADMIN_PASS=dbData.settings.adminPass;
+    renderAll();updateStats();
+    document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');
+    const el=document.getElementById('loading');
+    if(!el.classList.contains('hidden')){el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);}
+  });
+}
 
 function showUserLogin(){document.getElementById('userLoginOverlay').classList.remove('hidden');renderUserList();}
 function renderUserList(){const list=document.getElementById('userList');list.innerHTML='';document.getElementById('userPassSection').classList.remove('show');document.getElementById('userList').style.display='flex';Object.entries(dbData.users).forEach(([id,u])=>{const btn=document.createElement('button');btn.className='user-btn';btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;btn.onclick=()=>selectUser(id,u);list.appendChild(btn);});}
-function selectUser(id,u){selectedUserId=id;document.getElementById('userList').style.display='none';const ps=document.getElementById('userPassSection');ps.classList.add('show');document.getElementById('userPassLabel').textContent='Parola pentru '+u.name;document.getElementById('userPassInput').value='';document.getElementById('userPassErr').style.display='none';setTimeout(()=>document.getElementById('userPassInput').focus(),100);}
+function selectUser(id,u){selectedUserId=id;document.getElementById('userList').style.display='none';document.getElementById('userPassSection').classList.add('show');document.getElementById('userPassLabel').textContent='Parola pentru '+u.name;document.getElementById('userPassInput').value='';document.getElementById('userPassErr').style.display='none';setTimeout(()=>document.getElementById('userPassInput').focus(),100);}
 function backToUserList(){selectedUserId=null;document.getElementById('userList').style.display='flex';document.getElementById('userPassSection').classList.remove('show');}
 function confirmUserLogin(){const pass=document.getElementById('userPassInput').value;const u=dbData.users[selectedUserId];if(!u)return;if(pass===u.pass){currentUser={id:selectedUserId,name:u.name,emoji:u.emoji||'👤'};document.getElementById('userLoginOverlay').classList.add('hidden');document.getElementById('roleBadge').className='role-badge worker';document.getElementById('roleBadge').textContent=currentUser.emoji+' '+currentUser.name;showToast('✅ Bun venit, '+currentUser.name+'!');}else{document.getElementById('userPassErr').style.display='block';document.getElementById('userPassInput').value='';document.getElementById('userPassInput').focus();}}
 document.getElementById('userPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')confirmUserLogin();});
@@ -357,38 +487,130 @@ document.getElementById('adminPassInput').addEventListener('keydown',e=>{if(e.ke
 
 function openEditOverlay(id){if(!isAdmin)return;const item=dbData.items[id];if(!item)return;editingItemId=id;document.getElementById('editName').value=item.name;document.getElementById('editQty').value=item.qty;document.getElementById('editOverlay').classList.add('show');}
 function closeEditOverlay(){document.getElementById('editOverlay').classList.remove('show');editingItemId=null;}
-function saveEditItem(){if(!editingItemId)return;const name=document.getElementById('editName').value.trim();const qty=parseInt(document.getElementById('editQty').value);if(!name){showToast('Introdu numele!');return;}if(!qty||qty<1){showToast('Stoc invalid!');return;}const item=dbData.items[editingItemId];const u={};u[`v2/items/${editingItemId}/name`]=name;u[`v2/items/${editingItemId}/qty`]=qty;if((item.qtyPresent||0)>qty)u[`v2/items/${editingItemId}/qtyPresent`]=qty;db.ref().update(u,()=>{showToast('✅ Salvat!');logAction('✏️ Editat: '+name,'stoc maxim: '+qty);});closeEditOverlay();}
+function saveEditItem(){if(!editingItemId)return;const name=document.getElementById('editName').value.trim();const qty=parseInt(document.getElementById('editQty').value);if(!name){showToast('Introdu numele!');return;}if(!qty||qty<1){showToast('Stoc invalid!');return;}const item=dbData.items[editingItemId];const u={};u[`v4/items/${editingItemId}/name`]=name;u[`v4/items/${editingItemId}/qty`]=qty;if((item.qtyPresent||0)>qty)u[`v4/items/${editingItemId}/qtyPresent`]=qty;db.ref().update(u,()=>{showToast('✅ Salvat!');logAction('✏️ Editat: '+name,'stoc: '+qty);});closeEditOverlay();}
 
-function logAction(action,itemName){if(!currentUser)return;db.ref('v2/jurnal').push({user:currentUser.name,userEmoji:currentUser.emoji||'👤',userId:currentUser.id,action:action,item:itemName,ts:Date.now()});}
+function logAction(action,itemName){if(!currentUser)return;db.ref('v4/jurnal').push({user:currentUser.name,userEmoji:currentUser.emoji||'👤',userId:currentUser.id,action:action,item:itemName,ts:Date.now()});}
 function openJurnal(){document.getElementById('jurnalPanel').classList.add('show');document.getElementById('btnClearJurnal').style.display=isAdmin?'block':'none';renderJurnal();}
 function closeJurnal(){document.getElementById('jurnalPanel').classList.remove('show');}
 function setJurnalFilter(f){currentJurnalFilter=f;document.querySelectorAll('.j-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.jf===f));renderJurnal();}
 function renderJurnal(){const content=document.getElementById('jurnalContent');const entries=Object.values(dbData.jurnal).sort((a,b)=>b.ts-a.ts);const filterDiv=document.getElementById('jurnalFilter');filterDiv.innerHTML=`<button class="j-filter-btn ${currentJurnalFilter==='all'?'active':''}" data-jf="all" onclick="setJurnalFilter('all')">Toți</button>`;const usersInJurnal=[...new Set(entries.map(e=>e.userId))];usersInJurnal.forEach(uid=>{const u=dbData.users[uid];if(!u)return;filterDiv.innerHTML+=`<button class="j-filter-btn ${currentJurnalFilter===uid?'active':''}" data-jf="${uid}" onclick="setJurnalFilter('${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});const filtered=currentJurnalFilter==='all'?entries:entries.filter(e=>e.userId===currentJurnalFilter);if(filtered.length===0){content.innerHTML='<div class="jurnal-empty">Nicio activitate înregistrată</div>';return;}content.innerHTML=filtered.map(e=>{const d=new Date(e.ts);const t=d.toLocaleDateString('ro-RO')+' '+d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});return`<div class="jurnal-entry"><div class="jurnal-who">${e.userEmoji||'👤'} ${e.user}</div><div class="jurnal-action">${e.action}: <strong>${e.item}</strong></div><div class="jurnal-time">🕐 ${t}</div></div>`;}).join('');}
-function clearJurnal(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v2/jurnal').remove(()=>showToast('✅ Jurnal șters!'));closeJurnal();}
-function clearJurnalFromAdmin(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v2/jurnal').remove(()=>showToast('✅ Jurnal șters!'));}
+function clearJurnal(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v4/jurnal').remove(()=>showToast('✅ Jurnal șters!'));closeJurnal();}
+function clearJurnalFromAdmin(){if(!confirm('Ștergi tot jurnalul?'))return;db.ref('v4/jurnal').remove(()=>showToast('✅ Jurnal șters!'));}
 
-function renderAll(){const search=document.getElementById('searchInput').value.toLowerCase();const container=document.getElementById('categories');container.innerHTML='';const catOrder=['sunet','lumini','multimedia','scena','backline','masini','diverse','service'];const allCatIds=Object.keys(dbData.categories);const sorted=[...catOrder.filter(id=>allCatIds.includes(id)),...allCatIds.filter(id=>!catOrder.includes(id))];sorted.forEach((catId,idx)=>{const cat=dbData.categories[catId];if(!cat)return;let items=Object.entries(dbData.items).filter(([,v])=>v.cat===catId).map(([k,v])=>({id:k,...v}));if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));if(currentFilter==='absent')items=items.filter(it=>!it.present);if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');if(items.length===0)return;const totalItems=Object.values(dbData.items).filter(v=>v.cat===catId).length;const presentItems=Object.values(dbData.items).filter(v=>v.cat===catId&&v.present).length;const pct=totalItems>0?Math.round(presentItems/totalItems*100):0;const card=document.createElement('div');card.className='category-card';card.style.animationDelay=(idx*40)+'ms';const isOpen=search||currentFilter!=='all'||localStorage.getItem('open_'+catId)==='1';card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${presentItems}/${totalItems}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="items-list ${isOpen?'open':''}" id="list_${catId}">${items.map(item=>renderItem(item)).join('')}</div>`;container.appendChild(card);});if(container.innerHTML==='')container.innerHTML='<div class="empty">✅ Totul e în ordine!</div>';}
-function renderItem(item){const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};const s=item.status||'ok';const n=item.name.replace(/'/g,"\\'");const qPrez=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const whoHtml=item.lastUser?`<div class="item-who">✏️ ${item.lastUser}</div>`:'';const editBtn=isAdmin?`<button class="edit-btn" onclick="openEditOverlay('${item.id}')">✏️</button><button class="edit-btn" style="color:var(--danger);border-color:var(--danger)" onclick="deleteItem('${item.id}','${n}')">🗑</button>`:'';return`<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${editBtn}</div><div class="item-sub">${qPrez} / ${item.qty} buc</div>${whoHtml}</div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1,'${n}')">−</button><span class="qty-num">${qPrez}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1,'${n}')">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</div></div>`;}
+const CAT_ORDER=['sunet','lumini','multimedia','scena','backline','masini','diverse','service'];
 
-function deleteItem(id,name){if(!confirm('Ștergi "'+name+'" din inventar?'))return;db.ref(`v2/items/${id}`).remove();logAction('🗑 Șters',name);showToast('✅ Echipament șters!');}
-function togglePresent(id,v,name){const u={};u[`v2/items/${id}/present`]=v;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(v?'✅ Prezent':'❌ Absent',name);showToast(v?'✅ Prezent':'❌ Absent');}
-function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:'ok'};const next=cycle[cur]||'ok';const labels={ok:'OK',defect:'Defect',lipsa:'Lipsă'};const u={};u[`v2/items/${id}/status`]=next;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction('🔄 Status → '+labels[next],name);}
-function changeQtyPresent(id,delta,name){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const max=item.qty||999;const next=Math.min(max,Math.max(0,cur+delta));if(next===cur){if(delta>0)showToast('⚠️ Stoc maxim atins!');return;}const u={};u[`v2/items/${id}/qtyPresent`]=next;if(currentUser)u[`v2/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(`📦 Cantitate: ${cur}→${next}`,name);}
-function toggleCat(catId){const list=document.getElementById('list_'+catId);const tog=document.getElementById('tog_'+catId);const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
+function renderAll(){
+  const search=document.getElementById('searchInput').value.toLowerCase();
+  const container=document.getElementById('categories');
+  container.innerHTML='';
+  const allCatIds=Object.keys(dbData.categories);
+  const sorted=[...CAT_ORDER.filter(id=>allCatIds.includes(id)),...allCatIds.filter(id=>!CAT_ORDER.includes(id))];
+  sorted.forEach((catId,idx)=>{
+    const cat=dbData.categories[catId];if(!cat)return;
+    const subcats=Object.entries(dbData.subcategories).filter(([,v])=>v.catId===catId);
+    let catHasItems=false;
+    const subcatHtml=subcats.map(([scId,sc])=>{
+      let items=Object.entries(dbData.items).filter(([,v])=>v.subcatId===scId).map(([k,v])=>({id:k,...v}));
+      if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));
+      if(currentFilter==='absent')items=items.filter(it=>!it.present);
+      if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');
+      if(items.length===0&&(search||currentFilter!=='all'))return'';
+      catHasItems=true;
+      const total=Object.values(dbData.items).filter(v=>v.subcatId===scId).length;
+      const present=Object.values(dbData.items).filter(v=>v.subcatId===scId&&v.present).length;
+      const isOpen=search||currentFilter!=='all'||localStorage.getItem('sopen_'+scId)==='1';
+      const itemsHtml=items.map(item=>renderItem(item)).join('');
+      const addRow=isAdmin?`<div class="add-item-row"><input class="add-item-input" id="ni_${scId}" placeholder="Nume echipament..."><input class="add-item-qty" id="nq_${scId}" type="number" value="1" min="1"><button class="add-item-btn" onclick="addItemInline('${scId}')">+ ADD</button></div>`:'';
+      return`<div class="subcat-block"><div class="subcat-header" onclick="toggleSubcat('${scId}')"><span class="subcat-icon">${sc.emoji||'📁'}</span><span class="subcat-name">${sc.name}</span><span class="subcat-count">${present}/${total}</span>${isAdmin?`<button class="edit-btn" style="font-size:0.6rem;padding:2px 5px" onclick="event.stopPropagation();renameSubcat('${scId}')">✏️</button><button class="del-btn" style="font-size:0.6rem;padding:2px 5px" onclick="event.stopPropagation();deleteSubcat('${scId}')">🗑</button>`:''}<span class="subcat-toggle ${isOpen?'open':''}" id="stog_${scId}">▼</span></div><div class="subcat-items ${isOpen?'open':''}" id="slist_${scId}">${itemsHtml}${addRow}</div></div>`;
+    }).join('');
+    if(!catHasItems&&(search||currentFilter!=='all'))return;
+    const totalCat=Object.values(dbData.items).filter(v=>{const sc=dbData.subcategories[v.subcatId];return sc&&sc.catId===catId;}).length;
+    const presentCat=Object.values(dbData.items).filter(v=>{const sc=dbData.subcategories[v.subcatId];return sc&&sc.catId===catId&&v.present;}).length;
+    const pct=totalCat>0?Math.round(presentCat/totalCat*100):0;
+    const isOpen=search||currentFilter!=='all'||localStorage.getItem('open_'+catId)==='1';
+    const addSubcatRow=isAdmin?`<div class="add-subcat-row"><input class="add-item-input" id="nsc_emoji_${catId}" placeholder="📁" style="width:50px;flex:none"><input class="add-item-input" id="nsc_name_${catId}" placeholder="Nume subcategorie..."><button class="add-item-btn" onclick="addSubcat('${catId}')">+ SUBCAT</button></div>`:'';
+    const card=document.createElement('div');
+    card.className='category-card';card.style.animationDelay=(idx*40)+'ms';
+    card.innerHTML=`<div class="cat-header" onclick="toggleCat('${catId}')"><span class="cat-icon">${cat.emoji||'📦'}</span><span class="cat-name">${cat.name}</span><span class="cat-count">${presentCat}/${totalCat}</span><span class="cat-toggle ${isOpen?'open':''}" id="tog_${catId}">▼</span></div><div style="padding:0 16px 8px"><div class="cat-progress"><div class="cat-progress-fill" style="width:${pct}%"></div></div></div><div class="cat-body ${isOpen?'open':''}" id="body_${catId}">${subcatHtml}${addSubcatRow}</div>`;
+    container.appendChild(card);
+  });
+  if(container.innerHTML==='')container.innerHTML='<div class="empty">✅ Totul e în ordine!</div>';
+}
+
+function renderItem(item){
+  const statusLabels={ok:'✓ OK',defect:'⚠ Defect',lipsa:'✗ Lipsă'};
+  const s=item.status||'ok';
+  const n=item.name.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const qPrez=item.qtyPresent!==undefined?item.qtyPresent:item.qty;
+  const whoHtml=item.lastUser?`<div class="item-who">✏️ ${item.lastUser}</div>`:'';
+  const adminBtns=isAdmin?`<button class="edit-btn" onclick="openEditOverlay('${item.id}')">✏️</button><button class="del-btn" onclick="deleteItem('${item.id}','${n}')">🗑</button>`:'';
+  return`<div class="item-row"><div class="item-check ${item.present?'present':'absent'}" onclick="togglePresent('${item.id}',${!item.present},'${n}')">${item.present?'✓':'✗'}</div><div class="item-info"><div class="item-name">${item.name} ${adminBtns}</div><div class="item-sub">${qPrez} / ${item.qty} buc</div>${whoHtml}</div><div class="item-qty"><button class="qty-btn" onclick="changeQtyPresent('${item.id}',-1,'${n}')">−</button><span class="qty-num">${qPrez}</span><button class="qty-btn" onclick="changeQtyPresent('${item.id}',1,'${n}')">+</button></div><div class="item-status ${s}" onclick="cycleStatus('${item.id}','${s}','${n}')">${statusLabels[s]}</div></div>`;
+}
+
+function addItemInline(scId){
+  const nameEl=document.getElementById('ni_'+scId);
+  const qtyEl=document.getElementById('nq_'+scId);
+  const name=nameEl.value.trim();
+  const qty=parseInt(qtyEl.value)||1;
+  if(!name){showToast('Introdu numele!');nameEl.focus();return;}
+  db.ref('v4/items/item_'+Date.now()).set({name,subcatId:scId,qty,qtyPresent:qty,present:true,status:'ok'});
+  logAction('➕ Adăugat',name);
+  showToast('✅ '+name+' adăugat!');
+  nameEl.value='';qtyEl.value='1';
+}
+
+function addSubcat(catId){
+  const emoji=document.getElementById('nsc_emoji_'+catId).value.trim()||'📁';
+  const name=document.getElementById('nsc_name_'+catId).value.trim();
+  if(!name){showToast('Introdu numele subcategoriei!');return;}
+  const id='sc_'+Date.now();
+  db.ref('v4/subcategories/'+id).set({catId,name,emoji});
+  document.getElementById('nsc_name_'+catId).value='';
+  document.getElementById('nsc_emoji_'+catId).value='';
+  showToast('✅ Subcategorie adăugată!');
+}
+
+function renameSubcat(scId){
+  const sc=dbData.subcategories[scId];if(!sc)return;
+  const newName=prompt('Nume subcategorie:',sc.name);
+  if(!newName)return;
+  const newEmoji=prompt('Emoji:',sc.emoji||'📁');
+  db.ref('v4/subcategories/'+scId).update({name:newName.trim(),emoji:newEmoji||'📁'});
+  showToast('✅ Subcategorie redenumită!');
+}
+
+function deleteSubcat(scId){
+  const sc=dbData.subcategories[scId];if(!sc)return;
+  if(!confirm('Ștergi subcategoria "'+sc.name+'" și toate echipamentele din ea?'))return;
+  db.ref('v4/subcategories/'+scId).remove();
+  Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v4/items/'+id).remove();});
+  showToast('✅ Subcategorie ștearsă!');
+}
+
+function deleteItem(id,name){if(!confirm('Ștergi "'+name+'"?'))return;db.ref('v4/items/'+id).remove();logAction('🗑 Șters',name);showToast('✅ Șters!');}
+function togglePresent(id,v,name){const u={};u[`v4/items/${id}/present`]=v;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(v?'✅ Prezent':'❌ Absent',name);showToast(v?'✅ Prezent':'❌ Absent');}
+function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:'ok'};const next=cycle[cur]||'ok';const labels={ok:'OK',defect:'Defect',lipsa:'Lipsă'};const u={};u[`v4/items/${id}/status`]=next;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction('🔄 Status → '+labels[next],name);}
+function changeQtyPresent(id,delta,name){const item=dbData.items[id];if(!item)return;const cur=item.qtyPresent!==undefined?item.qtyPresent:item.qty;const max=item.qty||999;const next=Math.min(max,Math.max(0,cur+delta));if(next===cur){if(delta>0)showToast('⚠️ Stoc maxim atins!');return;}const u={};u[`v4/items/${id}/qtyPresent`]=next;if(currentUser)u[`v4/items/${id}/lastUser`]=currentUser.name;db.ref().update(u);logAction(`📦 ${cur}→${next}`,name);}
+function toggleCat(catId){const body=document.getElementById('body_'+catId);const tog=document.getElementById('tog_'+catId);if(!body)return;const isOpen=body.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
+function toggleSubcat(scId){const list=document.getElementById('slist_'+scId);const tog=document.getElementById('stog_'+scId);if(!list)return;const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('sopen_'+scId,isOpen?'1':'0');}
 function filterItems(){renderAll();}
 function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
 function updateStats(){const items=Object.values(dbData.items);document.getElementById('sTot').textContent=items.length;document.getElementById('sPrez').textContent=items.filter(i=>i.present).length;document.getElementById('sLipsa').textContent=items.filter(i=>!i.present).length;document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
 
 function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').classList.add('show');renderAdminPanel();}
 function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
-function renderAdminPanel(){const userList=document.getElementById('adminUserList');userList.innerHTML='';Object.entries(dbData.users).forEach(([id,u])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;userList.appendChild(row);});const sel=document.getElementById('newItemCat');const catList=document.getElementById('adminCatList');sel.innerHTML='';catList.innerHTML='';Object.entries(dbData.categories).forEach(([id,cat])=>{const opt=document.createElement('option');opt.value=id;opt.textContent=cat.emoji+' '+cat.name;sel.appendChild(opt);const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕ Șterge</button>`;catList.appendChild(row);});}
-function addUser(){const emoji=document.getElementById('newUserEmoji').value.trim()||'👤';const name=document.getElementById('newUserName').value.trim();const pass=document.getElementById('newUserPass').value.trim();if(!name||!pass){showToast('Completează numele și parola!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,15)+'_'+Date.now();db.ref(`v2/users/${id}`).set({name,emoji,pass});document.getElementById('newUserName').value='';document.getElementById('newUserPass').value='';document.getElementById('newUserEmoji').value='';showToast('✅ Utilizator adăugat!');setTimeout(renderAdminPanel,600);}
-function deleteUser(id){if(!confirm('Ștergi utilizatorul?'))return;db.ref(`v2/users/${id}`).remove();showToast('✅ Șters');setTimeout(renderAdminPanel,600);}
-function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20)+'_'+Date.now();db.ref(`v2/categories/${id}`).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
-function deleteCategory(catId){if(!confirm('Ștergi categoria?'))return;db.ref(`v2/categories/${catId}`).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.cat===catId)db.ref(`v2/items/${id}`).remove();});showToast('✅ Ștearsă');}
-function addItem(){const name=document.getElementById('newItemName').value.trim();const cat=document.getElementById('newItemCat').value;const qty=parseInt(document.getElementById('newItemQty').value)||1;if(!name){showToast('Introdu numele!');return;}db.ref('v2/items/item_'+Date.now()).set({name,cat,qty,qtyPresent:qty,present:true,status:'ok'});document.getElementById('newItemName').value='';showToast('✅ Adăugat!');}
-function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v2/items/${id}/present`]=true;u[`v2/items/${id}/status`]='ok';u[`v2/items/${id}/qtyPresent`]=dbData.items[id].qty||1;});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
-function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v2/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
+function renderAdminPanel(){
+  const userList=document.getElementById('adminUserList');userList.innerHTML='';
+  Object.entries(dbData.users).forEach(([id,u])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;userList.appendChild(row);});
+  const catList=document.getElementById('adminCatList');catList.innerHTML='';
+  Object.entries(dbData.categories).forEach(([id,cat])=>{const row=document.createElement('div');row.className='admin-item-row';row.innerHTML=`<span>${cat.emoji} ${cat.name}</span><button class="btn-danger" onclick="deleteCategory('${id}')">✕ Șterge</button>`;catList.appendChild(row);});
+}
+function addUser(){const emoji=document.getElementById('newUserEmoji').value.trim()||'👤';const name=document.getElementById('newUserName').value.trim();const pass=document.getElementById('newUserPass').value.trim();if(!name||!pass){showToast('Completează numele și parola!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,15)+'_'+Date.now();db.ref(`v4/users/${id}`).set({name,emoji,pass});document.getElementById('newUserName').value='';document.getElementById('newUserPass').value='';document.getElementById('newUserEmoji').value='';showToast('✅ Utilizator adăugat!');setTimeout(renderAdminPanel,600);}
+function deleteUser(id){if(!confirm('Ștergi utilizatorul?'))return;db.ref(`v4/users/${id}`).remove();showToast('✅ Șters');setTimeout(renderAdminPanel,600);}
+function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id=name.toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20)+'_'+Date.now();db.ref(`v4/categories/${id}`).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
+function deleteCategory(catId){if(!confirm('Ștergi categoria și tot ce conține?'))return;db.ref(`v4/categories/${catId}`).remove();Object.entries(dbData.subcategories).forEach(([scId,sc])=>{if(sc.catId===catId){db.ref('v4/subcategories/'+scId).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v4/items/'+id).remove();});}});showToast('✅ Ștearsă!');}
+function resetAllStatus(){if(!confirm('Reset toate la Prezent/OK?'))return;const u={};Object.keys(dbData.items).forEach(id=>{u[`v4/items/${id}/present`]=true;u[`v4/items/${id}/status`]='ok';u[`v4/items/${id}/qtyPresent`]=dbData.items[id].qty||1;});db.ref().update(u,()=>showToast('✅ Reset complet!'));logAction('↺ RESET TOTAL','toate echipamentele');}
+function changePassword(){const p=document.getElementById('newPassInput').value.trim();if(!p||p.length<4){showToast('Minim 4 caractere!');return;}db.ref('v4/settings/adminPass').set(p,()=>{ADMIN_PASS=p;document.getElementById('newPassInput').value='';showToast('✅ Parolă schimbată!');});}
 
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
