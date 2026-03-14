@@ -464,9 +464,7 @@ function initFirebase(){
 function seedData(){
   showToast('Inițializare v5...');
   const items={};
-  SEED_DATA.items.forEach((item,i)=>{
-    items['item_'+i+'_'+Date.now()]={name:item.n,subcatId:item.s,qty:item.q,present:true,status:'ok',checkouts:{}};
-  });
+  SEED_DATA.items.forEach((item,i)=>{items['item_'+i+'_'+Date.now()]={name:item.n,subcatId:item.s,qty:item.q,present:true,status:'ok',checkouts:{}};});
   const users={};DEFAULT_USERS.forEach(u=>{users[u.id]={name:u.name,emoji:u.emoji,pass:u.pass};});
   db.ref('v5').set({categories:SEED_DATA.categories,subcategories:SEED_DATA.subcategories,items,settings:{adminPass:'akd2025'},users,jurnal:{}},()=>{loadData();showToast('✅ Inițializat!');});
 }
@@ -492,8 +490,7 @@ function renderUserList(){
   list.innerHTML='';
   document.getElementById('userPassSection').classList.remove('show');
   document.getElementById('userList').style.display='flex';
-  const sorted=Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0);
-  sorted.forEach(([id,u])=>{
+  Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0).forEach(([id,u])=>{
     const btn=document.createElement('button');
     btn.className='user-btn';
     btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;
@@ -643,6 +640,9 @@ function toggleSubcat(scId){const list=document.getElementById('slist_'+scId);co
 function filterItems(){renderAll();}
 function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
 function updateStats(){const items=Object.values(dbData.items);const totalOut=items.reduce((s,i)=>s+getItemOut(i),0);document.getElementById('sTot').textContent=items.length;document.getElementById('sOut').textContent=totalOut;document.getElementById('sIn').textContent=items.reduce((s,i)=>s+getItemAvail(i),0);document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
+
+function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').classList.add('show');renderAdminPanel();}
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
 function renderAdminPanel(){
   const userList=document.getElementById('adminUserList');
   userList.innerHTML='';
@@ -651,7 +651,7 @@ function renderAdminPanel(){
     row.className='admin-item-row';
     row.style.flexWrap='wrap';
     row.style.gap='6px';
-    row.innerHTML=`<span style="flex:1;min-width:120px">${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="edit-btn" onclick="editUser('${id}')">✏️</button><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;
+    row.innerHTML=`<span style="flex:1;min-width:100px">${u.emoji||'👤'} ${u.name} <span style="color:var(--text3);font-size:0.72rem">(${u.pass})</span></span><button class="edit-btn" onclick="editUser('${id}')">✏️ Edit</button><button class="btn-danger" onclick="deleteUser('${id}')">✕</button>`;
     userList.appendChild(row);
   });
   const catList=document.getElementById('adminCatList');
@@ -674,16 +674,6 @@ function editUser(id){
   db.ref('v5/users/'+id).update({emoji:newEmoji.trim()||'👤',name:newName.trim(),pass:newPass.trim()},()=>{showToast('✅ User actualizat!');setTimeout(renderAdminPanel,400);});
 }
 function addUser(){const emoji=document.getElementById('newUserEmoji').value.trim()||'👤';const name=document.getElementById('newUserName').value.trim();const pass=document.getElementById('newUserPass').value.trim();if(!name||!pass){showToast('Completează!');return;}const id='u_'+Date.now();db.ref('v5/users/'+id).set({name,emoji,pass});document.getElementById('newUserName').value='';document.getElementById('newUserPass').value='';document.getElementById('newUserEmoji').value='';showToast('✅ User adăugat!');setTimeout(renderAdminPanel,600);}
-function editUser(id){
-  const u=dbData.users[id];if(!u)return;
-  const newEmoji=prompt('Emoji:',u.emoji||'👤');
-  if(newEmoji===null)return;
-  const newName=prompt('Nume:',u.name);
-  if(!newName||!newName.trim())return;
-  const newPass=prompt('Parolă:',u.pass);
-  if(!newPass||newPass.length<3)return;
-  db.ref('v5/users/'+id).update({emoji:newEmoji.trim()||'👤',name:newName.trim(),pass:newPass.trim()},()=>{showToast('✅ User actualizat!');setTimeout(renderAdminPanel,400);});
-}
 function deleteUser(id){if(!confirm('Ștergi userul?'))return;db.ref('v5/users/'+id).remove();setTimeout(renderAdminPanel,600);}
 function addCategory(){const emoji=document.getElementById('newCatEmoji').value.trim()||'📦';const name=document.getElementById('newCatName').value.trim();if(!name){showToast('Introdu numele!');return;}const id='cat_'+Date.now();db.ref('v5/categories/'+id).set({name,emoji});document.getElementById('newCatName').value='';showToast('✅ Categorie adăugată!');}
 function deleteCategory(catId){if(!confirm('Ștergi categoria și tot?'))return;db.ref('v5/categories/'+catId).remove();Object.entries(dbData.subcategories).forEach(([scId,sc])=>{if(sc.catId===catId){db.ref('v5/subcategories/'+scId).remove();Object.entries(dbData.items).forEach(([id,item])=>{if(item.subcatId===scId)db.ref('v5/items/'+id).remove();});}});showToast('✅ Ștearsă!');}
