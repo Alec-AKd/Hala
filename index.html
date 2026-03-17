@@ -587,7 +587,7 @@ function renderAll(){
     const subcats=Object.entries(dbData.subcategories).filter(([,v])=>v.catId===catId);
     let catHasItems=false;
     const subcatHtml=subcats.map(([scId,sc])=>{
-      let items=Object.entries(dbData.items).filter(([,v])=>v.subcatId===scId).map(([k,v])=>({id:k,...v}));
+      let items=Object.entries(dbData.items).filter(([,v])=>v.subcatId===scId).map(([k,v])=>({id:k,...v})).sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:0);et items=Object.entries(dbData.items).filter(([,v])=>v.subcatId===scId).map(([k,v])=>({id:k,...v}));
       if(search)items=items.filter(it=>it.name.toLowerCase().includes(search));
       if(currentFilter==='absent')items=items.filter(it=>!it.present);
       if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');
