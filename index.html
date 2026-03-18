@@ -493,7 +493,8 @@ function renderUserList(){
   Object.entries(dbData.users).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0).forEach(([id,u])=>{
     const btn=document.createElement('button');
     btn.className='user-btn';
-    btn.innerHTML=<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>;
+    btn.innerHTML=`<div class="user-avatar">${u.emoji||'👤'}</div><span>${u.name}</span>`;
+
     btn.onclick=()=>selectUser(id,u);
     list.appendChild(btn);
   });
