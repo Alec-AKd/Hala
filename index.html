@@ -477,7 +477,7 @@ function loadData(){
     renderAll();updateStats();
     document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');
     const el=document.getElementById('loading');
-    el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);
+    if(!el.classList.contains('hidden')){el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);}
   });
 }
 
