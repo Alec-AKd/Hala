@@ -464,7 +464,7 @@ function loadData(){
     renderAll();updateStats();
     document.getElementById('lastSync').textContent='Sync: '+new Date().toLocaleTimeString('ro-RO');
     const el=document.getElementById('loading');
-    el.classList.add('hidden');setTimeout(()=>{el.style.display='none';showUserLogin();},500);
+    el.classList.add('hidden');setTimeout(()=>{el.style.display='none';if(!currentUser)showUserLogin();},500);
   });
 }
 function getItemOut(item){return Object.values(item.checkouts||{}).reduce((s,c)=>s+(c.qty||0),0);}
