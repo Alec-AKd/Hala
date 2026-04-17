@@ -574,7 +574,7 @@ function renderAll(){
   const sorted=getCatOrder();
   sorted.forEach((catId,idx)=>{
     const cat=dbData.categories[catId];if(!cat)return;
-    const subcats=Object.entries(dbData.subcategories).filter(([,v])=>v.catId===catId);
+    const subcats=Object.entries(dbData.subcategories).filter(([,v])=>v.catId===catId).sort(([,a],[,b])=>a.name<b.name?-1:a.name>b.name?1:0);
     let catHasItems=false;
     const subcatHtml=subcats.map(([scId,sc])=>{
       let items=Object.entries(dbData.items).filter(([,v])=>v.subcatId===scId).map(([k,v])=>({id:k,...v})).sort((a,b)=>a.name<b.name?-1:a.name>b.name?1:0);
