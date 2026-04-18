@@ -303,12 +303,13 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   <input class="search-input" type="search" id="searchInput" placeholder="🔍 Caută echipament..." oninput="filterItems()">
 </div>
 
-<div class="filter-tabs">
+<div class="filter-tabs" id="filterTabs">
   <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">Toate</button>
   <button class="filter-tab" data-filter="out" onclick="setFilter('out')">📤 Afară</button>
   <button class="filter-tab" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button>
   <button class="filter-tab" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button>
 </div>
+
 
 <div class="categories" id="categories"><div class="empty">Se conectează...</div></div>
 
@@ -582,6 +583,8 @@ function renderAll(){
       if(currentFilter==='absent')items=items.filter(it=>!it.present);
       if(currentFilter==='defect')items=items.filter(it=>it.status==='defect');
       if(currentFilter==='out')items=items.filter(it=>getItemOut(it)>0);
+if(currentFilter.startsWith('user_')){const uid=currentFilter.replace('user_','');items=items.filter(it=>Object.values(it.checkouts||{}).some(co=>co.userId===uid));}
+
       if(!items.length&&(search||currentFilter!=='all'))return'';
       catHasItems=true;
       const total=Object.values(dbData.items).filter(v=>v.subcatId===scId).length;
@@ -626,7 +629,18 @@ function cycleStatus(id,cur,name){const cycle={ok:'defect',defect:'lipsa',lipsa:
 function toggleCat(catId){const body=document.getElementById('body_'+catId);const tog=document.getElementById('tog_'+catId);if(!body)return;const isOpen=body.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('open_'+catId,isOpen?'1':'0');}
 function toggleSubcat(scId){const list=document.getElementById('slist_'+scId);const tog=document.getElementById('stog_'+scId);if(!list)return;const isOpen=list.classList.toggle('open');tog.classList.toggle('open',isOpen);localStorage.setItem('sopen_'+scId,isOpen?'1':'0');}
 function filterItems(){renderAll();}
-function setFilter(f){currentFilter=f;document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('active',t.dataset.filter===f));renderAll();}
+function setFilter(f){currentFilter=f;renderFilterTabs();renderAll();}
+function renderFilterTabs(){
+  const tabs=document.getElementById('filterTabs');
+  const usersOut=[...new Set(Object.values(dbData.items).flatMap(item=>Object.values(item.checkouts||{}).map(co=>co.userId)))];
+  let html=`<button class="filter-tab ${currentFilter==='all'?'active':''}" data-filter="all" onclick="setFilter('all')">Toate</button>`;
+  html+=`<button class="filter-tab ${currentFilter==='out'?'active':''}" data-filter="out" onclick="setFilter('out')">📤 Afară</button>`;
+  usersOut.forEach(uid=>{const u=dbData.users[uid];if(!u)return;html+=`<button class="filter-tab ${currentFilter==='user_'+uid?'active':''}" data-filter="user_${uid}" onclick="setFilter('user_${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});
+  html+=`<button class="filter-tab ${currentFilter==='absent'?'active':''}" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button>`;
+  html+=`<button class="filter-tab ${currentFilter==='defect'?'active':''}" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button>`;
+  tabs.innerHTML=html;
+}
+
 function updateStats(){const items=Object.values(dbData.items);const totalOut=items.reduce((s,i)=>s+getItemOut(i),0);document.getElementById('sTot').textContent=items.length;document.getElementById('sOut').textContent=totalOut;document.getElementById('sIn').textContent=items.reduce((s,i)=>s+getItemAvail(i),0);document.getElementById('sDefect').textContent=items.filter(i=>i.status==='defect').length;}
 function openAdmin(){if(!isAdmin)return;document.getElementById('adminPanel').classList.add('show');renderAdminPanel();}
 function closeAdmin(){document.getElementById('adminPanel').classList.remove('show');}
