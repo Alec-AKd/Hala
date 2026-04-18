@@ -232,7 +232,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Checkout Modal -->
 <div class="checkout-modal" id="checkoutModal">
   <div class="checkout-box">
     <h3>📤 CHECKOUT</h3>
@@ -248,7 +247,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Return Modal -->
 <div class="return-modal" id="returnModal">
   <div class="return-box">
     <h3>↩ RETURN</h3>
@@ -265,7 +263,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   </div>
 </div>
 
-<!-- Edit Item Overlay -->
 <div class="edit-overlay" id="editOverlay">
   <div class="edit-box">
     <h3>✏️ EDITEAZĂ ECHIPAMENT</h3>
@@ -309,7 +306,6 @@ header{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px 
   <button class="filter-tab" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button>
   <button class="filter-tab" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button>
 </div>
-
 
 <div class="categories" id="categories"><div class="empty">Se conectează...</div></div>
 
@@ -573,11 +569,11 @@ function renderFilterTabs(){
   const tabs=document.getElementById('filterTabs');
   if(!tabs)return;
   const usersOut=[...new Set(Object.values(dbData.items).flatMap(item=>Object.values(item.checkouts||{}).map(co=>co.userId)))];
-  let html=`<button class="filter-tab ${currentFilter==='all'?'active':''}" data-filter="all" onclick="setFilter('all')">Toate</button>`;
-  html+=`<button class="filter-tab ${currentFilter==='out'?'active':''}" data-filter="out" onclick="setFilter('out')">📤 Afară</button>`;
-  usersOut.forEach(uid=>{const u=dbData.users[uid];if(!u)return;html+=`<button class="filter-tab ${currentFilter==='user_'+uid?'active':''}" data-filter="user_${uid}" onclick="setFilter('user_${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});
-  html+=`<button class="filter-tab ${currentFilter==='absent'?'active':''}" data-filter="absent" onclick="setFilter('absent')">❌ Lipsă</button>`;
-  html+=`<button class="filter-tab ${currentFilter==='defect'?'active':''}" data-filter="defect" onclick="setFilter('defect')">⚠️ Defect</button>`;
+  let html=`<button class="filter-tab ${currentFilter==='all'?'active':''}" onclick="setFilter('all')">Toate</button>`;
+  html+=`<button class="filter-tab ${currentFilter==='out'?'active':''}" onclick="setFilter('out')">📤 Afară</button>`;
+  usersOut.forEach(uid=>{const u=dbData.users[uid];if(!u)return;html+=`<button class="filter-tab ${currentFilter==='user_'+uid?'active':''}" onclick="setFilter('user_${uid}')">${u.emoji||'👤'} ${u.name}</button>`;});
+  html+=`<button class="filter-tab ${currentFilter==='absent'?'active':''}" onclick="setFilter('absent')">❌ Lipsă</button>`;
+  html+=`<button class="filter-tab ${currentFilter==='defect'?'active':''}" onclick="setFilter('defect')">⚠️ Defect</button>`;
   tabs.innerHTML=html;
 }
 function renderAll(){
